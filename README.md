@@ -34,8 +34,8 @@ to include it in the library.
 
 ## Run tests
 
-   yarn test
-   yarn lint
+    yarn test
+    yarn lint
 
 ## Credits
 
