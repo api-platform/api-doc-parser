@@ -21,7 +21,7 @@ Using [NPM](https://www.npmjs.com/):
 ## Usage
 
 ```javascript
-import parseHydraDocumentation from 'api-doc-parser/hydra';
+import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
 
 parseHydraDocumentation('https://demo.api-platform.com').then(api => console.log(api));
 ```
