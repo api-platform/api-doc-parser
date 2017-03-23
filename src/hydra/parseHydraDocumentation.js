@@ -11,7 +11,9 @@ import fetchJsonLd from './fetchJsonLd';
  * @param {string} entrypointUrl
  * @return {string}
  */
-const guessNameFromUrl = (url, entrypointUrl) => url.substr(entrypointUrl.length + 1);
+function guessNameFromUrl(url, entrypointUrl) {
+  return url.substr(entrypointUrl.length + 1);
+}
 
 /**
  * Finds the description of the class with the given id.
@@ -20,8 +22,8 @@ const guessNameFromUrl = (url, entrypointUrl) => url.substr(entrypointUrl.length
  * @param {string} supportedClass
  * @return {object}
  */
-const findSupportedClass = (docs, supportedClass) => {
-  let supportedClasses = docs[0]['http://www.w3.org/ns/hydra/core#supportedClass'];
+function findSupportedClass(docs, supportedClass) {
+  const supportedClasses = docs[0]['http://www.w3.org/ns/hydra/core#supportedClass'];
 
   for (let i = 0; i < supportedClasses.length; i++) {
     if (supportedClasses[i]['@id'] === supportedClass) {
@@ -30,9 +32,9 @@ const findSupportedClass = (docs, supportedClass) => {
   }
 
   throw new Error(`The class ${supportedClass} doesn't exist.`);
-};
+}
 
-export const getDocumentationUrlFromHeaders = (headers) => {
+export function getDocumentationUrlFromHeaders(headers) {
   const linkHeader = headers.get('Link');
   if (!linkHeader) {
     Promise.reject(new Error('The response has no "Link" HTTP header.'));
@@ -44,7 +46,7 @@ export const getDocumentationUrlFromHeaders = (headers) => {
   }
 
   return matches[1];
-};
+}
 
 
 /**
@@ -53,7 +55,7 @@ export const getDocumentationUrlFromHeaders = (headers) => {
  * @param {string} entrypointUrl
  * @return {Promise}
  */
-const fetchEntrypointAndDocs = entrypointUrl => {
+function fetchEntrypointAndDocs(entrypointUrl) {
   return fetchJsonLd(entrypointUrl).then(d => {
     return {
       entrypointUrl,
@@ -79,7 +81,7 @@ const fetchEntrypointAndDocs = entrypointUrl => {
       })
     )
   );
-};
+}
 
 /**
  * Parses a Hydra documentation and converts it to an intermediate representation.
@@ -87,8 +89,8 @@ const fetchEntrypointAndDocs = entrypointUrl => {
  * @param {string} entrypointUrl
  * @return {Promise.<Api>}
  */
-export default (entrypointUrl) =>
-  fetchEntrypointAndDocs(entrypointUrl).then(({ entrypoint, docs }) => {
+export default function parseHydraDocumentation(entrypointUrl) {
+  return fetchEntrypointAndDocs(entrypointUrl).then(({ entrypoint, docs }) => {
     const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'] : 'API Platform';
     const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
 
@@ -155,3 +157,4 @@ export default (entrypointUrl) =>
 
     return new Api(entrypointUrl, title, resources);
   });
+}
