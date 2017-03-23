@@ -379,7 +379,7 @@ test('parse a Hydra documentation', () => {
   return parseHydraDocumentation('http://localhost').then(data => {
       const expectedApi = {
         "entrypoint": "http://localhost",
-        "title": "API Platform",
+        "title": "API Platform's demo",
         "resources": [
           {
             "name": "books",
