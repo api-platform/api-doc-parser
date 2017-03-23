@@ -91,7 +91,7 @@ function fetchEntrypointAndDocs(entrypointUrl) {
  */
 export default function parseHydraDocumentation(entrypointUrl) {
   return fetchEntrypointAndDocs(entrypointUrl).then(({ entrypoint, docs }) => {
-    const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'] : 'API Platform';
+    const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
     const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
 
     let resources = [];
