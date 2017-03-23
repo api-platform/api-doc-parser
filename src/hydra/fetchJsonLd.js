@@ -5,7 +5,7 @@
  * @param {object} options
  * @return {Promise.<object>} An object with a response key (the original HTTP response) and an optional body key (the parsed JSON-LD body)
  */
-export default (url, options = {})  => {
+export default function fetchJsonLd(url, options = {}) {
   const jsonLdMimeType = 'application/ld+json';
 
   if ('undefined' === typeof options.headers) {
@@ -26,6 +26,6 @@ export default (url, options = {})  => {
         return {response: response};
       }
 
-      return response.json().then(json => { return { response: response, body: json }});
+      return response.json().then(body => { return { response, body }});
     });
-};
+}
