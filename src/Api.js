@@ -1,12 +1,32 @@
+// @flow
+
+import Resource from './Resource';
+
+type ApiOptions = {
+  title?: string,
+  resource?: Map<string, Resource>,
+}
+
 /**
- * @property {string} entrypoint                - The URL of the API's entrypoint
- * @property {string} title                     - The title
- * @property {Map.<string, Resource>} resources - Resources of this API
+ * @property {string} entrypoint  - The URL of the API's entrypoint
  */
 export default class Api {
-  constructor(entrypoint, title = '', resources = new Map()) {
+  entrypoint: string;
+
+  /**
+   * @param {string}      entrypoint
+   * @param {?ApiOptions} options
+   */
+  constructor(entrypoint: string, options: ApiOptions = {}) {
     this.entrypoint = entrypoint;
-    this.title = title;
-    this.resources = resources;
+
+    Object.keys(options).forEach((key) => {
+      Object.defineProperty(this, key, {
+        readable: true,
+        writable: true,
+        enumerable: true,
+        value: options[key],
+      });
+    });
   }
 }
