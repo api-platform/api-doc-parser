@@ -12,4 +12,4 @@ cache:
 
 script:
   - npm test
-  - npm lint
+  - npm run lint
