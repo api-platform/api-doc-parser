@@ -118,11 +118,13 @@ export default function parseHydraDocumentation(entrypointUrl) {
 
           const field = new Field(
             supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
-            supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@id'],
-            range,
-            'http://www.w3.org/ns/hydra/core#Link' === supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@type'][0] ? range : null, // Will be updated in a subsequent pass
-            supportedProperty['http://www.w3.org/ns/hydra/core#required'] ? supportedProperty['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
-            supportedProperty['http://www.w3.org/ns/hydra/core#description'] ? supportedProperty['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
+            {
+              id: supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@id'],
+              range,
+              reference: 'http://www.w3.org/ns/hydra/core#Link' === supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@type'][0] ? range : null, // Will be updated in a subsequent pass
+              required: supportedProperty['http://www.w3.org/ns/hydra/core#required'] ? supportedProperty['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
+              description: supportedProperty['http://www.w3.org/ns/hydra/core#description'] ? supportedProperty['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
+            },
           );
 
           fields.push(field);
@@ -139,9 +141,11 @@ export default function parseHydraDocumentation(entrypointUrl) {
         resources.push(new Resource(
           guessNameFromUrl(entrypoint[0][property['@id']][0]['@id'], entrypointUrl),
           entrypoint[0][property['@id']][0]['@id'],
-          supportedClass['@id'],
-          readableFields,
-          writableFields
+          {
+            id: supportedClass['@id'],
+            readableFields,
+            writableFields
+          }
         ));
 
         break;
@@ -155,6 +159,6 @@ export default function parseHydraDocumentation(entrypointUrl) {
       }
     }
 
-    return new Api(entrypointUrl, title, resources);
+    return new Api(entrypointUrl, {title, resources});
   });
 }
