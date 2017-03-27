@@ -16,7 +16,7 @@ export default function fetchJsonLd(url, options = {}) {
     options.headers.set('Accept', jsonLdMimeType);
   }
 
-  if ('undefined' !== options.body && !(options.body instanceof FormData) && null === options.headers.get('Content-Type')) {
+  if ('undefined' !== options.body && !(typeof FormData !== 'undefined' && options.body instanceof FormData) && null === options.headers.get('Content-Type')) {
     options.headers.set('Content-Type', jsonLdMimeType);
   }
 
