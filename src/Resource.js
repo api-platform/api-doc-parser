@@ -1,16 +1,37 @@
+// @flow
+
+import Field from './Field';
+
+type ResourceOptions = {
+  id?: string,
+  readableFields?: Field[],
+  writableFields?: Field[],
+}
+
 /**
  * @property {string} name            - The name of the resource
  * @property {string} url             - The base URL for this resource
- * @property {?string} id             - The id of the resource (e.g. http://schema.org/Book)
- * @property {Field[]} readableFields - The list of readable fields
- * @property {Field[]} writableFields - The list of writable fields
  */
 export default class Resource {
-  constructor(name, url, id = null, readableFields = [], writableFields = []) {
+  name: string;
+  url: string;
+
+  /**
+   * @param {string}          name
+   * @param {string}          url
+   * @param {ResourceOptions} options
+   */
+  constructor(name: string, url: string, options: ResourceOptions = {}) {
     this.name = name;
     this.url = url;
-    this.id = id;
-    this.readableFields = readableFields;
-    this.writableFields = writableFields;
+
+    Object.keys(options).forEach((key) => {
+      Object.defineProperty(this, key, {
+        readable: true,
+        writable: true,
+        enumerable: true,
+        value: options[key],
+      });
+    });
   }
 }
