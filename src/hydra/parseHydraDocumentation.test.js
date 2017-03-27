@@ -385,6 +385,7 @@ test('parse a Hydra documentation', () => {
             "name": "books",
             "url": "http://localhost/books",
             "id": "http://schema.org/Book",
+            "title": "Book",
             "readableFields": [
               {
                 "name": "isbn",
@@ -474,6 +475,7 @@ test('parse a Hydra documentation', () => {
             "name": "reviews",
             "url": "http://localhost/reviews",
             "id": "http://schema.org/Review",
+            "title": "Review",
             "readableFields": [
               {
                 "name": "reviewBody",
@@ -499,6 +501,7 @@ test('parse a Hydra documentation', () => {
                   "name": "books",
                   "url": "http://localhost/books",
                   "id": "http://schema.org/Book",
+                  "title": "Book",
                   "readableFields": [
                     {
                       "name": "isbn",
@@ -613,6 +616,7 @@ test('parse a Hydra documentation', () => {
                   "name": "books",
                   "url": "http://localhost/books",
                   "id": "http://schema.org/Book",
+                  "title": "Book",
                   "readableFields": [
                     {
                       "name": "isbn",
@@ -707,7 +711,7 @@ test('parse a Hydra documentation', () => {
       };
 
       // TODO: find some something cleaner ;)
-      expect(JSON.stringify(data)).toBe(JSON.stringify(expectedApi));
+      expect(JSON.stringify(data, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
     }
   );
 });

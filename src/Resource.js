@@ -4,9 +4,10 @@ import Field from './Field';
 
 type ResourceOptions = {
   id?: string,
+  title?: string,
   readableFields?: Field[],
   writableFields?: Field[],
-}
+};
 
 /**
  * @property {string} name            - The name of the resource

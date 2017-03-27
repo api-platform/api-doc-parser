@@ -143,6 +143,7 @@ export default function parseHydraDocumentation(entrypointUrl) {
           entrypoint[0][property['@id']][0]['@id'],
           {
             id: supportedClass['@id'],
+            title: supportedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
             readableFields,
             writableFields
           }
