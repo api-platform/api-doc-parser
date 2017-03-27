@@ -18,6 +18,10 @@ Using [NPM](https://www.npmjs.com/):
 
     npm install api-doc-parser
 
+If you plan to use the library with Node, you also need a polyfill for the `fetch` function:
+
+    yarn install isomorphic-fetch
+
 ## Usage
 
 ```javascript
