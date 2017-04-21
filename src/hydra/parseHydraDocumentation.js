@@ -53,17 +53,18 @@ export function getDocumentationUrlFromHeaders(headers) {
  * Retrieves Hydra's entrypoint and API docs.
  *
  * @param {string} entrypointUrl
+ * @param {object} options
  * @return {Promise}
  */
-function fetchEntrypointAndDocs(entrypointUrl) {
-  return fetchJsonLd(entrypointUrl).then(d => {
+function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
+  return fetchJsonLd(entrypointUrl, options).then(d => {
     return {
       entrypointUrl,
       docsUrl: getDocumentationUrlFromHeaders(d.response.headers),
       entrypoint: d.body
     }
   }).then(data =>
-    fetchJsonLd(data.docsUrl).then(d => {
+    fetchJsonLd(data.docsUrl, options).then(d => {
       data.docs = d.body;
 
       return data;
@@ -87,10 +88,11 @@ function fetchEntrypointAndDocs(entrypointUrl) {
  * Parses a Hydra documentation and converts it to an intermediate representation.
  *
  * @param {string} entrypointUrl
+ * @param {object} options
  * @return {Promise.<Api>}
  */
-export default function parseHydraDocumentation(entrypointUrl) {
-  return fetchEntrypointAndDocs(entrypointUrl).then(({ entrypoint, docs }) => {
+export default function parseHydraDocumentation(entrypointUrl, options = {}) {
+  return fetchEntrypointAndDocs(entrypointUrl, options).then(({ entrypoint, docs }) => {
     const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
     const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
 
