@@ -376,7 +376,9 @@ test('parse a Hydra documentation', () => {
     [docs, init],
   );
 
-  return parseHydraDocumentation('http://localhost').then(data => {
+  const options = { headers: new Headers({'CustomHeader': 'customValue'}) };
+
+  return parseHydraDocumentation('http://localhost', options).then(data => {
       const expectedApi = {
         "entrypoint": "http://localhost",
         "title": "API Platform's demo",
@@ -712,6 +714,8 @@ test('parse a Hydra documentation', () => {
 
       // TODO: find some something cleaner ;)
       expect(JSON.stringify(data, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
+      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(fetch).toHaveBeenLastCalledWith('http://localhost/docs.jsonld', options);
     }
   );
 });
