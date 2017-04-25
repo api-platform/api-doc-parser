@@ -126,7 +126,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               reference: 'http://www.w3.org/ns/hydra/core#Link' === supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@type'][0] ? range : null, // Will be updated in a subsequent pass
               required: supportedProperty['http://www.w3.org/ns/hydra/core#required'] ? supportedProperty['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
               description: supportedProperty['http://www.w3.org/ns/hydra/core#description'] ? supportedProperty['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
-            },
+            }
           );
 
           fields.push(field);

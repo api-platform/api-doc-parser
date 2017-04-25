@@ -26,7 +26,7 @@ export default class Field {
         readable: true,
         writable: true,
         enumerable: true,
-        value: options[key],
+        value: options[key]
       });
     });
   }
