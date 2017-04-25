@@ -31,7 +31,7 @@ export default class Resource {
         readable: true,
         writable: true,
         enumerable: true,
-        value: options[key],
+        value: options[key]
       });
     });
   }
