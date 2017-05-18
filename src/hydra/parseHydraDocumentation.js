@@ -115,27 +115,28 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
         }
 
         const supportedClass = findSupportedClass(docs, className);
-        for (let supportedProperty of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-          const range = supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'];
+        for (let supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+          const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
+          const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
 
           const field = new Field(
-            supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+            supportedProperty['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
             {
-              id: supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@id'],
+              id: supportedProperty['@id'],
               range,
-              reference: 'http://www.w3.org/ns/hydra/core#Link' === supportedProperty['http://www.w3.org/ns/hydra/core#property'][0]['@type'][0] ? range : null, // Will be updated in a subsequent pass
-              required: supportedProperty['http://www.w3.org/ns/hydra/core#required'] ? supportedProperty['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
-              description: supportedProperty['http://www.w3.org/ns/hydra/core#description'] ? supportedProperty['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
+              reference: 'http://www.w3.org/ns/hydra/core#Link' === property['@type'][0] ? range : null, // Will be updated in a subsequent pass
+              required: supportedProperties['http://www.w3.org/ns/hydra/core#required'] ? supportedProperties['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
+              description: supportedProperties['http://www.w3.org/ns/hydra/core#description'] ? supportedProperties['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
             },
           );
 
           fields.push(field);
 
-          if (supportedProperty['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
+          if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
             readableFields.push(field);
           }
 
-          if (supportedProperty['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
+          if (supportedProperties['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
             writableFields.push(field);
           }
         }
@@ -158,7 +159,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
     // Resolve references
     for (let field of fields) {
       if (null !== field.reference) {
-        field.reference = resources.find(resource => resource.id === field.reference);
+        field.reference = resources.find(resource => resource.id === field.reference) || null;
       }
     }
 
