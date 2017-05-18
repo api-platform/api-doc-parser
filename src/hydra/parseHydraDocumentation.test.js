@@ -2,23 +2,28 @@ import parseHydraDocumentation from './parseHydraDocumentation';
 
 test('parse a Hydra documentation', () => {
   const entrypoint = `{
-  "@context": {
-    "@vocab": "http://localhost/docs.jsonld#",
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
       "hydra": "http://www.w3.org/ns/hydra/core#",
       "book": {
-      "@id": "Entrypoint/book",
+        "@id": "Entrypoint/book",
         "@type": "@id"
+      },
+      "review": {
+        "@id": "Entrypoint/review",
+        "@type": "@id"
+      },
+      "customResource": {
+        "@id": "Entrypoint/customResource",
+        "@type": "@id"
+      }
     },
-    "review": {
-      "@id": "Entrypoint/review",
-        "@type": "@id"
-    }
-  },
-  "@id": "/",
+    "@id": "/",
     "@type": "Entrypoint",
     "book": "/books",
-    "review": "/reviews"
-}`;
+    "review": "/reviews",
+    "customResource": "/customResources"
+  }`;
 
   const docs = `{
   "@context": {
@@ -238,6 +243,73 @@ test('parse a Hydra documentation', () => {
       ]
     },
     {
+      "@id": "#CustomResource",
+      "@type": "hydra:Class",
+      "rdfs:label": "CustomResource",
+      "hydra:title": "CustomResource",
+      "hydra:description": "A custom resource.",
+      "hydra:supportedProperty": [
+        {
+          "@type": "hydra:SupportedProperty",
+          "hydra:property": {
+            "@id": "#CustomResource/label",
+            "@type": "rdf:Property",
+            "rdfs:label": "label",
+            "domain": "#CustomResource",
+            "range": "xmls:string"
+          },
+          "hydra:title": "label",
+          "hydra:required": true,
+          "hydra:readable": true,
+          "hydra:writable": true
+        },
+        {
+          "@type": "hydra:SupportedProperty",
+          "hydra:property": {
+            "@id": "#CustomResource/description",
+            "@type": "rdf:Property",
+            "rdfs:label": "description",
+            "domain": "#CustomResource",
+            "range": "xmls:string"
+          },
+          "hydra:title": "description",
+          "hydra:required": true,
+          "hydra:readable": true,
+          "hydra:writable": true
+        },
+        {
+          "@type": "hydra:SupportedProperty",
+          "hydra:property": {
+            "@id": "#CustomResource/sanitizedDescription",
+            "@type": "rdf:Property",
+            "rdfs:label": "sanitizedDescription",
+            "domain": "#CustomResource"
+          },
+          "hydra:title": "sanitizedDescription",
+          "hydra:required": false,
+          "hydra:readable": true,
+          "hydra:writable": false
+        }
+      ],
+      "hydra:supportedOperation": [
+        {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "hydra:title": "Retrieves custom resources.",
+          "rdfs:label": "Retrieves custom resources.",
+          "returns": "#CustomResource"
+        },
+        {
+          "@type": "hydra:CreateResourceOperation",
+          "expects": "#CustomResource",
+          "hydra:method": "POST",
+          "hydra:title": "Creates a custom resource.",
+          "rdfs:label": "Creates a custom resource.",
+          "returns": "#CustomResource"
+        }
+      ]
+    },
+    {
       "@id": "#Entrypoint",
       "@type": "hydra:Class",
       "hydra:title": "The API entrypoint",
@@ -299,6 +371,36 @@ test('parse a Hydra documentation', () => {
             ]
           },
           "hydra:title": "The collection of Review resources",
+          "hydra:readable": true,
+          "hydra:writable": false
+        },
+        {
+          "@type": "hydra:SupportedProperty",
+          "hydra:property": {
+            "@id": "#Entrypoint/customResource",
+            "@type": "hydra:Link",
+            "domain": "#Entrypoint",
+            "rdfs:label": "The collection of custom resources",
+            "range": "hydra:PagedCollection",
+            "hydra:supportedOperation": [
+              {
+                "@type": "hydra:Operation",
+                "hydra:method": "GET",
+                "hydra:title": "Retrieves the collection of custom resources.",
+                "rdfs:label": "Retrieves the collection of custom resources.",
+                "returns": "hydra:PagedCollection"
+              },
+              {
+                "@type": "hydra:CreateResourceOperation",
+                "expects": "#CustomResource",
+                "hydra:method": "POST",
+                "hydra:title": "Creates a custom resource.",
+                "rdfs:label": "Creates a custom resource.",
+                "returns": "#CustomResource"
+              }
+            ]
+          },
+          "hydra:title": "The collection of custom resources",
           "hydra:readable": true,
           "hydra:writable": false
         }
@@ -706,6 +808,56 @@ test('parse a Hydra documentation', () => {
                 },
                 "required": true,
                 "description": "The item that is being reviewed/rated"
+              }
+            ]
+          },
+          {
+            name: "customResources",
+            url: "http://localhost/customResources",
+            id: "http://localhost/docs.jsonld#CustomResource",
+            title: "CustomResource",
+            readableFields: [
+              {
+                "name": "label",
+                "id": "http://localhost/docs.jsonld#CustomResource/label",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
+              },
+              {
+                "name": "description",
+                "id": "http://localhost/docs.jsonld#CustomResource/description",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
+              },
+              {
+                "name": "sanitizedDescription",
+                "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+                "range": null,
+                "reference": null,
+                "required": false,
+                "description": ""
+              }
+            ],
+            "writableFields": [
+              {
+                "name": "label",
+                "id": "http://localhost/docs.jsonld#CustomResource/label",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
+              },
+              {
+                "name": "description",
+                "id": "http://localhost/docs.jsonld#CustomResource/description",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
               }
             ]
           }
