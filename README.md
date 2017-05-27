@@ -20,7 +20,7 @@ Using [NPM](https://www.npmjs.com/):
 
 If you plan to use the library with Node, you also need a polyfill for the `fetch` function:
 
-    yarn install isomorphic-fetch
+    yarn add isomorphic-fetch
 
 ## Usage
 
