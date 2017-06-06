@@ -471,14 +471,21 @@ test('parse a Hydra documentation', () => {
     }
   ]
 }`;
-  const init = {status: 200, statusText: 'OK', headers: new Headers({'Link': '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"', 'Content-Type': 'application/ld+json'})};
+  const init = {
+    status: 200,
+    statusText: 'OK',
+    headers: new Headers({
+      'Link': '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
+      'Content-Type': 'application/ld+json'
+    })
+  };
 
   fetch.mockResponses(
     [entrypoint, init],
     [docs, init],
   );
 
-  const options = { headers: new Headers({'CustomHeader': 'customValue'}) };
+  const options = {headers: new Headers({'CustomHeader': 'customValue'})};
 
   return parseHydraDocumentation('http://localhost', options).then(data => {
       const expectedApi = {
@@ -490,6 +497,48 @@ test('parse a Hydra documentation', () => {
             "url": "http://localhost/books",
             "id": "http://schema.org/Book",
             "title": "Book",
+            "fields": [
+              {
+                "name": "isbn",
+                "id": "http://schema.org/isbn",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": "The ISBN of the book"
+              },
+              {
+                "name": "name",
+                "id": "http://schema.org/name",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": "The name of the item"
+              },
+              {
+                "name": "description",
+                "id": "http://schema.org/description",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": false,
+                "description": "A description of the item"
+              },
+              {
+                "name": "author",
+                "id": "http://schema.org/author",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+              },
+              {
+                "name": "dateCreated",
+                "id": "http://schema.org/dateCreated",
+                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                "reference": null,
+                "required": true,
+                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+              }
+            ],
             "readableFields": [
               {
                 "name": "isbn",
@@ -580,6 +629,163 @@ test('parse a Hydra documentation', () => {
             "url": "http://localhost/reviews",
             "id": "http://schema.org/Review",
             "title": "Review",
+            "fields": [
+              {
+                "name": "reviewBody",
+                "id": "http://schema.org/reviewBody",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": false,
+                "description": "The actual body of the review"
+              },
+              {
+                "name": "rating",
+                "id": "http://localhost/docs.jsonld#Review/rating",
+                "range": "http://www.w3.org/2001/XMLSchema#integer",
+                "reference": null,
+                "required": false,
+                "description": ""
+              },
+              {
+                "name": "itemReviewed",
+                "id": "http://schema.org/itemReviewed",
+                "range": "http://schema.org/Book",
+                "reference": {
+                  "name": "books",
+                  "url": "http://localhost/books",
+                  "id": "http://schema.org/Book",
+                  "title": "Book",
+                  "fields": [
+                    {
+                      "name": "isbn",
+                      "id": "http://schema.org/isbn",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The ISBN of the book"
+                    },
+                    {
+                      "name": "name",
+                      "id": "http://schema.org/name",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The name of the item"
+                    },
+                    {
+                      "name": "description",
+                      "id": "http://schema.org/description",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": false,
+                      "description": "A description of the item"
+                    },
+                    {
+                      "name": "author",
+                      "id": "http://schema.org/author",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                    },
+                    {
+                      "name": "dateCreated",
+                      "id": "http://schema.org/dateCreated",
+                      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "reference": null,
+                      "required": true,
+                      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+                    }
+                  ],
+                  "readableFields": [
+                    {
+                      "name": "isbn",
+                      "id": "http://schema.org/isbn",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The ISBN of the book"
+                    },
+                    {
+                      "name": "name",
+                      "id": "http://schema.org/name",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The name of the item"
+                    },
+                    {
+                      "name": "description",
+                      "id": "http://schema.org/description",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": false,
+                      "description": "A description of the item"
+                    },
+                    {
+                      "name": "author",
+                      "id": "http://schema.org/author",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                    },
+                    {
+                      "name": "dateCreated",
+                      "id": "http://schema.org/dateCreated",
+                      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "reference": null,
+                      "required": true,
+                      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+                    }
+                  ],
+                  "writableFields": [
+                    {
+                      "name": "isbn",
+                      "id": "http://schema.org/isbn",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The ISBN of the book"
+                    },
+                    {
+                      "name": "name",
+                      "id": "http://schema.org/name",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The name of the item"
+                    },
+                    {
+                      "name": "description",
+                      "id": "http://schema.org/description",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": false,
+                      "description": "A description of the item"
+                    },
+                    {
+                      "name": "author",
+                      "id": "http://schema.org/author",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                    },
+                    {
+                      "name": "dateCreated",
+                      "id": "http://schema.org/dateCreated",
+                      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "reference": null,
+                      "required": true,
+                      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+                    }
+                  ]
+                },
+                "required": true,
+                "description": "The item that is being reviewed/rated"
+              }
+            ],
             "readableFields": [
               {
                 "name": "reviewBody",
@@ -606,6 +812,48 @@ test('parse a Hydra documentation', () => {
                   "url": "http://localhost/books",
                   "id": "http://schema.org/Book",
                   "title": "Book",
+                  "fields": [
+                    {
+                      "name": "isbn",
+                      "id": "http://schema.org/isbn",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The ISBN of the book"
+                    },
+                    {
+                      "name": "name",
+                      "id": "http://schema.org/name",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The name of the item"
+                    },
+                    {
+                      "name": "description",
+                      "id": "http://schema.org/description",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": false,
+                      "description": "A description of the item"
+                    },
+                    {
+                      "name": "author",
+                      "id": "http://schema.org/author",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                    },
+                    {
+                      "name": "dateCreated",
+                      "id": "http://schema.org/dateCreated",
+                      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "reference": null,
+                      "required": true,
+                      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+                    }
+                  ],
                   "readableFields": [
                     {
                       "name": "isbn",
@@ -721,6 +969,48 @@ test('parse a Hydra documentation', () => {
                   "url": "http://localhost/books",
                   "id": "http://schema.org/Book",
                   "title": "Book",
+                  "fields": [
+                    {
+                      "name": "isbn",
+                      "id": "http://schema.org/isbn",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The ISBN of the book"
+                    },
+                    {
+                      "name": "name",
+                      "id": "http://schema.org/name",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The name of the item"
+                    },
+                    {
+                      "name": "description",
+                      "id": "http://schema.org/description",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": false,
+                      "description": "A description of the item"
+                    },
+                    {
+                      "name": "author",
+                      "id": "http://schema.org/author",
+                      "range": "http://www.w3.org/2001/XMLSchema#string",
+                      "reference": null,
+                      "required": true,
+                      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                    },
+                    {
+                      "name": "dateCreated",
+                      "id": "http://schema.org/dateCreated",
+                      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "reference": null,
+                      "required": true,
+                      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+                    }
+                  ],
                   "readableFields": [
                     {
                       "name": "isbn",
@@ -812,11 +1102,37 @@ test('parse a Hydra documentation', () => {
             ]
           },
           {
-            name: "customResources",
-            url: "http://localhost/customResources",
-            id: "http://localhost/docs.jsonld#CustomResource",
-            title: "CustomResource",
-            readableFields: [
+            "name": "customResources",
+            "url": "http://localhost/customResources",
+            "id": "http://localhost/docs.jsonld#CustomResource",
+            "title": "CustomResource",
+            "fields": [
+              {
+                "name": "label",
+                "id": "http://localhost/docs.jsonld#CustomResource/label",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
+              },
+              {
+                "name": "description",
+                "id": "http://localhost/docs.jsonld#CustomResource/description",
+                "range": "http://www.w3.org/2001/XMLSchema#string",
+                "reference": null,
+                "required": true,
+                "description": ""
+              },
+              {
+                "name": "sanitizedDescription",
+                "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+                "range": null,
+                "reference": null,
+                "required": false,
+                "description": ""
+              }
+            ],
+            "readableFields": [
               {
                 "name": "label",
                 "id": "http://localhost/docs.jsonld#CustomResource/label",

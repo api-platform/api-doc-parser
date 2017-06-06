@@ -105,6 +105,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
       const entrypointSupportedOperations = property['http://www.w3.org/ns/hydra/core#supportedOperation'];
 
       let readableFields = [];
+      let resourceFields = [];
       let writableFields = [];
 
       // Add fields
@@ -131,6 +132,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           );
 
           fields.push(field);
+          resourceFields.push(field);
 
           if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
             readableFields.push(field);
@@ -147,6 +149,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           {
             id: supportedClass['@id'],
             title: supportedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
+            fields: resourceFields,
             readableFields,
             writableFields
           }
