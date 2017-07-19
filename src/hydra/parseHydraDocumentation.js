@@ -69,7 +69,7 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
 
       return data;
     }).then(data =>
-      promises.expand(data.docs, { base: data.docsUrl, documentLoader: fetchJsonLd }).then(docs => {
+      promises.expand(data.docs, { base: data.docsUrl, documentLoader: (input, done) => fetchJsonLd(input, options) }).then(docs => {
         data.docs = docs;
 
         return data;
