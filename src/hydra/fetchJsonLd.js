@@ -16,11 +16,6 @@ export default function fetchJsonLd(url, options = {}) {
     options.headers.set('Accept', jsonLdMimeType);
   }
 
-  if (null === options.headers.get('Authorization')) {
-     const token = localStorage.getItem('token');
-      if (undefined !== token || null !== token) options.headers.set('Authorization', `Bearer ${token}`);
-  }
-
   if ('undefined' !== options.body && !(typeof FormData !== 'undefined' && options.body instanceof FormData) && null === options.headers.get('Content-Type')) {
     options.headers.set('Content-Type', jsonLdMimeType);
   }
