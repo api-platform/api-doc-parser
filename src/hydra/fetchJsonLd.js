@@ -26,6 +26,6 @@ export default function fetchJsonLd(url, options = {}) {
         return {response: response};
       }
 
-      return response.json().then(body => { return { response, body }});
+      return response.json().then(body => ({ response, body, document: body }));
     });
 }

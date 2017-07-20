@@ -69,17 +69,17 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
 
       return data;
     }).then(data =>
-      promises.expand(data.docs, { base: data.docsUrl }).then(docs => {
+      promises.expand(data.docs, { base: data.docsUrl, documentLoader: (input) => fetchJsonLd(input, options) }).then(docs => {
         data.docs = docs;
 
         return data;
       })
     ).then(data =>
-      promises.expand(data.entrypoint, { base: data.entrypointUrl }).then(entrypoint => {
-        data.entrypoint = entrypoint;
+        promises.expand(data.entrypoint, { base: data.entrypointUrl, documentLoader: (input) => fetchJsonLd(input, options) }).then(entrypoint => {
+            data.entrypoint = entrypoint;
 
-        return data;
-      })
+            return data;
+        })
     )
   );
 }
