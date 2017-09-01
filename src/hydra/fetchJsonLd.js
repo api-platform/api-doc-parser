@@ -22,10 +22,10 @@ export default function fetchJsonLd(url, options = {}) {
 
   return fetch(url, options)
     .then(response => {
-      if (!response.headers.has('Content-Type') || !response.headers.get('Content-Type').includes(jsonLdMimeType)) {
-        return {response: response};
+      if (false === response.ok || !response.headers.has('Content-Type') || !response.headers.get('Content-Type').includes(jsonLdMimeType)) {
+        return Promise.reject({ response });
       }
 
-      return response.json().then(body => ({ response, body, document: body }));
+      return Promise.resolve(response.json().then(body => ({ response, body, document: body })));
     });
 }

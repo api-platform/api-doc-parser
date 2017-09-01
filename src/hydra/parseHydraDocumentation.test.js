@@ -1181,9 +1181,40 @@ test('parse a Hydra documentation', () => {
       };
 
       // TODO: find some something cleaner ;)
-      expect(JSON.stringify(data, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
+      expect(JSON.stringify(data.api, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
+      expect(data.response).toBeDefined();
+      expect(data.status).toBe(200);
+
       expect(fetch).toHaveBeenCalledTimes(2);
       expect(fetch).toHaveBeenLastCalledWith('http://localhost/docs.jsonld', options);
     }
   );
+});
+
+test('parse a Hydra documentation without authorization', () => {
+  const init = {
+    status: 401,
+    statusText: 'Unauthorized',
+  };
+
+  const expectedApi = {
+    entrypoint: 'http://localhost',
+    resources: [],
+  };
+
+  const expectedResponse = {
+    code: 401,
+    message: 'JWT Token not found'
+  };
+
+  fetch.mockResponses(
+    [JSON.stringify(expectedResponse), init],
+  );
+
+  return parseHydraDocumentation('http://localhost').catch(async data => {
+    expect(data.api).toEqual(expectedApi);
+    expect(data.response).toBeDefined();
+    await expect(data.response.json()).resolves.toEqual(expectedResponse);
+    expect(data.status).toBe(401);
+  });
 });

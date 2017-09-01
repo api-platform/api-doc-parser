@@ -27,7 +27,7 @@ If you plan to use the library with Node, you also need a polyfill for the `fetc
 ```javascript
 import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
 
-parseHydraDocumentation('https://demo.api-platform.com').then(api => console.log(api));
+parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
 ## Support for other formats (Swagger/OpenAPI, API Blueprint, JSONAPI...)

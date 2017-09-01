@@ -19,7 +19,7 @@ test('fetch a JSON-LD document', () => {
 test('fetch a non JSON-LD document', () => {
   fetch.mockResponseOnce(`<body>Hello</body>`, {status: 200, statusText: 'OK', headers: new Headers({'Content-Type': 'text/html'})});
 
-  return fetchJsonLd('/foo.jsonld').then(data => {
+  return fetchJsonLd('/foo.jsonld').catch(data => {
       expect(data.response.ok).toBe(true);
       expect(typeof data.body).toBe('undefined');
     }
@@ -35,9 +35,10 @@ test('fetch an error', () => {
     "spouse": "http://dbpedia.org/resource/Cynthia_Lennon"
 }`, {status: 400, statusText: 'Bad Request', headers: new Headers({'Content-Type': 'application/ld+json'})});
 
-  return fetchJsonLd('/foo.jsonld').then(data => {
-      expect(data.response.ok).toBe(false);
-      expect(data.body.born).toBe('1940-10-09');
-    }
-  );
+  return fetchJsonLd('/foo.jsonld').catch(({response}) => {
+    response.json().then(body => {
+      expect(response.ok).toBe(false);
+      expect(body.born).toBe('1940-10-09');
+    });
+  });
 });

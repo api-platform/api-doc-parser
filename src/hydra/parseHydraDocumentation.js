@@ -61,7 +61,8 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
     return {
       entrypointUrl,
       docsUrl: getDocumentationUrlFromHeaders(d.response.headers),
-      entrypoint: d.body
+      entrypoint: d.body,
+      response: d.response
     }
   }).then(data =>
     fetchJsonLd(data.docsUrl, options).then(d => {
@@ -92,80 +93,83 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
  * @return {Promise.<Api>}
  */
 export default function parseHydraDocumentation(entrypointUrl, options = {}) {
-  return fetchEntrypointAndDocs(entrypointUrl, options).then(({ entrypoint, docs }) => {
-    const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
-    const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
+  return fetchEntrypointAndDocs(entrypointUrl, options).then(
+    ({ entrypoint, docs, response }) => {
+      const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
+      const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
 
-    let resources = [];
-    let fields = [];
+      let resources = [];
+      let fields = [];
 
-    // Add resources
-    for (let properties of entrypointSupportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-      const property = properties['http://www.w3.org/ns/hydra/core#property'][0];
-      const entrypointSupportedOperations = property['http://www.w3.org/ns/hydra/core#supportedOperation'];
+      // Add resources
+      for (let properties of entrypointSupportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+        const property = properties['http://www.w3.org/ns/hydra/core#property'][0];
+        const entrypointSupportedOperations = property['http://www.w3.org/ns/hydra/core#supportedOperation'];
 
-      let readableFields = [];
-      let resourceFields = [];
-      let writableFields = [];
+        let readableFields = [];
+        let resourceFields = [];
+        let writableFields = [];
 
-      // Add fields
-      for (let j = 0; j < entrypointSupportedOperations.length; j++) {
-        const className = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
-        if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
-          continue;
-        }
+        // Add fields
+        for (let j = 0; j < entrypointSupportedOperations.length; j++) {
+          const className = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+          if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
+            continue;
+          }
 
-        const supportedClass = findSupportedClass(docs, className);
-        for (let supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-          const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
-          const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
+          const supportedClass = findSupportedClass(docs, className);
+          for (let supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+            const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
+            const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
 
-          const field = new Field(
-            supportedProperty['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+            const field = new Field(
+              supportedProperty['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+              {
+                id: supportedProperty['@id'],
+                range,
+                reference: 'http://www.w3.org/ns/hydra/core#Link' === property['@type'][0] ? range : null, // Will be updated in a subsequent pass
+                required: supportedProperties['http://www.w3.org/ns/hydra/core#required'] ? supportedProperties['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
+                description: supportedProperties['http://www.w3.org/ns/hydra/core#description'] ? supportedProperties['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
+              },
+            );
+
+            fields.push(field);
+            resourceFields.push(field);
+
+            if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
+              readableFields.push(field);
+            }
+
+            if (supportedProperties['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
+              writableFields.push(field);
+            }
+          }
+
+          resources.push(new Resource(
+            guessNameFromUrl(entrypoint[0][property['@id']][0]['@id'], entrypointUrl),
+            entrypoint[0][property['@id']][0]['@id'],
             {
-              id: supportedProperty['@id'],
-              range,
-              reference: 'http://www.w3.org/ns/hydra/core#Link' === property['@type'][0] ? range : null, // Will be updated in a subsequent pass
-              required: supportedProperties['http://www.w3.org/ns/hydra/core#required'] ? supportedProperties['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
-              description: supportedProperties['http://www.w3.org/ns/hydra/core#description'] ? supportedProperties['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
-            },
-          );
+              id: supportedClass['@id'],
+              title: supportedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
+              fields: resourceFields,
+              readableFields,
+              writableFields
+            }
+          ));
 
-          fields.push(field);
-          resourceFields.push(field);
-
-          if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
-            readableFields.push(field);
-          }
-
-          if (supportedProperties['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
-            writableFields.push(field);
-          }
+          break;
         }
-
-        resources.push(new Resource(
-          guessNameFromUrl(entrypoint[0][property['@id']][0]['@id'], entrypointUrl),
-          entrypoint[0][property['@id']][0]['@id'],
-          {
-            id: supportedClass['@id'],
-            title: supportedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
-            fields: resourceFields,
-            readableFields,
-            writableFields
-          }
-        ));
-
-        break;
       }
-    }
 
-    // Resolve references
-    for (let field of fields) {
-      if (null !== field.reference) {
-        field.reference = resources.find(resource => resource.id === field.reference) || null;
+      // Resolve references
+      for (let field of fields) {
+        if (null !== field.reference) {
+          field.reference = resources.find(resource => resource.id === field.reference) || null;
+        }
       }
-    }
 
-    return new Api(entrypointUrl, {title, resources});
-  });
+      return Promise.resolve({ api: new Api(entrypointUrl, {title, resources}), response , status: response.status });
+    },
+    ({ response }) => Promise.reject({ api: new Api(entrypointUrl, {resources: []}), response, status: response.status })
+  );
 }
