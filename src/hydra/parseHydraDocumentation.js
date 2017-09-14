@@ -112,7 +112,15 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
         // Add fields
         for (let j = 0; j < entrypointSupportedOperations.length; j++) {
-          const className = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+          let className = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'];
+
+          // Skip operations not having a return type
+          if (!className) {
+            continue;
+          }
+
+          className = className[0]['@id'];
+
           if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
             continue;
           }

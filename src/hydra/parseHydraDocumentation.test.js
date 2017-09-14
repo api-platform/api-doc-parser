@@ -163,6 +163,10 @@ test('parse a Hydra documentation', () => {
           "hydra:title": "Deletes the Book resource.",
           "rdfs:label": "Deletes the Book resource.",
           "returns": "owl:Nothing"
+        },
+        {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET"
         }
       ]
     },
