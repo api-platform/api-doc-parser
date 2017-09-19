@@ -325,7 +325,15 @@ test('parse a Hydra documentation', () => {
             "@type": "hydra:Link",
             "domain": "#Entrypoint",
             "rdfs:label": "The collection of Book resources",
-            "range": "hydra:PagedCollection",
+            "rdfs:range": [
+              "hydra:Collection",
+              {
+                "owl:equivalentClass": {
+                  "owl:onProperty": "hydra:member",
+                  "owl:allValuesFrom": "http://schema.org/Book"
+                }
+              }
+            ],
             "hydra:supportedOperation": [
               {
                 "@type": "hydra:Operation",
@@ -355,7 +363,15 @@ test('parse a Hydra documentation', () => {
             "@type": "hydra:Link",
             "domain": "#Entrypoint",
             "rdfs:label": "The collection of Review resources",
-            "range": "hydra:PagedCollection",
+            "rdfs:range": [
+              "hydra:Collection",
+              {
+                "owl:equivalentClass": {
+                  "owl:onProperty": "hydra:member",
+                  "owl:allValuesFrom": "http://schema.org/Review"
+                }
+              }
+            ],
             "hydra:supportedOperation": [
               {
                 "@type": "hydra:Operation",
@@ -385,7 +401,15 @@ test('parse a Hydra documentation', () => {
             "@type": "hydra:Link",
             "domain": "#Entrypoint",
             "rdfs:label": "The collection of custom resources",
-            "range": "hydra:PagedCollection",
+            "rdfs:range": [
+              "hydra:Collection",
+              {
+                "owl:equivalentClass": {
+                  "owl:onProperty": "hydra:member",
+                  "owl:allValuesFrom": "#CustomResource"
+                }
+              }
+            ],
             "hydra:supportedOperation": [
               {
                 "@type": "hydra:Operation",
