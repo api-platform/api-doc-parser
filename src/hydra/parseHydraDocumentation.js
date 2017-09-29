@@ -85,6 +85,14 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
   );
 }
 
+function removeTrailingSlash(url) {
+  if (/\/$/.test(url)) {
+    url = url.slice(0, -1)
+  }
+
+  return url
+}
+
 /**
  * Parses a Hydra documentation and converts it to an intermediate representation.
  *
@@ -93,6 +101,7 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
  * @return {Promise.<Api>}
  */
 export default function parseHydraDocumentation(entrypointUrl, options = {}) {
+  entrypointUrl = removeTrailingSlash(entrypointUrl)
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
     ({ entrypoint, docs, response }) => {
       const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
