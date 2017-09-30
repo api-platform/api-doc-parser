@@ -9,5 +9,21 @@ cache:
     - node_modules
 
 script:
-  - npm test
-  - npm run lint
+  - yarn build
+  - yarn test
+  - yarn lint
+
+deploy:
+  provider: npm
+  email: "$NPM_AUTH_EMAIL"
+  api_key: "$NPM_AUTH_TOKEN"
+  on:
+    tags: true
+    node_js: '8'
+  skip_cleanup: true
+
+env:
+  global:
+    - secure: Q66PwZfGH7zV/tkZm6wfPEZVJ0tE6CLbeWBQqo2rPDbmC1PWjL1k/OwniEeuO40u2PuzMZ5u3YqrmJuNFP4tCvz7I57EKee7zsp0uzzWERW5yktJ4fgqu6UlePXZLoO3Cp4uUrsb4whoDApuIlVNvynXWnIZ8GJeWFKLO7QqQ8/Vut+qGN5J71QkFk87zDdSVwd0J7ncaYl7/hdoXYFxEl1rKe9dOXh3vImtTkbFYcaDZ7W357912KXW/GzLbhKHiuITRFhNQhDNQeq03MdwTLX0Wh8sNSZqodf9EGT4tymMC6IBu9hGauflUR70KBL0doG4L/mZKsLaTLScRiu3PA2x7a3+/4GalZzb9Vhbfh+h/R1gJ+GSG2FJMcMohcT0SPZfI5gGfYuEEqJc+cTB2DTmes/tO7Se8ycsuHEYyrRsjgxw2g3cXhp2de3QvYe/t3rzi3K9w5VfM0cjZIzLQm5IjbR1bPr/7HRfBGPHHprmBl+3moY2TCVFRfQWLlOUa3zD5aPXYJ/C8edR3O1xalo9kzXjWmBHsGB0Vz6IVSUKF4IAwTfNdANN5ntYSM7C6SJcCREjBRFEb++WosjdC3zIHo8lmHq+mxDFCnRx9zozCNNdpSNW7mn5+I+PnGg4OYx9yHmmy6Yl2ozjGnFiFNgSh+CekdThsJCAtIhq/FI=
+    - secure: aGZeYRxdv4+V3cxPAWyxGnNXvoOGsr/KoE9qFuaRcsJk6hnuuvyrIp0IHku0+srCidYbdyRLFjCh/GA1DBCljj17ou/EtUdfjEHAcHTcY5Y6UPndkSa3rKzDcvFx57uL4jkF3A5FydxXUkqHKGM7iSTyjVFMdI6yAA5Ll8pbER9yXX5mgjedX1wv+ultgUwtVUyGQBZWX/u4FFpj9n9vYCOfySftgV2rxzN7TWDTX5QVEfFkG576drE8nqh4hL3nmt0x2qR3caOvNFkKSwFCyCgN/xr8yNd6ZIa8D2roEOzwTTsRRFB/zPRQQhjYdPNzWTnXK+n3ZuOW5UOOF2jFvCIrpFz9kOwijQuoPbFZfYhZJ5NterKRdGaQffOeTNqI3U/3asTDCBILjcv6k6GNOOQwHYq/yGg0Hvd/8KgchhjioueDUsprXvwBJlwO7X/eaK+PYG2xFWL3INnL92XjMjX98c8gEgUm76uxIKqmG83ZVxmg0JAo63/NKtPbOrff1Ybw8W/QRuMgVUxdVS9LpMlYBpu4xHXpE070s2Yn44Sd6Y6lvct9LcdDvbYoDvGlj6dix/iNb77mWV9b1SCk6coVVbcttC6Cdi3uu3TJVUgSUL/mtskjHe53/vNuY7dFhndR5umYZtFUVMX+WsQgFGtyYdOzsiurZvZRXr60kmU=
+

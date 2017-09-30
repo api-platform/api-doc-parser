@@ -1,7 +1,7 @@
 # API Doc Parser
 
 [![Build Status](https://travis-ci.org/api-platform/api-doc-parser.svg?branch=master)](https://travis-ci.org/api-platform/api-doc-parser)
-[![npm version](https://badge.fury.io/js/api-doc-parser.svg)](https://badge.fury.io/js/api-doc-parser)
+[![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 `api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com) API documentations and transform them
@@ -9,8 +9,6 @@ in an intermediate representation. This data structure can then be used for vari
 scaffolding code or building administration interfaces.
 
 It plays well with the [API Platform](https://api-platform.com) framework.
-
-[![Build Status](https://travis-ci.org/dunglas/api-doc-parser.svg?branch=master)](https://travis-ci.org/dunglas/api-doc-parser)
 
 ## Install
 
