@@ -1,5 +1,5 @@
 {
-  "name": "api-doc-parser",
+  "name": "@api-platform/api-doc-parser",
   "version": "0.2.2",
   "description": "Transform a Hydra API documentation in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building admininistration interfaces.",
   "files": [
@@ -10,8 +10,8 @@
   ],
   "main": "lib/index",
   "repository": "dunglas/api-doc-parser",
-  "homepage": "https://github.com/dunglas/api-doc-parser",
-  "bugs": "https://github.com/dunglas/api-doc-parser/issues",
+  "homepage": "https://github.com/api-platform/api-doc-parser",
+  "bugs": "https://github.com/api-platform/api-doc-parser/issues",
   "author": "Kévin Dunglas",
   "license": "MIT",
   "devDependencies": {
