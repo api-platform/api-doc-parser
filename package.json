@@ -9,7 +9,7 @@
     "src"
   ],
   "main": "lib/index",
-  "repository": "dunglas/api-doc-parser",
+  "repository": "api-platform/api-doc-parser",
   "homepage": "https://github.com/api-platform/api-doc-parser",
   "bugs": "https://github.com/api-platform/api-doc-parser/issues",
   "author": "Kévin Dunglas",
@@ -43,5 +43,8 @@
     "setupFiles": [
       "./setupJest.js"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
