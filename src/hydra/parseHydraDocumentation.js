@@ -107,35 +107,32 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
       const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
       const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
 
-      let resources = [];
-      let fields = [];
+      const resources = [], fields = [];
 
       // Add resources
       for (let properties of entrypointSupportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
         const property = properties['http://www.w3.org/ns/hydra/core#property'][0];
         const entrypointSupportedOperations = property['http://www.w3.org/ns/hydra/core#supportedOperation'];
 
-        let readableFields = [];
-        let resourceFields = [];
-        let writableFields = [];
+        const readableFields = [], resourceFields = [], writableFields = [];
 
         // Add fields
         for (let j = 0; j < entrypointSupportedOperations.length; j++) {
-          let className = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'];
+          const returns = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'];
 
           // Skip operations not having a return type
-          if (!className) {
+          if (!returns) {
             continue;
           }
 
-          className = className[0]['@id'];
+          const className = returns[0]['@id'];
 
           if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
             continue;
           }
 
           const supportedClass = findSupportedClass(docs, className);
-          for (let supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+          for (const supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
             const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
             const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
 
@@ -179,7 +176,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
       }
 
       // Resolve references
-      for (let field of fields) {
+      for (const field of fields) {
         if (null !== field.reference) {
           field.reference = resources.find(resource => resource.id === field.reference) || null;
         }
