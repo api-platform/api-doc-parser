@@ -19,19 +19,17 @@ function guessNameFromUrl(url, entrypointUrl) {
  * Finds the description of the class with the given id.
  *
  * @param {object[]} docs
- * @param {string} supportedClass
+ * @param {string} classToFind
  * @return {object}
  */
-function findSupportedClass(docs, supportedClass) {
-  const supportedClasses = docs[0]['http://www.w3.org/ns/hydra/core#supportedClass'];
-
-  for (let i = 0; i < supportedClasses.length; i++) {
-    if (supportedClasses[i]['@id'] === supportedClass) {
-      return supportedClasses[i];
+function findSupportedClass(docs, classToFind) {
+  for (const supportedClass of docs[0]['http://www.w3.org/ns/hydra/core#supportedClass']) {
+    if (supportedClass['@id'] === classToFind) {
+      return supportedClass;
     }
   }
 
-  throw new Error(`The class ${supportedClass} doesn't exist.`);
+  throw new Error(`The class ${classToFind} doesn't exist.`);
 }
 
 export function getDocumentationUrlFromHeaders(headers) {
@@ -47,7 +45,6 @@ export function getDocumentationUrlFromHeaders(headers) {
 
   return matches[1];
 }
-
 
 /**
  * Retrieves Hydra's entrypoint and API docs.
@@ -101,24 +98,20 @@ function removeTrailingSlash(url) {
  * @return {Promise.<Api>}
  */
 export default function parseHydraDocumentation(entrypointUrl, options = {}) {
-  entrypointUrl = removeTrailingSlash(entrypointUrl)
+  entrypointUrl = removeTrailingSlash(entrypointUrl);
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
     ({ entrypoint, docs, response }) => {
       const title = 'undefined' === typeof docs[0]['http://www.w3.org/ns/hydra/core#title'] ? 'API Platform' : docs[0]['http://www.w3.org/ns/hydra/core#title'][0]['@value'];
-      const entrypointSupportedClass = findSupportedClass(docs, entrypoint[0]['@type'][0]);
-
       const resources = [], fields = [];
 
       // Add resources
-      for (let properties of entrypointSupportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+      for (const properties of findSupportedClass(docs, entrypoint[0]['@type'][0])['http://www.w3.org/ns/hydra/core#supportedProperty']) {
         const property = properties['http://www.w3.org/ns/hydra/core#property'][0];
-        const entrypointSupportedOperations = property['http://www.w3.org/ns/hydra/core#supportedOperation'];
-
         const readableFields = [], resourceFields = [], writableFields = [];
 
         // Add fields
-        for (let j = 0; j < entrypointSupportedOperations.length; j++) {
-          const returns = entrypointSupportedOperations[j]['http://www.w3.org/ns/hydra/core#returns'];
+        for (const entrypointSupportedOperation of property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+          const returns = entrypointSupportedOperation['http://www.w3.org/ns/hydra/core#returns'];
 
           // Skip operations not having a return type
           if (!returns) {
@@ -126,7 +119,6 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           }
 
           const className = returns[0]['@id'];
-
           if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
             continue;
           }
