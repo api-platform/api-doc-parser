@@ -1176,7 +1176,6 @@ test('parse a Hydra documentation', () => {
   const options = {headers: new Headers({'CustomHeader': 'customValue'})};
 
   return parseHydraDocumentation('http://localhost', options).then(data => {
-      // TODO: find some something cleaner ;)
       expect(JSON.stringify(data.api, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
       expect(data.response).toBeDefined();
       expect(data.status).toBe(200);
@@ -1194,7 +1193,6 @@ test('parse a Hydra documentation (http://localhost/)', () => {
   );
 
   return parseHydraDocumentation('http://localhost/').then(data => {
-      // TODO: find some something cleaner ;)
       expect(JSON.stringify(data.api, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
       expect(data.response).toBeDefined();
       expect(data.status).toBe(200);
@@ -1228,5 +1226,178 @@ test('parse a Hydra documentation without authorization', () => {
     expect(data.response).toBeDefined();
     await expect(data.response.json()).resolves.toEqual(expectedResponse);
     expect(data.status).toBe(401);
+  });
+});
+
+test('Parse entrypoint without "@type" key', () => {
+  const entrypoint = `{
+  "@context": {
+    "@vocab": "http://localhost/docs.jsonld#",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+    "book": {
+      "@id": "Entrypoint/book",
+      "@type": "@id"
+    },
+    "review": {
+      "@id": "Entrypoint/review",
+      "@type": "@id"
+    },
+    "customResource": {
+      "@id": "Entrypoint/customResource",
+      "@type": "@id"
+    }
+  },
+  "@id": "/",
+  "book": "/books",
+  "review": "/reviews",
+  "customResource": "/customResources"
+}`;
+
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data.message).toBe('The API entrypoint has no "@type" key.');
+  });
+});
+
+test('Parse entrypoint class without "supportedClass" key', () => {
+  const docs = `{
+"@context": {
+  "@vocab": "http://localhost/docs.jsonld#",
+  "hydra": "http://www.w3.org/ns/hydra/core#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "xmls": "http://www.w3.org/2001/XMLSchema#",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "domain": {
+    "@id": "rdfs:domain",
+    "@type": "@id"
+  },
+  "range": {
+    "@id": "rdfs:range",
+    "@type": "@id"
+  },
+  "subClassOf": {
+    "@id": "rdfs:subClassOf",
+    "@type": "@id"
+  },
+  "expects": {
+    "@id": "hydra:expects",
+    "@type": "@id"
+  },
+  "returns": {
+    "@id": "hydra:returns",
+    "@type": "@id"
+  }
+},
+"@id": "/docs.jsonld",
+"hydra:title": "API Platform's demo",
+"hydra:description": "A test",
+"hydra:entrypoint": "/"
+}`;
+
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data.message).toBe('The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.');
+  });
+});
+
+test('Parse entrypoint class without "supportedProperty" key', () => {
+  const docs = `{
+"@context": {
+  "@vocab": "http://localhost/docs.jsonld#",
+  "hydra": "http://www.w3.org/ns/hydra/core#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "xmls": "http://www.w3.org/2001/XMLSchema#",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "domain": {
+    "@id": "rdfs:domain",
+    "@type": "@id"
+  },
+  "range": {
+    "@id": "rdfs:range",
+    "@type": "@id"
+  },
+  "subClassOf": {
+    "@id": "rdfs:subClassOf",
+    "@type": "@id"
+  },
+  "expects": {
+    "@id": "hydra:expects",
+    "@type": "@id"
+  },
+  "returns": {
+    "@id": "hydra:returns",
+    "@type": "@id"
+  }
+},
+"@id": "/docs.jsonld",
+"hydra:title": "API Platform's demo",
+"hydra:description": "A test",
+"hydra:entrypoint": "/",
+"hydra:supportedClass": [
+  {
+    "@id": "#Entrypoint",
+    "@type": "hydra:Class",
+    "hydra:title": "The API entrypoint",
+    "hydra:supportedOperation": {
+      "@type": "hydra:Operation",
+      "hydra:method": "GET",
+      "rdfs:label": "The API entrypoint.",
+      "returns": "#EntryPoint"
+    }
+  }
+]
+}`;
+
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data.message).toBe('The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.');
+  });
+});
+
+
+test('Invalid docs JSON', () => {
+  const docs = `{foo,}`;
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data).toHaveProperty('api');
+    expect(data).toHaveProperty('response');
+    expect(data).toHaveProperty('status');
+  });
+});
+
+test('Invalid entrypoint JSON', () => {
+  const entrypoint = `{foo,}`;
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data).toHaveProperty('api');
+    expect(data).toHaveProperty('response');
+    expect(data).toHaveProperty('status');
   });
 });
