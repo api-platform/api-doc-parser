@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "jsonld": "^0.4.11"
+    "jsonld": "^0.4.11",
+    "lodash.get": "^4.4.2"
   },
   "scripts": {
     "test": "jest",
