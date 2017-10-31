@@ -222,6 +222,6 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
       return Promise.resolve({ api: new Api(entrypointUrl, {title, resources}), response , status: response.status });
     },
-    ({ response }) => Promise.reject({ api: new Api(entrypointUrl, {resources: []}), response, status: response.status })
+    ({ response }) => Promise.reject({ api: new Api(entrypointUrl, {resources: []}), response, status: get(response, 'status') })
   );
 }

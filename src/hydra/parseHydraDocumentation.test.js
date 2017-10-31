@@ -1370,3 +1370,34 @@ test('Parse entrypoint class without "supportedProperty" key', () => {
     expect(data.message).toBe('The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.');
   });
 });
+
+
+test('Invalid docs JSON', () => {
+  const docs = `{foo,}`;
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data).toHaveProperty('api');
+    expect(data).toHaveProperty('response');
+    expect(data).toHaveProperty('status');
+  });
+});
+
+test('Invalid entrypoint JSON', () => {
+  const entrypoint = `{foo,}`;
+
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+  );
+
+  parseHydraDocumentation('http://localhost/').catch(data => {
+    expect(data).toHaveProperty('api');
+    expect(data).toHaveProperty('response');
+    expect(data).toHaveProperty('status');
+  });
+});
