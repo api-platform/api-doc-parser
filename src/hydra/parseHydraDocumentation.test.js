@@ -324,23 +324,14 @@ const docs = `{
           "@type": "hydra:Link",
           "domain": "#Entrypoint",
           "rdfs:label": "The collection of Book resources",
-          "range": "hydra:PagedCollection",
-          "hydra:supportedOperation": [
-            {
-              "@type": "hydra:Operation",
-              "hydra:method": "GET",
-              "hydra:title": "Retrieves the collection of Book resources.",
-              "rdfs:label": "Retrieves the collection of Book resources.",
-              "returns": "hydra:PagedCollection"
-            },
-            {
-              "@type": "hydra:CreateResourceOperation",
-              "expects": "http://schema.org/Book",
-              "hydra:method": "POST",
-              "hydra:title": "Creates a Book resource.",
-              "rdfs:label": "Creates a Book resource.",
-              "returns": "http://schema.org/Book"
-            }
+          "rdfs:range": [
+              {"@id": "hydra:PagedCollection"},
+              {
+                  "owl:equivalentClass": {
+                      "owl:onProperty": {"@id": "hydra:member"},
+                      "owl:allValuesFrom": {"@id": "http://schema.org/Book"}
+                  }
+              }
           ]
         },
         "hydra:title": "The collection of Book resources",

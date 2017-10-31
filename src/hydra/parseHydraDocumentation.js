@@ -91,6 +91,40 @@ function removeTrailingSlash(url) {
 }
 
 /**
+ *
+ * @param {object} docs
+ * @param {object} property
+ * @return {string|null}
+ */
+function findRelatedClass(docs, property) {
+  // Use the entrypoint property's owl:equivalentClass if available
+  if (property['http://www.w3.org/2000/01/rdf-schema#range']) {
+    for (const range of property['http://www.w3.org/2000/01/rdf-schema#range']) {
+      const equivalentClass = range['http://www.w3.org/2002/07/owl#equivalentClass'];
+      if (equivalentClass && 'http://www.w3.org/ns/hydra/core#member' === equivalentClass[0]['http://www.w3.org/2002/07/owl#onProperty'][0]['@id']) {
+        //console.log('==>'+equivalentClass[0]['http://www.w3.org/2002/07/owl#allValuesFrom'][0]['@id']);
+        return findSupportedClass(docs, equivalentClass[0]['http://www.w3.org/2002/07/owl#allValuesFrom'][0]['@id']);
+      }
+    }
+  }
+
+  // As a fallback, find an operation available on the property of the entrypoint returning the searched type (usually POST)
+  for (const entrypointSupportedOperation of property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+    if (!entrypointSupportedOperation['http://www.w3.org/ns/hydra/core#returns']) {
+      continue;
+    }
+
+    const returns = entrypointSupportedOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+    if (0 !== returns.indexOf('http://www.w3.org/ns/hydra/core')) {
+      //console.log(returns);
+      return findSupportedClass(docs, returns);
+    }
+  }
+
+  return null;
+}
+
+/**
  * Parses a Hydra documentation and converts it to an intermediate representation.
  *
  * @param {string} entrypointUrl
@@ -110,61 +144,49 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
         const readableFields = [], resourceFields = [], writableFields = [];
 
         // Add fields
-        for (const entrypointSupportedOperation of property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
-          const returns = entrypointSupportedOperation['http://www.w3.org/ns/hydra/core#returns'];
-
-          // Skip operations not having a return type
-          if (!returns) {
-            continue;
-          }
-
-          const className = returns[0]['@id'];
-          if (0 === className.indexOf('http://www.w3.org/ns/hydra/core')) {
-            continue;
-          }
-
-          const supportedClass = findSupportedClass(docs, className);
-          for (const supportedProperties of supportedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-            const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
-            const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
-
-            const field = new Field(
-              supportedProperty['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
-              {
-                id: supportedProperty['@id'],
-                range,
-                reference: 'http://www.w3.org/ns/hydra/core#Link' === property['@type'][0] ? range : null, // Will be updated in a subsequent pass
-                required: supportedProperties['http://www.w3.org/ns/hydra/core#required'] ? supportedProperties['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
-                description: supportedProperties['http://www.w3.org/ns/hydra/core#description'] ? supportedProperties['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
-              },
-            );
-
-            fields.push(field);
-            resourceFields.push(field);
-
-            if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
-              readableFields.push(field);
-            }
-
-            if (supportedProperties['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
-              writableFields.push(field);
-            }
-          }
-
-          resources.push(new Resource(
-            guessNameFromUrl(entrypoint[0][property['@id']][0]['@id'], entrypointUrl),
-            entrypoint[0][property['@id']][0]['@id'],
-            {
-              id: supportedClass['@id'],
-              title: supportedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
-              fields: resourceFields,
-              readableFields,
-              writableFields
-            }
-          ));
-
-          break;
+        const relatedClass = findRelatedClass(docs, property);
+        if (null === relatedClass) {
+          continue;
         }
+
+        for (const supportedProperties of relatedClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
+          const supportedProperty = supportedProperties['http://www.w3.org/ns/hydra/core#property'][0];
+          const range = supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'] ? supportedProperty['http://www.w3.org/2000/01/rdf-schema#range'][0]['@id'] : null;
+
+          const field = new Field(
+            supportedProperty['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+            {
+              id: supportedProperty['@id'],
+              range,
+              reference: 'http://www.w3.org/ns/hydra/core#Link' === property['@type'][0] ? range : null, // Will be updated in a subsequent pass
+              required: supportedProperties['http://www.w3.org/ns/hydra/core#required'] ? supportedProperties['http://www.w3.org/ns/hydra/core#required'][0]['@value'] : false,
+              description: supportedProperties['http://www.w3.org/ns/hydra/core#description'] ? supportedProperties['http://www.w3.org/ns/hydra/core#description'][0]['@value'] : ''
+            },
+          );
+
+          fields.push(field);
+          resourceFields.push(field);
+
+          if (supportedProperties['http://www.w3.org/ns/hydra/core#readable'][0]['@value']) {
+            readableFields.push(field);
+          }
+
+          if (supportedProperties['http://www.w3.org/ns/hydra/core#writable'][0]['@value']) {
+            writableFields.push(field);
+          }
+        }
+
+        resources.push(new Resource(
+          guessNameFromUrl(entrypoint[0][property['@id']][0]['@id'], entrypointUrl),
+          entrypoint[0][property['@id']][0]['@id'],
+          {
+            id: relatedClass['@id'],
+            title: relatedClass['http://www.w3.org/ns/hydra/core#title'][0]['@value'],
+            fields: resourceFields,
+            readableFields,
+            writableFields
+          }
+        ));
       }
 
       // Resolve references
