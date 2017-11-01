@@ -6,10 +6,11 @@ type FieldOptions = {
   reference?: string,
   required?: boolean,
   description?: string,
+  maxCardinality?: number,
 }
 
 /**
- * @property {string} name    - The name of this field
+ * @property {string} name - The name of this field
  */
 export default class Field {
   name: string;

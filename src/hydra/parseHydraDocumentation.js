@@ -180,6 +180,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               reference: 'http://www.w3.org/ns/hydra/core#Link' === get(property, '["@type"][0]') ? range : null, // Will be updated in a subsequent pass
               required: get(supportedProperties, '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]', false),
               description: get(supportedProperties, '["http://www.w3.org/ns/hydra/core#description"][0]["@value"]', ''),
+              maxCardinality: get(supportedProperty, '["http://www.w3.org/2002/07/owl#maxCardinality"][0]["@value"]', null),
             },
           );
 

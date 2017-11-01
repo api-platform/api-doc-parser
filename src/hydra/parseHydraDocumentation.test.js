@@ -211,6 +211,7 @@ const docs = `{
           "@type": "hydra:Link",
           "rdfs:label": "itemReviewed",
           "domain": "http://schema.org/Review",
+          "owl:maxCardinality": 1,
           "range": "http://schema.org/Book"
         },
         "hydra:title": "itemReviewed",
@@ -466,142 +467,159 @@ const docs = `{
 ]
 }`;
 
+const book = {
+  "name": "books",
+  "url": "http://localhost/books",
+  "id": "http://schema.org/Book",
+  "title": "Book",
+  "fields": [
+    {
+      "name": "isbn",
+      "id": "http://schema.org/isbn",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The ISBN of the book",
+      "maxCardinality": null,
+    },
+    {
+      "name": "name",
+      "id": "http://schema.org/name",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The name of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://schema.org/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "A description of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "author",
+      "id": "http://schema.org/author",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      "maxCardinality": null,
+    },
+    {
+      "name": "dateCreated",
+      "id": "http://schema.org/dateCreated",
+      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "reference": null,
+      "required": true,
+      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      "maxCardinality": null,
+    }
+  ],
+  "readableFields": [
+    {
+      "name": "isbn",
+      "id": "http://schema.org/isbn",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The ISBN of the book",
+      "maxCardinality": null,
+    },
+    {
+      "name": "name",
+      "id": "http://schema.org/name",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The name of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://schema.org/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "A description of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "author",
+      "id": "http://schema.org/author",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      "maxCardinality": null,
+    },
+    {
+      "name": "dateCreated",
+      "id": "http://schema.org/dateCreated",
+      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "reference": null,
+      "required": true,
+      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      "maxCardinality": null,
+    }
+  ],
+  "writableFields": [
+    {
+      "name": "isbn",
+      "id": "http://schema.org/isbn",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The ISBN of the book",
+      "maxCardinality": null,
+    },
+    {
+      "name": "name",
+      "id": "http://schema.org/name",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The name of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://schema.org/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "A description of the item",
+      "maxCardinality": null,
+    },
+    {
+      "name": "author",
+      "id": "http://schema.org/author",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      "maxCardinality": null,
+    },
+    {
+      "name": "dateCreated",
+      "id": "http://schema.org/dateCreated",
+      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "reference": null,
+      "required": true,
+      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      "maxCardinality": null,
+    }
+  ]
+};
+
 const expectedApi = {
   "entrypoint": "http://localhost",
   "title": "API Platform's demo",
   "resources": [
-    {
-      "name": "books",
-      "url": "http://localhost/books",
-      "id": "http://schema.org/Book",
-      "title": "Book",
-      "fields": [
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The ISBN of the book"
-        },
-        {
-          "name": "name",
-          "id": "http://schema.org/name",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The name of the item"
-        },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "A description of the item"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "dateCreated",
-          "id": "http://schema.org/dateCreated",
-          "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-          "reference": null,
-          "required": true,
-          "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ],
-      "readableFields": [
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The ISBN of the book"
-        },
-        {
-          "name": "name",
-          "id": "http://schema.org/name",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The name of the item"
-        },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "A description of the item"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "dateCreated",
-          "id": "http://schema.org/dateCreated",
-          "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-          "reference": null,
-          "required": true,
-          "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ],
-      "writableFields": [
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The ISBN of the book"
-        },
-        {
-          "name": "name",
-          "id": "http://schema.org/name",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The name of the item"
-        },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "A description of the item"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "dateCreated",
-          "id": "http://schema.org/dateCreated",
-          "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-          "reference": null,
-          "required": true,
-          "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ]
-    },
+    book,
     {
       "name": "reviews",
       "url": "http://localhost/reviews",
@@ -614,7 +632,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": false,
-          "description": "The actual body of the review"
+          "description": "The actual body of the review",
+          "maxCardinality": null,
         },
         {
           "name": "rating",
@@ -622,146 +641,17 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#integer",
           "reference": null,
           "required": false,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "itemReviewed",
           "id": "http://schema.org/itemReviewed",
           "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "http://localhost/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
+          "reference": book,
           "required": true,
-          "description": "The item that is being reviewed/rated"
+          "description": "The item that is being reviewed/rated",
+          "maxCardinality": 1,
         }
       ],
       "readableFields": [
@@ -771,7 +661,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": false,
-          "description": "The actual body of the review"
+          "description": "The actual body of the review",
+          "maxCardinality": null,
         },
         {
           "name": "rating",
@@ -779,146 +670,17 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#integer",
           "reference": null,
           "required": false,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "itemReviewed",
           "id": "http://schema.org/itemReviewed",
           "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "http://localhost/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
+          "reference": book,
           "required": true,
-          "description": "The item that is being reviewed/rated"
+          "description": "The item that is being reviewed/rated",
+          "maxCardinality": 1,
         }
       ],
       "writableFields": [
@@ -928,7 +690,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": false,
-          "description": "The actual body of the review"
+          "description": "The actual body of the review",
+          "maxCardinality": null,
         },
         {
           "name": "rating",
@@ -936,146 +699,17 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#integer",
           "reference": null,
           "required": false,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "itemReviewed",
           "id": "http://schema.org/itemReviewed",
           "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "http://localhost/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "name",
-                "id": "http://schema.org/name",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The name of the item"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": false,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": "http://www.w3.org/2001/XMLSchema#string",
-                "reference": null,
-                "required": true,
-                "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "dateCreated",
-                "id": "http://schema.org/dateCreated",
-                "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-                "reference": null,
-                "required": true,
-                "description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
+          "reference": book,
           "required": true,
-          "description": "The item that is being reviewed/rated"
+          "description": "The item that is being reviewed/rated",
+          "maxCardinality": 1,
         }
       ]
     },
@@ -1091,7 +725,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "description",
@@ -1099,7 +734,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "sanitizedDescription",
@@ -1107,7 +743,8 @@ const expectedApi = {
           "range": null,
           "reference": null,
           "required": false,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         }
       ],
       "readableFields": [
@@ -1117,7 +754,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "description",
@@ -1125,7 +763,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "sanitizedDescription",
@@ -1133,7 +772,8 @@ const expectedApi = {
           "range": null,
           "reference": null,
           "required": false,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         }
       ],
       "writableFields": [
@@ -1143,7 +783,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         },
         {
           "name": "description",
@@ -1151,7 +792,8 @@ const expectedApi = {
           "range": "http://www.w3.org/2001/XMLSchema#string",
           "reference": null,
           "required": true,
-          "description": ""
+          "description": "",
+          "maxCardinality": null,
         }
       ]
     }
