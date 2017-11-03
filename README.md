@@ -32,7 +32,7 @@ import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocument
 parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
-## Support for other formats (Swagger/OpenAPI, API Blueprint, JSONAPI...)
+## Support for other formats (GraphQL, Swagger/OpenAPI, JSONAPI...)
 
 API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
 For now, only Hydra is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
