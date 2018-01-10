@@ -22,11 +22,11 @@ export default function fetchJsonLd(url, options = {}) {
 
   return fetch(url, options)
     .then(response => {
-      if (204 === response.status) {
+      const { headers, status } = response;
+      if (204 === status) {
         return Promise.resolve({ response });
       }
-
-      if (false === response.ok || !response.headers.has('Content-Type') || !response.headers.get('Content-Type').includes(jsonLdMimeType)) {
+      if (500 <= status || !headers.has('Content-Type') || !headers.get('Content-Type').includes(jsonLdMimeType)) {
         return Promise.reject({ response });
       }
 

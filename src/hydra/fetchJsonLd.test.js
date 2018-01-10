@@ -46,8 +46,8 @@ test('fetch an error', () => {
 test('fetch an empty document', () => {
   fetch.mockResponseOnce('', {status: 204, statusText: 'No Content', headers: new Headers({'Content-Type': 'text/html'})});
 
-  return fetchJsonLd('/foo.jsonld').then(({response}) => {
-    expect(response.ok).toBe(true);
-    expect(response.body).toBe(undefined);
+  return fetchJsonLd('/foo.jsonld').then(data => {
+    expect(data.response.ok).toBe(true);
+    expect(data.body).toBe(undefined);
   });
 });
