@@ -612,6 +612,26 @@ const book = {
       "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
       "maxCardinality": null,
     }
+  ],
+  "operations": [
+    {
+      "name": "Retrieves Book resource.",
+      "method": "GET",
+      "returns": "http://schema.org/Book",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+    },
+    {
+      "name": "Replaces the Book resource.",
+      "method": "PUT",
+      "returns": "http://schema.org/Book",
+      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"]
+    },
+    {
+      "name": "Deletes the Book resource.",
+      "method": "DELETE",
+      "returns": "http://www.w3.org/2002/07/owl#Nothing",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+    }
   ]
 };
 
@@ -711,6 +731,26 @@ const expectedApi = {
           "description": "The item that is being reviewed/rated",
           "maxCardinality": 1,
         }
+      ],
+      "operations": [
+        {
+          "name": "Retrieves Review resource.",
+          "method": "GET",
+          "returns": "http://schema.org/Review",
+          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+        },
+        {
+          "name": "Replaces the Review resource.",
+          "method": "PUT",
+          "returns": "http://schema.org/Review",
+          "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"]
+        },
+        {
+          "name": "Deletes the Review resource.",
+          "method": "DELETE",
+          "returns": "http://www.w3.org/2002/07/owl#Nothing",
+          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+        }
       ]
     },
     {
@@ -794,6 +834,20 @@ const expectedApi = {
           "required": true,
           "description": "",
           "maxCardinality": null,
+        }
+      ],
+      "operations": [
+        {
+          "name": "Retrieves custom resources.",
+          "method": "GET",
+          "returns": "http://localhost/docs.jsonld#CustomResource",
+          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+        },
+        {
+          "name": "Creates a custom resource.",
+          "method": "POST",
+          "returns": "http://localhost/docs.jsonld#CustomResource",
+          "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"]
         }
       ]
     }

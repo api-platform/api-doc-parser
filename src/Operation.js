@@ -2,8 +2,8 @@
 
 type OperationOptions = {
   method?: string,
-  title?: string,
   returns?: string,
+  types?: Array,
 }
 
 /**

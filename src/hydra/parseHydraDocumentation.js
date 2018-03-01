@@ -3,6 +3,7 @@ import get from 'lodash.get';
 import Api from '../Api'
 import Field from '../Field'
 import Resource from '../Resource'
+import Operation from '../Operation'
 import fetchJsonLd from './fetchJsonLd';
 
 /**
@@ -159,7 +160,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
       // Add resources
       for (const properties of entrypointClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-        const readableFields = [], resourceFields = [], writableFields = [];
+        const readableFields = [], resourceFields = [], writableFields = [], operations = [];
 
         const property = get(properties, '["http://www.w3.org/ns/hydra/core#property"][0]');
         if (!property) {
@@ -196,6 +197,24 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           }
         }
 
+        for (const supportedOperation of relatedClass['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+          // @todo not sure what's the best attribute to consider the operation as valid
+          if (!supportedOperation['http://www.w3.org/ns/hydra/core#returns']) {
+            continue;
+          }
+
+          const operation = new Operation(
+            supportedOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+            {
+              method: supportedOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+              returns: supportedOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'],
+              types: supportedOperation['@type'],
+            },
+          );
+
+          operations.push(operation);
+        }
+
         const url = get(entrypoint, `[0]["${property['@id']}"][0]["@id"]`);
         if (!url) {
           throw new Error(`Unable to find the URL for "${property['@id']}".`);
@@ -209,7 +228,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
             title: get(relatedClass, '["http://www.w3.org/ns/hydra/core#title"][0]["@value"]', ''),
             fields: resourceFields,
             readableFields,
-            writableFields
+            writableFields,
+            operations
           }
         ));
       }
