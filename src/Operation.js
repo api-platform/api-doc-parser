@@ -3,7 +3,7 @@
 type OperationOptions = {
   method?: string,
   returns?: string,
-  types?: Array,
+  types?: Array<string>,
 }
 
 /**
