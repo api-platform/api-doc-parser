@@ -1,12 +1,14 @@
 // @flow
 
 import Field from './Field';
+import Operation from './Operation';
 
 type ResourceOptions = {
   id?: string,
   title?: string,
   readableFields?: Field[],
   writableFields?: Field[],
+  operations?: Operation[],
 };
 
 /**
