@@ -145,7 +145,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
     ({ entrypoint, docs, response }) => {
-      const resources = [], fields = [];
+      const resources = [], fields = [], operations = [];
       const title = get(docs, '[0]["http://www.w3.org/ns/hydra/core#title"][0]["@value"]', 'API Platform');
 
       const entrypointType = get(entrypoint, '[0]["@type"][0]');
@@ -160,7 +160,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
       // Add resources
       for (const properties of entrypointClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-        const readableFields = [], resourceFields = [], writableFields = [], operations = [];
+        const readableFields = [], resourceFields = [], writableFields = [], resourceOperations = [];
 
         const property = get(properties, '["http://www.w3.org/ns/hydra/core#property"][0]');
         if (!property) {
@@ -197,21 +197,45 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           }
         }
 
+        // parse entrypoint's operations (a.k.a. collection operations)
+        if (property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+          for (const entrypointOperation of property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+            if (!entrypointOperation['http://www.w3.org/ns/hydra/core#returns']) {
+              continue;
+            }
+
+            const range = entrypointOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+            const operation = new Operation(
+              entrypointOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+              {
+                method: entrypointOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+                returns: range,
+                types: entrypointOperation['@type'],
+              },
+            );
+
+            resourceOperations.push(operation);
+            operations.push(operation);
+          }
+        }
+
+        // parse resource operations (a.k.a. item operations)
         for (const supportedOperation of relatedClass['http://www.w3.org/ns/hydra/core#supportedOperation']) {
-          // @todo not sure what's the best attribute to consider the operation as valid
           if (!supportedOperation['http://www.w3.org/ns/hydra/core#returns']) {
             continue;
           }
 
+          const range = supportedOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
           const operation = new Operation(
             supportedOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
             {
               method: supportedOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
-              returns: supportedOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'],
+              returns: range,
               types: supportedOperation['@type'],
             },
           );
 
+          resourceOperations.push(operation);
           operations.push(operation);
         }
 
@@ -229,7 +253,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
             fields: resourceFields,
             readableFields,
             writableFields,
-            operations
+            operations: resourceOperations
           }
         ));
       }

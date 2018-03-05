@@ -618,19 +618,264 @@ const book = {
       "name": "Retrieves Book resource.",
       "method": "GET",
       "returns": "http://schema.org/Book",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
     },
     {
       "name": "Replaces the Book resource.",
       "method": "PUT",
       "returns": "http://schema.org/Book",
-      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"]
+      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
     },
     {
       "name": "Deletes the Book resource.",
       "method": "DELETE",
       "returns": "http://www.w3.org/2002/07/owl#Nothing",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"]
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+    }
+  ]
+};
+
+const review = {
+  "name": "reviews",
+  "url": "http://localhost/reviews",
+  "id": "http://schema.org/Review",
+  "title": "Review",
+  "fields": [
+    {
+      "name": "reviewBody",
+      "id": "http://schema.org/reviewBody",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "The actual body of the review",
+      "maxCardinality": null,
+    },
+    {
+      "name": "rating",
+      "id": "http://localhost/docs.jsonld#Review/rating",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "reference": null,
+      "required": false,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "itemReviewed",
+      "id": "http://schema.org/itemReviewed",
+      "range": "http://schema.org/Book",
+      "reference": book,
+      "required": true,
+      "description": "The item that is being reviewed/rated",
+      "maxCardinality": 1,
+    }
+  ],
+  "readableFields": [
+    {
+      "name": "reviewBody",
+      "id": "http://schema.org/reviewBody",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "The actual body of the review",
+      "maxCardinality": null,
+    },
+    {
+      "name": "rating",
+      "id": "http://localhost/docs.jsonld#Review/rating",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "reference": null,
+      "required": false,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "itemReviewed",
+      "id": "http://schema.org/itemReviewed",
+      "range": "http://schema.org/Book",
+      "reference": book,
+      "required": true,
+      "description": "The item that is being reviewed/rated",
+      "maxCardinality": 1,
+    }
+  ],
+  "writableFields": [
+    {
+      "name": "reviewBody",
+      "id": "http://schema.org/reviewBody",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": false,
+      "description": "The actual body of the review",
+      "maxCardinality": null,
+    },
+    {
+      "name": "rating",
+      "id": "http://localhost/docs.jsonld#Review/rating",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "reference": null,
+      "required": false,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "itemReviewed",
+      "id": "http://schema.org/itemReviewed",
+      "range": "http://schema.org/Book",
+      "reference": book,
+      "required": true,
+      "description": "The item that is being reviewed/rated",
+      "maxCardinality": 1,
+    }
+  ],
+  "operations": [
+    {
+      "name": "Retrieves the collection of Review resources.",
+      "method": "GET",
+      "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
+      "types": [
+        "http://www.w3.org/ns/hydra/core#Operation"
+      ],
+    },
+    {
+      "name": "Creates a Review resource.",
+      "method": "POST",
+      "returns": "http://schema.org/Review",
+      "types": [
+        "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
+      ],
+    },
+    {
+      "name": "Retrieves Review resource.",
+      "method": "GET",
+      "returns": "http://schema.org/Review",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+    },
+    {
+      "name": "Replaces the Review resource.",
+      "method": "PUT",
+      "returns": "http://schema.org/Review",
+      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
+    },
+    {
+      "name": "Deletes the Review resource.",
+      "method": "DELETE",
+      "returns": "http://www.w3.org/2002/07/owl#Nothing",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+    }
+  ]
+};
+
+const customResource = {
+  "name": "customResources",
+  "url": "http://localhost/customResources",
+  "id": "http://localhost/docs.jsonld#CustomResource",
+  "title": "CustomResource",
+  "fields": [
+    {
+      "name": "label",
+      "id": "http://localhost/docs.jsonld#CustomResource/label",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://localhost/docs.jsonld#CustomResource/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "sanitizedDescription",
+      "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+      "range": null,
+      "reference": null,
+      "required": false,
+      "description": "",
+      "maxCardinality": null,
+    }
+  ],
+  "readableFields": [
+    {
+      "name": "label",
+      "id": "http://localhost/docs.jsonld#CustomResource/label",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://localhost/docs.jsonld#CustomResource/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "sanitizedDescription",
+      "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+      "range": null,
+      "reference": null,
+      "required": false,
+      "description": "",
+      "maxCardinality": null,
+    }
+  ],
+  "writableFields": [
+    {
+      "name": "label",
+      "id": "http://localhost/docs.jsonld#CustomResource/label",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    },
+    {
+      "name": "description",
+      "id": "http://localhost/docs.jsonld#CustomResource/description",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+    }
+  ],
+  "operations": [
+    {
+      "name": "Retrieves the collection of custom resources.",
+      "method": "GET",
+      "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
+      "types": [
+        "http://www.w3.org/ns/hydra/core#Operation"
+      ],
+    },
+    {
+      "name": "Creates a custom resource.",
+      "method": "POST",
+      "returns": "http://localhost/docs.jsonld#CustomResource",
+      "types": [
+        "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
+      ],
+    },
+    {
+      "name": "Retrieves custom resources.",
+      "method": "GET",
+      "returns": "http://localhost/docs.jsonld#CustomResource",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+    },
+    {
+      "name": "Creates a custom resource.",
+      "method": "POST",
+      "returns": "http://localhost/docs.jsonld#CustomResource",
+      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
     }
   ]
 };
@@ -640,217 +885,8 @@ const expectedApi = {
   "title": "API Platform's demo",
   "resources": [
     book,
-    {
-      "name": "reviews",
-      "url": "http://localhost/reviews",
-      "id": "http://schema.org/Review",
-      "title": "Review",
-      "fields": [
-        {
-          "name": "reviewBody",
-          "id": "http://schema.org/reviewBody",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review",
-          "maxCardinality": null,
-        },
-        {
-          "name": "rating",
-          "id": "http://localhost/docs.jsonld#Review/rating",
-          "range": "http://www.w3.org/2001/XMLSchema#integer",
-          "reference": null,
-          "required": false,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "itemReviewed",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": book,
-          "required": true,
-          "description": "The item that is being reviewed/rated",
-          "maxCardinality": 1,
-        }
-      ],
-      "readableFields": [
-        {
-          "name": "reviewBody",
-          "id": "http://schema.org/reviewBody",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review",
-          "maxCardinality": null,
-        },
-        {
-          "name": "rating",
-          "id": "http://localhost/docs.jsonld#Review/rating",
-          "range": "http://www.w3.org/2001/XMLSchema#integer",
-          "reference": null,
-          "required": false,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "itemReviewed",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": book,
-          "required": true,
-          "description": "The item that is being reviewed/rated",
-          "maxCardinality": 1,
-        }
-      ],
-      "writableFields": [
-        {
-          "name": "reviewBody",
-          "id": "http://schema.org/reviewBody",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review",
-          "maxCardinality": null,
-        },
-        {
-          "name": "rating",
-          "id": "http://localhost/docs.jsonld#Review/rating",
-          "range": "http://www.w3.org/2001/XMLSchema#integer",
-          "reference": null,
-          "required": false,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "itemReviewed",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": book,
-          "required": true,
-          "description": "The item that is being reviewed/rated",
-          "maxCardinality": 1,
-        }
-      ],
-      "operations": [
-        {
-          "name": "Retrieves Review resource.",
-          "method": "GET",
-          "returns": "http://schema.org/Review",
-          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
-        },
-        {
-          "name": "Replaces the Review resource.",
-          "method": "PUT",
-          "returns": "http://schema.org/Review",
-          "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"]
-        },
-        {
-          "name": "Deletes the Review resource.",
-          "method": "DELETE",
-          "returns": "http://www.w3.org/2002/07/owl#Nothing",
-          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
-        }
-      ]
-    },
-    {
-      "name": "customResources",
-      "url": "http://localhost/customResources",
-      "id": "http://localhost/docs.jsonld#CustomResource",
-      "title": "CustomResource",
-      "fields": [
-        {
-          "name": "label",
-          "id": "http://localhost/docs.jsonld#CustomResource/label",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "description",
-          "id": "http://localhost/docs.jsonld#CustomResource/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "sanitizedDescription",
-          "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "",
-          "maxCardinality": null,
-        }
-      ],
-      "readableFields": [
-        {
-          "name": "label",
-          "id": "http://localhost/docs.jsonld#CustomResource/label",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "description",
-          "id": "http://localhost/docs.jsonld#CustomResource/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "sanitizedDescription",
-          "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "",
-          "maxCardinality": null,
-        }
-      ],
-      "writableFields": [
-        {
-          "name": "label",
-          "id": "http://localhost/docs.jsonld#CustomResource/label",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        },
-        {
-          "name": "description",
-          "id": "http://localhost/docs.jsonld#CustomResource/description",
-          "range": "http://www.w3.org/2001/XMLSchema#string",
-          "reference": null,
-          "required": true,
-          "description": "",
-          "maxCardinality": null,
-        }
-      ],
-      "operations": [
-        {
-          "name": "Retrieves custom resources.",
-          "method": "GET",
-          "returns": "http://localhost/docs.jsonld#CustomResource",
-          "types": ["http://www.w3.org/ns/hydra/core#Operation"]
-        },
-        {
-          "name": "Creates a custom resource.",
-          "method": "POST",
-          "returns": "http://localhost/docs.jsonld#CustomResource",
-          "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"]
-        }
-      ]
-    }
+    review,
+    customResource
   ]
 };
 
