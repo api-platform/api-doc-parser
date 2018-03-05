@@ -623,6 +623,7 @@ const book = {
     {
       "name": "Replaces the Book resource.",
       "method": "PUT",
+      "expects": "http://schema.org/Book",
       "returns": "http://schema.org/Book",
       "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
     },
@@ -739,6 +740,7 @@ const review = {
     {
       "name": "Creates a Review resource.",
       "method": "POST",
+      "expects": "http://schema.org/Review",
       "returns": "http://schema.org/Review",
       "types": [
         "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
@@ -753,6 +755,7 @@ const review = {
     {
       "name": "Replaces the Review resource.",
       "method": "PUT",
+      "expects": "http://schema.org/Review",
       "returns": "http://schema.org/Review",
       "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
     },
@@ -860,6 +863,7 @@ const customResource = {
     {
       "name": "Creates a custom resource.",
       "method": "POST",
+      "expects": "http://localhost/docs.jsonld#CustomResource",
       "returns": "http://localhost/docs.jsonld#CustomResource",
       "types": [
         "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
@@ -874,6 +878,7 @@ const customResource = {
     {
       "name": "Creates a custom resource.",
       "method": "POST",
+      "expects": "http://localhost/docs.jsonld#CustomResource",
       "returns": "http://localhost/docs.jsonld#CustomResource",
       "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
     }

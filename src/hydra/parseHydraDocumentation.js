@@ -209,6 +209,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               entrypointOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
               {
                 method: entrypointOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+                expects: entrypointOperation['http://www.w3.org/ns/hydra/core#expects'] && entrypointOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
                 returns: range,
                 types: entrypointOperation['@type'],
               },
@@ -230,6 +231,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
             supportedOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
             {
               method: supportedOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+              expects: supportedOperation['http://www.w3.org/ns/hydra/core#expects'] && supportedOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
               returns: range,
               types: supportedOperation['@type'],
             },
