@@ -3,6 +3,7 @@ import get from 'lodash.get';
 import Api from '../Api'
 import Field from '../Field'
 import Resource from '../Resource'
+import Operation from '../Operation'
 import fetchJsonLd from './fetchJsonLd';
 
 /**
@@ -144,7 +145,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
     ({ entrypoint, docs, response }) => {
-      const resources = [], fields = [];
+      const resources = [], fields = [], operations = [];
       const title = get(docs, '[0]["http://www.w3.org/ns/hydra/core#title"][0]["@value"]', 'API Platform');
 
       const entrypointType = get(entrypoint, '[0]["@type"][0]');
@@ -159,7 +160,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
       // Add resources
       for (const properties of entrypointClass['http://www.w3.org/ns/hydra/core#supportedProperty']) {
-        const readableFields = [], resourceFields = [], writableFields = [];
+        const readableFields = [], resourceFields = [], writableFields = [], resourceOperations = [];
 
         const property = get(properties, '["http://www.w3.org/ns/hydra/core#property"][0]');
         if (!property) {
@@ -196,6 +197,50 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           }
         }
 
+        // parse entrypoint's operations (a.k.a. collection operations)
+        if (property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+          for (const entrypointOperation of property['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+            if (!entrypointOperation['http://www.w3.org/ns/hydra/core#returns']) {
+              continue;
+            }
+
+            const range = entrypointOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+            const operation = new Operation(
+              entrypointOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+              {
+                method: entrypointOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+                expects: entrypointOperation['http://www.w3.org/ns/hydra/core#expects'] && entrypointOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
+                returns: range,
+                types: entrypointOperation['@type'],
+              },
+            );
+
+            resourceOperations.push(operation);
+            operations.push(operation);
+          }
+        }
+
+        // parse resource operations (a.k.a. item operations)
+        for (const supportedOperation of relatedClass['http://www.w3.org/ns/hydra/core#supportedOperation']) {
+          if (!supportedOperation['http://www.w3.org/ns/hydra/core#returns']) {
+            continue;
+          }
+
+          const range = supportedOperation['http://www.w3.org/ns/hydra/core#returns'][0]['@id'];
+          const operation = new Operation(
+            supportedOperation['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
+            {
+              method: supportedOperation['http://www.w3.org/ns/hydra/core#method'][0]['@value'],
+              expects: supportedOperation['http://www.w3.org/ns/hydra/core#expects'] && supportedOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
+              returns: range,
+              types: supportedOperation['@type'],
+            },
+          );
+
+          resourceOperations.push(operation);
+          operations.push(operation);
+        }
+
         const url = get(entrypoint, `[0]["${property['@id']}"][0]["@id"]`);
         if (!url) {
           throw new Error(`Unable to find the URL for "${property['@id']}".`);
@@ -209,7 +254,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
             title: get(relatedClass, '["http://www.w3.org/ns/hydra/core#title"][0]["@value"]', ''),
             fields: resourceFields,
             readableFields,
-            writableFields
+            writableFields,
+            operations: resourceOperations
           }
         ));
       }
