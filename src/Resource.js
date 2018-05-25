@@ -6,6 +6,7 @@ import Operation from './Operation';
 type ResourceOptions = {
   id?: string,
   title?: string,
+  deprecated?: boolean,
   readableFields?: Field[],
   writableFields?: Field[],
   operations?: Operation[],

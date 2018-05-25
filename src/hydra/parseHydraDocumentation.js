@@ -182,6 +182,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               required: get(supportedProperties, '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]', false),
               description: get(supportedProperties, '["http://www.w3.org/ns/hydra/core#description"][0]["@value"]', ''),
               maxCardinality: get(supportedProperty, '["http://www.w3.org/2002/07/owl#maxCardinality"][0]["@value"]', null),
+              deprecated: get(supportedProperties, '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]', false),
             },
           );
 
@@ -212,6 +213,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
                 expects: entrypointOperation['http://www.w3.org/ns/hydra/core#expects'] && entrypointOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
                 returns: range,
                 types: entrypointOperation['@type'],
+                deprecated: get(entrypointOperation, '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]', false),
               },
             );
 
@@ -234,6 +236,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               expects: supportedOperation['http://www.w3.org/ns/hydra/core#expects'] && supportedOperation['http://www.w3.org/ns/hydra/core#expects'][0]['@id'],
               returns: range,
               types: supportedOperation['@type'],
+              deprecated: get(supportedOperation, '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]', false),
             },
           );
 
@@ -255,7 +258,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
             fields: resourceFields,
             readableFields,
             writableFields,
-            operations: resourceOperations
+            operations: resourceOperations,
+            deprecated: get(relatedClass, '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]', false),
           }
         ));
       }

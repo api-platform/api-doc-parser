@@ -4,6 +4,7 @@ type OperationOptions = {
   method?: string,
   returns?: string,
   types?: Array<string>,
+  deprecated?: boolean,
 }
 
 /**

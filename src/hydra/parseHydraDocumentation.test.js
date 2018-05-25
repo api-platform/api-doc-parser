@@ -15,13 +15,18 @@ const entrypoint = `{
     "customResource": {
       "@id": "Entrypoint/customResource",
       "@type": "@id"
+    },
+    "deprecatedResource": {
+      "@id": "Entrypoint/deprecatedResource",
+      "@type": "@id"
     }
   },
   "@id": "/",
   "@type": "Entrypoint",
   "book": "/books",
   "review": "/reviews",
-  "customResource": "/customResources"
+  "customResource": "/customResources",
+  "deprecatedResource": "/deprecated_resources"
 }`;
 
 const docs = `{
@@ -314,6 +319,45 @@ const docs = `{
     ]
   },
   {
+    "@id": "#DeprecatedResource",
+    "@type": "hydra:Class",
+    "rdfs:label": "DeprecatedResource",
+    "hydra:title": "DeprecatedResource",
+    "hydra:supportedProperty": [
+        {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+                "@id": "#DeprecatedResource/deprecatedField",
+                "@type": "rdf:Property",
+                "rdfs:label": "deprecatedField",
+                "domain": "#DeprecatedResource",
+                "range": "xmls:string"
+            },
+            "hydra:title": "deprecatedField",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writable": true,
+            "hydra:description": "",
+            "owl:deprecated": true
+        }
+    ],
+    "hydra:supportedOperation": [
+        {
+            "@type": [
+                "hydra:Operation",
+                "schema:FindAction"
+            ],
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves DeprecatedResource resource.",
+            "owl:deprecated": true,
+            "rdfs:label": "Retrieves DeprecatedResource resource.",
+            "returns": "#DeprecatedResource"
+        }
+    ],
+    "hydra:description": "This is a dummy entity. Remove it!",
+    "owl:deprecated": true
+  },
+  {
     "@id": "#Entrypoint",
     "@type": "hydra:Class",
     "hydra:title": "The API entrypoint",
@@ -398,7 +442,48 @@ const docs = `{
         "hydra:title": "The collection of custom resources",
         "hydra:readable": true,
         "hydra:writable": false
-      }
+      },
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+            "@id": "#Entrypoint/deprecatedResource",
+            "@type": "hydra:Link",
+            "domain": "#Entrypoint",
+            "rdfs:label": "The collection of DeprecatedResource resources",
+            "rdfs:range": [
+                {
+                    "@id": "hydra:Collection"
+                },
+                {
+                    "owl:equivalentClass": {
+                        "owl:onProperty": {
+                            "@id": "hydra:member"
+                        },
+                        "owl:allValuesFrom": {
+                            "@id": "#DeprecatedResource"
+                        }
+                    }
+                }
+            ],
+            "hydra:supportedOperation": [
+                {
+                    "@type": [
+                        "hydra:Operation",
+                        "schema:FindAction"
+                    ],
+                    "hydra:method": "GET",
+                    "hydra:title": "Retrieves the collection of DeprecatedResource resources.",
+                    "owl:deprecated": true,
+                    "rdfs:label": "Retrieves the collection of DeprecatedResource resources.",
+                    "returns": "hydra:Collection"
+                }
+            ]
+        },
+        "hydra:title": "The collection of DeprecatedResource resources",
+        "hydra:readable": true,
+        "hydra:writable": false,
+        "owl:deprecated": true
+    }
     ],
     "hydra:supportedOperation": {
       "@type": "hydra:Operation",
@@ -481,6 +566,7 @@ const book = {
       "required": true,
       "description": "The ISBN of the book",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "name",
@@ -490,6 +576,7 @@ const book = {
       "required": true,
       "description": "The name of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -499,6 +586,7 @@ const book = {
       "required": false,
       "description": "A description of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "author",
@@ -508,6 +596,7 @@ const book = {
       "required": true,
       "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "dateCreated",
@@ -517,6 +606,7 @@ const book = {
       "required": true,
       "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "readableFields": [
@@ -528,6 +618,7 @@ const book = {
       "required": true,
       "description": "The ISBN of the book",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "name",
@@ -537,6 +628,7 @@ const book = {
       "required": true,
       "description": "The name of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -546,6 +638,7 @@ const book = {
       "required": false,
       "description": "A description of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "author",
@@ -555,6 +648,7 @@ const book = {
       "required": true,
       "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "dateCreated",
@@ -564,6 +658,7 @@ const book = {
       "required": true,
       "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "writableFields": [
@@ -575,6 +670,7 @@ const book = {
       "required": true,
       "description": "The ISBN of the book",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "name",
@@ -584,6 +680,7 @@ const book = {
       "required": true,
       "description": "The name of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -593,6 +690,7 @@ const book = {
       "required": false,
       "description": "A description of the item",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "author",
@@ -602,6 +700,7 @@ const book = {
       "required": true,
       "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "dateCreated",
@@ -611,6 +710,7 @@ const book = {
       "required": true,
       "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "operations": [
@@ -619,6 +719,7 @@ const book = {
       "method": "GET",
       "returns": "http://schema.org/Book",
       "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     },
     {
       "name": "Replaces the Book resource.",
@@ -626,14 +727,17 @@ const book = {
       "expects": "http://schema.org/Book",
       "returns": "http://schema.org/Book",
       "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
+      "deprecated": false,
     },
     {
       "name": "Deletes the Book resource.",
       "method": "DELETE",
       "returns": "http://www.w3.org/2002/07/owl#Nothing",
       "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     }
-  ]
+  ],
+  "deprecated": false,
 };
 
 const review = {
@@ -650,6 +754,7 @@ const review = {
       "required": false,
       "description": "The actual body of the review",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "rating",
@@ -659,6 +764,7 @@ const review = {
       "required": false,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "itemReviewed",
@@ -668,6 +774,7 @@ const review = {
       "required": true,
       "description": "The item that is being reviewed/rated",
       "maxCardinality": 1,
+      "deprecated": false,
     }
   ],
   "readableFields": [
@@ -679,6 +786,7 @@ const review = {
       "required": false,
       "description": "The actual body of the review",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "rating",
@@ -688,6 +796,7 @@ const review = {
       "required": false,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "itemReviewed",
@@ -697,6 +806,7 @@ const review = {
       "required": true,
       "description": "The item that is being reviewed/rated",
       "maxCardinality": 1,
+      "deprecated": false,
     }
   ],
   "writableFields": [
@@ -708,6 +818,7 @@ const review = {
       "required": false,
       "description": "The actual body of the review",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "rating",
@@ -717,6 +828,7 @@ const review = {
       "required": false,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "itemReviewed",
@@ -726,6 +838,7 @@ const review = {
       "required": true,
       "description": "The item that is being reviewed/rated",
       "maxCardinality": 1,
+      "deprecated": false,
     }
   ],
   "operations": [
@@ -733,24 +846,23 @@ const review = {
       "name": "Retrieves the collection of Review resources.",
       "method": "GET",
       "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
-      "types": [
-        "http://www.w3.org/ns/hydra/core#Operation"
-      ],
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     },
     {
       "name": "Creates a Review resource.",
       "method": "POST",
       "expects": "http://schema.org/Review",
       "returns": "http://schema.org/Review",
-      "types": [
-        "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
-      ],
+      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      "deprecated": false,
     },
     {
       "name": "Retrieves Review resource.",
       "method": "GET",
       "returns": "http://schema.org/Review",
       "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     },
     {
       "name": "Replaces the Review resource.",
@@ -758,14 +870,17 @@ const review = {
       "expects": "http://schema.org/Review",
       "returns": "http://schema.org/Review",
       "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
+      "deprecated": false,
     },
     {
       "name": "Deletes the Review resource.",
       "method": "DELETE",
       "returns": "http://www.w3.org/2002/07/owl#Nothing",
       "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     }
-  ]
+  ],
+  "deprecated": false,
 };
 
 const customResource = {
@@ -782,6 +897,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -791,6 +907,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "sanitizedDescription",
@@ -800,6 +917,7 @@ const customResource = {
       "required": false,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "readableFields": [
@@ -811,6 +929,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -820,6 +939,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "sanitizedDescription",
@@ -829,6 +949,7 @@ const customResource = {
       "required": false,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "writableFields": [
@@ -840,6 +961,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     },
     {
       "name": "description",
@@ -849,6 +971,7 @@ const customResource = {
       "required": true,
       "description": "",
       "maxCardinality": null,
+      "deprecated": false,
     }
   ],
   "operations": [
@@ -856,24 +979,8 @@ const customResource = {
       "name": "Retrieves the collection of custom resources.",
       "method": "GET",
       "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
-      "types": [
-        "http://www.w3.org/ns/hydra/core#Operation"
-      ],
-    },
-    {
-      "name": "Creates a custom resource.",
-      "method": "POST",
-      "expects": "http://localhost/docs.jsonld#CustomResource",
-      "returns": "http://localhost/docs.jsonld#CustomResource",
-      "types": [
-        "http://www.w3.org/ns/hydra/core#CreateResourceOperation"
-      ],
-    },
-    {
-      "name": "Retrieves custom resources.",
-      "method": "GET",
-      "returns": "http://localhost/docs.jsonld#CustomResource",
       "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
     },
     {
       "name": "Creates a custom resource.",
@@ -881,8 +988,91 @@ const customResource = {
       "expects": "http://localhost/docs.jsonld#CustomResource",
       "returns": "http://localhost/docs.jsonld#CustomResource",
       "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      "deprecated": false,
+    },
+    {
+      "name": "Retrieves custom resources.",
+      "method": "GET",
+      "returns": "http://localhost/docs.jsonld#CustomResource",
+      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
+      "deprecated": false,
+    },
+    {
+      "name": "Creates a custom resource.",
+      "method": "POST",
+      "expects": "http://localhost/docs.jsonld#CustomResource",
+      "returns": "http://localhost/docs.jsonld#CustomResource",
+      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      "deprecated": false,
     }
-  ]
+  ],
+  "deprecated": false,
+};
+
+const deprecatedResource = {
+  "name": "deprecated_resources",
+  "url": "http://localhost/deprecated_resources",
+  "id": "http://localhost/docs.jsonld#DeprecatedResource",
+  "title": "DeprecatedResource",
+  "fields": [
+    {
+      "name": "deprecatedField",
+      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+      "deprecated": true,
+    }
+  ],
+  "readableFields": [
+    {
+      "name": "deprecatedField",
+      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+      "deprecated": true,
+    }
+  ],
+  "writableFields": [
+    {
+      "name": "deprecatedField",
+      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "reference": null,
+      "required": true,
+      "description": "",
+      "maxCardinality": null,
+      "deprecated": true,
+    }
+  ],
+  "operations": [
+    {
+      "name": "Retrieves the collection of DeprecatedResource resources.",
+      "method": "GET",
+      "returns": "http://www.w3.org/ns/hydra/core#Collection",
+      "types": [
+          "http://www.w3.org/ns/hydra/core#Operation",
+          "schema:FindAction",
+      ],
+      "deprecated": true,
+    },
+    {
+      "name": "Retrieves DeprecatedResource resource.",
+      "method": "GET",
+      "returns": "http://localhost/docs.jsonld#DeprecatedResource",
+      "types": [
+          "http://www.w3.org/ns/hydra/core#Operation",
+          "schema:FindAction",
+      ],
+      "deprecated": true,
+    }
+  ],
+  "deprecated": true,
 };
 
 const expectedApi = {
@@ -891,7 +1081,8 @@ const expectedApi = {
   "resources": [
     book,
     review,
-    customResource
+    customResource,
+    deprecatedResource,
   ]
 };
 

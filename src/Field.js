@@ -7,6 +7,7 @@ type FieldOptions = {
   required?: boolean,
   description?: string,
   maxCardinality?: number,
+  deprecated?: boolean,
 }
 
 /**
