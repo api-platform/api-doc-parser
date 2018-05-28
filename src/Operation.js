@@ -4,7 +4,8 @@ type OperationOptions = {
   method?: string,
   returns?: string,
   types?: Array<string>,
-}
+  deprecated?: boolean
+};
 
 /**
  * @property {string} name - The name of this operation
@@ -19,12 +20,12 @@ export default class Operation {
   constructor(name: string, options: OperationOptions = {}) {
     this.name = name;
 
-    Object.keys(options).forEach((key) => {
+    Object.keys(options).forEach(key => {
       Object.defineProperty(this, key, {
         readable: true,
         writable: true,
         enumerable: true,
-        value: options[key],
+        value: options[key]
       });
     });
   }

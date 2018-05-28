@@ -1,2 +1,4 @@
-export fetchJsonLd from './fetchJsonLd';
-export parseHydraDocumentation, { getDocumentationUrlFromHeaders } from './parseHydraDocumentation';
+export fetchJsonLd from "./fetchJsonLd";
+export parseHydraDocumentation, {
+  getDocumentationUrlFromHeaders
+} from "./parseHydraDocumentation";
