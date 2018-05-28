@@ -14,9 +14,11 @@ module.exports = {
   plugins: ['import', 'flowtype', 'prettier'],
 
   extends: [
-      "prettier",
-      "prettier/flowtype",
-      "prettier/react"
+      "plugin:prettier/recommended",
   ],
+
+  rules: {
+      "prettier/prettier": "error"
+  },
 
 };

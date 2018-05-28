@@ -1,4 +1,4 @@
-import parseHydraDocumentation from './parseHydraDocumentation';
+import parseHydraDocumentation from "./parseHydraDocumentation";
 
 const entrypoint = `{
   "@context": {
@@ -324,35 +324,35 @@ const docs = `{
     "rdfs:label": "DeprecatedResource",
     "hydra:title": "DeprecatedResource",
     "hydra:supportedProperty": [
-        {
-            "@type": "hydra:SupportedProperty",
-            "hydra:property": {
-                "@id": "#DeprecatedResource/deprecatedField",
-                "@type": "rdf:Property",
-                "rdfs:label": "deprecatedField",
-                "domain": "#DeprecatedResource",
-                "range": "xmls:string"
-            },
-            "hydra:title": "deprecatedField",
-            "hydra:required": true,
-            "hydra:readable": true,
-            "hydra:writable": true,
-            "hydra:description": "",
-            "owl:deprecated": true
-        }
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+          "@id": "#DeprecatedResource/deprecatedField",
+          "@type": "rdf:Property",
+          "rdfs:label": "deprecatedField",
+          "domain": "#DeprecatedResource",
+          "range": "xmls:string"
+        },
+        "hydra:title": "deprecatedField",
+        "hydra:required": true,
+        "hydra:readable": true,
+        "hydra:writable": true,
+        "hydra:description": "",
+        "owl:deprecated": true
+      }
     ],
     "hydra:supportedOperation": [
-        {
-            "@type": [
-                "hydra:Operation",
-                "schema:FindAction"
-            ],
-            "hydra:method": "GET",
-            "hydra:title": "Retrieves DeprecatedResource resource.",
-            "owl:deprecated": true,
-            "rdfs:label": "Retrieves DeprecatedResource resource.",
-            "returns": "#DeprecatedResource"
-        }
+      {
+        "@type": [
+          "hydra:Operation",
+          "schema:FindAction"
+        ],
+        "hydra:method": "GET",
+        "hydra:title": "Retrieves DeprecatedResource resource.",
+        "owl:deprecated": true,
+        "rdfs:label": "Retrieves DeprecatedResource resource.",
+        "returns": "#DeprecatedResource"
+      }
     ],
     "hydra:description": "This is a dummy entity. Remove it!",
     "owl:deprecated": true
@@ -370,13 +370,13 @@ const docs = `{
           "domain": "#Entrypoint",
           "rdfs:label": "The collection of Book resources",
           "rdfs:range": [
-              {"@id": "hydra:PagedCollection"},
-              {
-                  "owl:equivalentClass": {
-                      "owl:onProperty": {"@id": "hydra:member"},
-                      "owl:allValuesFrom": {"@id": "http://schema.org/Book"}
-                  }
+            {"@id": "hydra:PagedCollection"},
+            {
+              "owl:equivalentClass": {
+                "owl:onProperty": {"@id": "hydra:member"},
+                "owl:allValuesFrom": {"@id": "http://schema.org/Book"}
               }
+            }
           ]
         },
         "hydra:title": "The collection of Book resources",
@@ -451,32 +451,32 @@ const docs = `{
             "domain": "#Entrypoint",
             "rdfs:label": "The collection of DeprecatedResource resources",
             "rdfs:range": [
-                {
-                    "@id": "hydra:Collection"
-                },
-                {
-                    "owl:equivalentClass": {
-                        "owl:onProperty": {
-                            "@id": "hydra:member"
-                        },
-                        "owl:allValuesFrom": {
-                            "@id": "#DeprecatedResource"
-                        }
-                    }
+              {
+                "@id": "hydra:Collection"
+              },
+              {
+                "owl:equivalentClass": {
+                  "owl:onProperty": {
+                    "@id": "hydra:member"
+                  },
+                  "owl:allValuesFrom": {
+                    "@id": "#DeprecatedResource"
+                  }
                 }
+              }
             ],
             "hydra:supportedOperation": [
-                {
-                    "@type": [
-                        "hydra:Operation",
-                        "schema:FindAction"
-                    ],
-                    "hydra:method": "GET",
-                    "hydra:title": "Retrieves the collection of DeprecatedResource resources.",
-                    "owl:deprecated": true,
-                    "rdfs:label": "Retrieves the collection of DeprecatedResource resources.",
-                    "returns": "hydra:Collection"
-                }
+              {
+                "@type": [
+                  "hydra:Operation",
+                  "schema:FindAction"
+                ],
+                "hydra:method": "GET",
+                "hydra:title": "Retrieves the collection of DeprecatedResource resources.",
+                "owl:deprecated": true,
+                "rdfs:label": "Retrieves the collection of DeprecatedResource resources.",
+                "returns": "hydra:Collection"
+              }
             ]
         },
         "hydra:title": "The collection of DeprecatedResource resources",
@@ -553,603 +553,595 @@ const docs = `{
 }`;
 
 const book = {
-  "name": "books",
-  "url": "http://localhost/books",
-  "id": "http://schema.org/Book",
-  "title": "Book",
-  "fields": [
+  name: "books",
+  url: "http://localhost/books",
+  id: "http://schema.org/Book",
+  title: "Book",
+  fields: [
     {
-      "name": "isbn",
-      "id": "http://schema.org/isbn",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The ISBN of the book",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "isbn",
+      id: "http://schema.org/isbn",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The ISBN of the book",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "name",
-      "id": "http://schema.org/name",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The name of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "name",
+      id: "http://schema.org/name",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The name of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://schema.org/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "A description of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://schema.org/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "A description of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "author",
-      "id": "http://schema.org/author",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "author",
+      id: "http://schema.org/author",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description:
+        "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "dateCreated",
-      "id": "http://schema.org/dateCreated",
-      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-      "reference": null,
-      "required": true,
-      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "dateCreated",
+      id: "http://schema.org/dateCreated",
+      range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      reference: null,
+      required: true,
+      description:
+        "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "readableFields": [
+  readableFields: [
     {
-      "name": "isbn",
-      "id": "http://schema.org/isbn",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The ISBN of the book",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "isbn",
+      id: "http://schema.org/isbn",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The ISBN of the book",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "name",
-      "id": "http://schema.org/name",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The name of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "name",
+      id: "http://schema.org/name",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The name of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://schema.org/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "A description of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://schema.org/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "A description of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "author",
-      "id": "http://schema.org/author",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "author",
+      id: "http://schema.org/author",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description:
+        "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "dateCreated",
-      "id": "http://schema.org/dateCreated",
-      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-      "reference": null,
-      "required": true,
-      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "dateCreated",
+      id: "http://schema.org/dateCreated",
+      range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      reference: null,
+      required: true,
+      description:
+        "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "writableFields": [
+  writableFields: [
     {
-      "name": "isbn",
-      "id": "http://schema.org/isbn",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The ISBN of the book",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "isbn",
+      id: "http://schema.org/isbn",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The ISBN of the book",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "name",
-      "id": "http://schema.org/name",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The name of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "name",
+      id: "http://schema.org/name",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "The name of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://schema.org/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "A description of the item",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://schema.org/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "A description of the item",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "author",
-      "id": "http://schema.org/author",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "author",
+      id: "http://schema.org/author",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description:
+        "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "dateCreated",
-      "id": "http://schema.org/dateCreated",
-      "range": "http://www.w3.org/2001/XMLSchema#dateTime",
-      "reference": null,
-      "required": true,
-      "description": "The date on which the CreativeWork was created or the item was added to a DataFeed",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "dateCreated",
+      id: "http://schema.org/dateCreated",
+      range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      reference: null,
+      required: true,
+      description:
+        "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "operations": [
+  operations: [
     {
-      "name": "Retrieves Book resource.",
-      "method": "GET",
-      "returns": "http://schema.org/Book",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Retrieves Book resource.",
+      method: "GET",
+      returns: "http://schema.org/Book",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     },
     {
-      "name": "Replaces the Book resource.",
-      "method": "PUT",
-      "expects": "http://schema.org/Book",
-      "returns": "http://schema.org/Book",
-      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
-      "deprecated": false,
+      name: "Replaces the Book resource.",
+      method: "PUT",
+      expects: "http://schema.org/Book",
+      returns: "http://schema.org/Book",
+      types: ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
+      deprecated: false
     },
     {
-      "name": "Deletes the Book resource.",
-      "method": "DELETE",
-      "returns": "http://www.w3.org/2002/07/owl#Nothing",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Deletes the Book resource.",
+      method: "DELETE",
+      returns: "http://www.w3.org/2002/07/owl#Nothing",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     }
   ],
-  "deprecated": false,
+  deprecated: false
 };
 
 const review = {
-  "name": "reviews",
-  "url": "http://localhost/reviews",
-  "id": "http://schema.org/Review",
-  "title": "Review",
-  "fields": [
+  name: "reviews",
+  url: "http://localhost/reviews",
+  id: "http://schema.org/Review",
+  title: "Review",
+  fields: [
     {
-      "name": "reviewBody",
-      "id": "http://schema.org/reviewBody",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "The actual body of the review",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "reviewBody",
+      id: "http://schema.org/reviewBody",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "The actual body of the review",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "rating",
-      "id": "http://localhost/docs.jsonld#Review/rating",
-      "range": "http://www.w3.org/2001/XMLSchema#integer",
-      "reference": null,
-      "required": false,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "rating",
+      id: "http://localhost/docs.jsonld#Review/rating",
+      range: "http://www.w3.org/2001/XMLSchema#integer",
+      reference: null,
+      required: false,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "itemReviewed",
-      "id": "http://schema.org/itemReviewed",
-      "range": "http://schema.org/Book",
-      "reference": book,
-      "required": true,
-      "description": "The item that is being reviewed/rated",
-      "maxCardinality": 1,
-      "deprecated": false,
+      name: "itemReviewed",
+      id: "http://schema.org/itemReviewed",
+      range: "http://schema.org/Book",
+      reference: book,
+      required: true,
+      description: "The item that is being reviewed/rated",
+      maxCardinality: 1,
+      deprecated: false
     }
   ],
-  "readableFields": [
+  readableFields: [
     {
-      "name": "reviewBody",
-      "id": "http://schema.org/reviewBody",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "The actual body of the review",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "reviewBody",
+      id: "http://schema.org/reviewBody",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "The actual body of the review",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "rating",
-      "id": "http://localhost/docs.jsonld#Review/rating",
-      "range": "http://www.w3.org/2001/XMLSchema#integer",
-      "reference": null,
-      "required": false,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "rating",
+      id: "http://localhost/docs.jsonld#Review/rating",
+      range: "http://www.w3.org/2001/XMLSchema#integer",
+      reference: null,
+      required: false,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "itemReviewed",
-      "id": "http://schema.org/itemReviewed",
-      "range": "http://schema.org/Book",
-      "reference": book,
-      "required": true,
-      "description": "The item that is being reviewed/rated",
-      "maxCardinality": 1,
-      "deprecated": false,
+      name: "itemReviewed",
+      id: "http://schema.org/itemReviewed",
+      range: "http://schema.org/Book",
+      reference: book,
+      required: true,
+      description: "The item that is being reviewed/rated",
+      maxCardinality: 1,
+      deprecated: false
     }
   ],
-  "writableFields": [
+  writableFields: [
     {
-      "name": "reviewBody",
-      "id": "http://schema.org/reviewBody",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": false,
-      "description": "The actual body of the review",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "reviewBody",
+      id: "http://schema.org/reviewBody",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: false,
+      description: "The actual body of the review",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "rating",
-      "id": "http://localhost/docs.jsonld#Review/rating",
-      "range": "http://www.w3.org/2001/XMLSchema#integer",
-      "reference": null,
-      "required": false,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "rating",
+      id: "http://localhost/docs.jsonld#Review/rating",
+      range: "http://www.w3.org/2001/XMLSchema#integer",
+      reference: null,
+      required: false,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "itemReviewed",
-      "id": "http://schema.org/itemReviewed",
-      "range": "http://schema.org/Book",
-      "reference": book,
-      "required": true,
-      "description": "The item that is being reviewed/rated",
-      "maxCardinality": 1,
-      "deprecated": false,
+      name: "itemReviewed",
+      id: "http://schema.org/itemReviewed",
+      range: "http://schema.org/Book",
+      reference: book,
+      required: true,
+      description: "The item that is being reviewed/rated",
+      maxCardinality: 1,
+      deprecated: false
     }
   ],
-  "operations": [
+  operations: [
     {
-      "name": "Retrieves the collection of Review resources.",
-      "method": "GET",
-      "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Retrieves the collection of Review resources.",
+      method: "GET",
+      returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     },
     {
-      "name": "Creates a Review resource.",
-      "method": "POST",
-      "expects": "http://schema.org/Review",
-      "returns": "http://schema.org/Review",
-      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      "deprecated": false,
+      name: "Creates a Review resource.",
+      method: "POST",
+      expects: "http://schema.org/Review",
+      returns: "http://schema.org/Review",
+      types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      deprecated: false
     },
     {
-      "name": "Retrieves Review resource.",
-      "method": "GET",
-      "returns": "http://schema.org/Review",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Retrieves Review resource.",
+      method: "GET",
+      returns: "http://schema.org/Review",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     },
     {
-      "name": "Replaces the Review resource.",
-      "method": "PUT",
-      "expects": "http://schema.org/Review",
-      "returns": "http://schema.org/Review",
-      "types": ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
-      "deprecated": false,
+      name: "Replaces the Review resource.",
+      method: "PUT",
+      expects: "http://schema.org/Review",
+      returns: "http://schema.org/Review",
+      types: ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
+      deprecated: false
     },
     {
-      "name": "Deletes the Review resource.",
-      "method": "DELETE",
-      "returns": "http://www.w3.org/2002/07/owl#Nothing",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Deletes the Review resource.",
+      method: "DELETE",
+      returns: "http://www.w3.org/2002/07/owl#Nothing",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     }
   ],
-  "deprecated": false,
+  deprecated: false
 };
 
 const customResource = {
-  "name": "customResources",
-  "url": "http://localhost/customResources",
-  "id": "http://localhost/docs.jsonld#CustomResource",
-  "title": "CustomResource",
-  "fields": [
+  name: "customResources",
+  url: "http://localhost/customResources",
+  id: "http://localhost/docs.jsonld#CustomResource",
+  title: "CustomResource",
+  fields: [
     {
-      "name": "label",
-      "id": "http://localhost/docs.jsonld#CustomResource/label",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "label",
+      id: "http://localhost/docs.jsonld#CustomResource/label",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://localhost/docs.jsonld#CustomResource/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://localhost/docs.jsonld#CustomResource/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "sanitizedDescription",
-      "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
-      "range": null,
-      "reference": null,
-      "required": false,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "sanitizedDescription",
+      id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+      range: null,
+      reference: null,
+      required: false,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "readableFields": [
+  readableFields: [
     {
-      "name": "label",
-      "id": "http://localhost/docs.jsonld#CustomResource/label",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "label",
+      id: "http://localhost/docs.jsonld#CustomResource/label",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://localhost/docs.jsonld#CustomResource/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://localhost/docs.jsonld#CustomResource/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "sanitizedDescription",
-      "id": "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
-      "range": null,
-      "reference": null,
-      "required": false,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "sanitizedDescription",
+      id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
+      range: null,
+      reference: null,
+      required: false,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "writableFields": [
+  writableFields: [
     {
-      "name": "label",
-      "id": "http://localhost/docs.jsonld#CustomResource/label",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "label",
+      id: "http://localhost/docs.jsonld#CustomResource/label",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     },
     {
-      "name": "description",
-      "id": "http://localhost/docs.jsonld#CustomResource/description",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": false,
+      name: "description",
+      id: "http://localhost/docs.jsonld#CustomResource/description",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
-  "operations": [
+  operations: [
     {
-      "name": "Retrieves the collection of custom resources.",
-      "method": "GET",
-      "returns": "http://www.w3.org/ns/hydra/core#PagedCollection",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Retrieves the collection of custom resources.",
+      method: "GET",
+      returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     },
     {
-      "name": "Creates a custom resource.",
-      "method": "POST",
-      "expects": "http://localhost/docs.jsonld#CustomResource",
-      "returns": "http://localhost/docs.jsonld#CustomResource",
-      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      "deprecated": false,
+      name: "Creates a custom resource.",
+      method: "POST",
+      expects: "http://localhost/docs.jsonld#CustomResource",
+      returns: "http://localhost/docs.jsonld#CustomResource",
+      types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      deprecated: false
     },
     {
-      "name": "Retrieves custom resources.",
-      "method": "GET",
-      "returns": "http://localhost/docs.jsonld#CustomResource",
-      "types": ["http://www.w3.org/ns/hydra/core#Operation"],
-      "deprecated": false,
+      name: "Retrieves custom resources.",
+      method: "GET",
+      returns: "http://localhost/docs.jsonld#CustomResource",
+      types: ["http://www.w3.org/ns/hydra/core#Operation"],
+      deprecated: false
     },
     {
-      "name": "Creates a custom resource.",
-      "method": "POST",
-      "expects": "http://localhost/docs.jsonld#CustomResource",
-      "returns": "http://localhost/docs.jsonld#CustomResource",
-      "types": ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      "deprecated": false,
+      name: "Creates a custom resource.",
+      method: "POST",
+      expects: "http://localhost/docs.jsonld#CustomResource",
+      returns: "http://localhost/docs.jsonld#CustomResource",
+      types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      deprecated: false
     }
   ],
-  "deprecated": false,
+  deprecated: false
 };
 
 const deprecatedResource = {
-  "name": "deprecated_resources",
-  "url": "http://localhost/deprecated_resources",
-  "id": "http://localhost/docs.jsonld#DeprecatedResource",
-  "title": "DeprecatedResource",
-  "fields": [
+  name: "deprecated_resources",
+  url: "http://localhost/deprecated_resources",
+  id: "http://localhost/docs.jsonld#DeprecatedResource",
+  title: "DeprecatedResource",
+  fields: [
     {
-      "name": "deprecatedField",
-      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": true,
+      name: "deprecatedField",
+      id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: true
     }
   ],
-  "readableFields": [
+  readableFields: [
     {
-      "name": "deprecatedField",
-      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": true,
+      name: "deprecatedField",
+      id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: true
     }
   ],
-  "writableFields": [
+  writableFields: [
     {
-      "name": "deprecatedField",
-      "id": "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
-      "reference": null,
-      "required": true,
-      "description": "",
-      "maxCardinality": null,
-      "deprecated": true,
+      name: "deprecatedField",
+      id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: true
     }
   ],
-  "operations": [
+  operations: [
     {
-      "name": "Retrieves the collection of DeprecatedResource resources.",
-      "method": "GET",
-      "returns": "http://www.w3.org/ns/hydra/core#Collection",
-      "types": [
-          "http://www.w3.org/ns/hydra/core#Operation",
-          "schema:FindAction",
-      ],
-      "deprecated": true,
+      name: "Retrieves the collection of DeprecatedResource resources.",
+      method: "GET",
+      returns: "http://www.w3.org/ns/hydra/core#Collection",
+      types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
+      deprecated: true
     },
     {
-      "name": "Retrieves DeprecatedResource resource.",
-      "method": "GET",
-      "returns": "http://localhost/docs.jsonld#DeprecatedResource",
-      "types": [
-          "http://www.w3.org/ns/hydra/core#Operation",
-          "schema:FindAction",
-      ],
-      "deprecated": true,
+      name: "Retrieves DeprecatedResource resource.",
+      method: "GET",
+      returns: "http://localhost/docs.jsonld#DeprecatedResource",
+      types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
+      deprecated: true
     }
   ],
-  "deprecated": true,
+  deprecated: true
 };
 
 const expectedApi = {
-  "entrypoint": "http://localhost",
-  "title": "API Platform's demo",
-  "resources": [
-    book,
-    review,
-    customResource,
-    deprecatedResource,
-  ]
+  entrypoint: "http://localhost",
+  title: "API Platform's demo",
+  resources: [book, review, customResource, deprecatedResource]
 };
 
 const init = {
   status: 200,
-  statusText: 'OK',
+  statusText: "OK",
   headers: new Headers({
-    'Link': '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
-    'Content-Type': 'application/ld+json'
+    Link:
+      '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
+    "Content-Type": "application/ld+json"
   })
 };
 
-test('parse a Hydra documentation', () => {
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
+test("parse a Hydra documentation", () => {
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  const options = {headers: new Headers({'CustomHeader': 'customValue'})};
+  const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
-  return parseHydraDocumentation('http://localhost', options).then(data => {
-      expect(JSON.stringify(data.api, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
-      expect(data.response).toBeDefined();
-      expect(data.status).toBe(200);
+  return parseHydraDocumentation("http://localhost", options).then(data => {
+    expect(JSON.stringify(data.api, null, 2)).toBe(
+      JSON.stringify(expectedApi, null, 2)
+    );
+    expect(data.response).toBeDefined();
+    expect(data.status).toBe(200);
 
-      expect(fetch).toHaveBeenCalledTimes(2);
-      expect(fetch).toHaveBeenLastCalledWith('http://localhost/docs.jsonld', options);
-    }
-  );
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenLastCalledWith(
+      "http://localhost/docs.jsonld",
+      options
+    );
+  });
 });
 
-test('parse a Hydra documentation (http://localhost/)', () => {
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
+test("parse a Hydra documentation (http://localhost/)", () => {
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  return parseHydraDocumentation('http://localhost/').then(data => {
-      expect(JSON.stringify(data.api, null, 2)).toBe(JSON.stringify(expectedApi, null, 2));
-      expect(data.response).toBeDefined();
-      expect(data.status).toBe(200);
-    }
-  );
+  return parseHydraDocumentation("http://localhost/").then(data => {
+    expect(JSON.stringify(data.api, null, 2)).toBe(
+      JSON.stringify(expectedApi, null, 2)
+    );
+    expect(data.response).toBeDefined();
+    expect(data.status).toBe(200);
+  });
 });
 
-
-test('parse a Hydra documentation without authorization', () => {
+test("parse a Hydra documentation without authorization", () => {
   const init = {
     status: 401,
-    statusText: 'Unauthorized',
+    statusText: "Unauthorized"
   };
 
   const expectedApi = {
-    entrypoint: 'http://localhost',
-    resources: [],
+    entrypoint: "http://localhost",
+    resources: []
   };
 
   const expectedResponse = {
     code: 401,
-    message: 'JWT Token not found'
+    message: "JWT Token not found"
   };
 
-  fetch.mockResponses(
-    [JSON.stringify(expectedResponse), init],
-  );
+  fetch.mockResponses([JSON.stringify(expectedResponse), init]);
 
-  return parseHydraDocumentation('http://localhost').catch(async data => {
+  return parseHydraDocumentation("http://localhost").catch(async data => {
     expect(data.api).toEqual(expectedApi);
     expect(data.response).toBeDefined();
     await expect(data.response.json()).resolves.toEqual(expectedResponse);
@@ -1181,13 +1173,9 @@ test('Parse entrypoint without "@type" key', () => {
   "customResource": "/customResources"
 }`;
 
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
-
-  parseHydraDocumentation('http://localhost/').catch(data => {
+  parseHydraDocumentation("http://localhost/").catch(data => {
     expect(data.message).toBe('The API entrypoint has no "@type" key.');
   });
 });
@@ -1228,14 +1216,12 @@ test('Parse entrypoint class without "supportedClass" key', () => {
 "hydra:entrypoint": "/"
 }`;
 
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
-
-  parseHydraDocumentation('http://localhost/').catch(data => {
-    expect(data.message).toBe('The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.');
+  parseHydraDocumentation("http://localhost/").catch(data => {
+    expect(data.message).toBe(
+      'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
+    );
   });
 });
 
@@ -1288,44 +1274,35 @@ test('Parse entrypoint class without "supportedProperty" key', () => {
 ]
 }`;
 
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
-
-  parseHydraDocumentation('http://localhost/').catch(data => {
-    expect(data.message).toBe('The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.');
+  parseHydraDocumentation("http://localhost/").catch(data => {
+    expect(data.message).toBe(
+      'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.'
+    );
   });
 });
 
-
-test('Invalid docs JSON', () => {
+test("Invalid docs JSON", () => {
   const docs = `{foo,}`;
 
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation('http://localhost/').catch(data => {
-    expect(data).toHaveProperty('api');
-    expect(data).toHaveProperty('response');
-    expect(data).toHaveProperty('status');
+  parseHydraDocumentation("http://localhost/").catch(data => {
+    expect(data).toHaveProperty("api");
+    expect(data).toHaveProperty("response");
+    expect(data).toHaveProperty("status");
   });
 });
 
-test('Invalid entrypoint JSON', () => {
+test("Invalid entrypoint JSON", () => {
   const entrypoint = `{foo,}`;
 
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-  );
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation('http://localhost/').catch(data => {
-    expect(data).toHaveProperty('api');
-    expect(data).toHaveProperty('response');
-    expect(data).toHaveProperty('status');
+  parseHydraDocumentation("http://localhost/").catch(data => {
+    expect(data).toHaveProperty("api");
+    expect(data).toHaveProperty("response");
+    expect(data).toHaveProperty("status");
   });
 });
