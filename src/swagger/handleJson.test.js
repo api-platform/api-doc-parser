@@ -1,1174 +1,1176 @@
-import handleJson from './handleJson';
+import handleJson from "./handleJson";
 
 const swaggerApiDefinition = {
-    "swagger": "2.0",
-    "basePath": "/",
-    "info": {
-      "title": "API Platform's demo",
-      "version": "0.0.0",
-      "description":
-        "This is a demo application of the [API Platform](https://api-platform.com) framework.\n[Its source code](https://github.com/api-platform/demo) includes various examples, check it out!\n"
-    },
-    "paths": {
-      "/books": {
-        "get": {
-          "tags": ["Book"],
-          "operationId": "getBookCollection",
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Retrieves the collection of Book resources.",
-          "responses": {
-            "200": {
-              "description": "Book collection response",
-              "schema": {
-                "type": "array",
-                "items": { "$ref": "#/definitions/Book" }
-              }
+  swagger: "2.0",
+  basePath: "/",
+  info: {
+    title: "API Platform's demo",
+    version: "0.0.0",
+    description:
+      "This is a demo application of the [API Platform](https://api-platform.com) framework.\n[Its source code](https://github.com/api-platform/demo) includes various examples, check it out!\n"
+  },
+  paths: {
+    "/books": {
+      get: {
+        tags: ["Book"],
+        operationId: "getBookCollection",
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Retrieves the collection of Book resources.",
+        responses: {
+          "200": {
+            description: "Book collection response",
+            schema: {
+              type: "array",
+              items: { $ref: "#/definitions/Book" }
             }
-          }
-        },
-        "post": {
-          "tags": ["Book"],
-          "operationId": "postBookCollection",
-          "consumes": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Creates a Book resource.",
-          "parameters": [
-            {
-              "name": "book",
-              "in": "body",
-              "description": "The new Book resource",
-              "schema": { "$ref": "#/definitions/Book" }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Book resource created",
-              "schema": { "$ref": "#/definitions/Book" }
-            },
-            "400": { "description": "Invalid input" },
-            "404": { "description": "Resource not found" }
           }
         }
       },
-      "/books/{id}": {
-        "get": {
-          "tags": ["Book"],
-          "operationId": "getBookItem",
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Retrieves a Book resource.",
-          "parameters": [
-            { "name": "id", "in": "path", "required": true, "type": "integer" }
-          ],
-          "responses": {
-            "200": {
-              "description": "Book resource response",
-              "schema": { "$ref": "#/definitions/Book" }
-            },
-            "404": { "description": "Resource not found" }
+      post: {
+        tags: ["Book"],
+        operationId: "postBookCollection",
+        consumes: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Creates a Book resource.",
+        parameters: [
+          {
+            name: "book",
+            in: "body",
+            description: "The new Book resource",
+            schema: { $ref: "#/definitions/Book" }
           }
-        },
-        "put": {
-          "tags": ["Book"],
-          "operationId": "putBookItem",
-          "consumes": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Replaces the Book resource.",
-          "parameters": [
-            { "name": "id", "in": "path", "type": "integer", "required": true },
-            {
-              "name": "book",
-              "in": "body",
-              "description": "The updated Book resource",
-              "schema": { "$ref": "#/definitions/Book" }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Book resource updated",
-              "schema": { "$ref": "#/definitions/Book" }
-            },
-            "400": { "description": "Invalid input" },
-            "404": { "description": "Resource not found" }
-          }
-        },
-        "delete": {
-          "tags": ["Book"],
-          "operationId": "deleteBookItem",
-          "summary": "Removes the Book resource.",
-          "responses": {
-            "204": { "description": "Book resource deleted" },
-            "404": { "description": "Resource not found" }
+        ],
+        responses: {
+          "201": {
+            description: "Book resource created",
+            schema: { $ref: "#/definitions/Book" }
           },
-          "parameters": [
-            { "name": "id", "in": "path", "type": "integer", "required": true }
-          ]
-        }
-      },
-      "/reviews": {
-        "get": {
-          "tags": ["Review"],
-          "operationId": "getReviewCollection",
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Retrieves the collection of Review resources.",
-          "responses": {
-            "200": {
-              "description": "Review collection response",
-              "schema": {
-                "type": "array",
-                "items": { "$ref": "#/definitions/Review" }
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": ["Review"],
-          "operationId": "postReviewCollection",
-          "consumes": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Creates a Review resource.",
-          "parameters": [
-            {
-              "name": "review",
-              "in": "body",
-              "description": "The new Review resource",
-              "schema": { "$ref": "#/definitions/Review" }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Review resource created",
-              "schema": { "$ref": "#/definitions/Review" }
-            },
-            "400": { "description": "Invalid input" },
-            "404": { "description": "Resource not found" }
-          }
-        }
-      },
-      "/reviews/{id}": {
-        "get": {
-          "tags": ["Review"],
-          "operationId": "getReviewItem",
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Retrieves a Review resource.",
-          "parameters": [
-            { "name": "id", "in": "path", "required": true, "type": "integer" }
-          ],
-          "responses": {
-            "200": {
-              "description": "Review resource response",
-              "schema": { "$ref": "#/definitions/Review" }
-            },
-            "404": { "description": "Resource not found" }
-          }
-        },
-        "put": {
-          "tags": ["Review"],
-          "operationId": "putReviewItem",
-          "consumes": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "produces": [
-            "application/ld+json",
-            "application/hal+json",
-            "application/xml",
-            "text/xml",
-            "application/json",
-            "application/x-yaml",
-            "text/csv",
-            "text/html"
-          ],
-          "summary": "Replaces the Review resource.",
-          "parameters": [
-            { "name": "id", "in": "path", "type": "integer", "required": true },
-            {
-              "name": "review",
-              "in": "body",
-              "description": "The updated Review resource",
-              "schema": { "$ref": "#/definitions/Review" }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Review resource updated",
-              "schema": { "$ref": "#/definitions/Review" }
-            },
-            "400": { "description": "Invalid input" },
-            "404": { "description": "Resource not found" }
-          }
-        },
-        "delete": {
-          "tags": ["Review"],
-          "operationId": "deleteReviewItem",
-          "summary": "Removes the Review resource.",
-          "responses": {
-            "204": { "description": "Review resource deleted" },
-            "404": { "description": "Resource not found" }
-          },
-          "parameters": [
-            { "name": "id", "in": "path", "type": "integer", "required": true }
-          ]
+          "400": { description: "Invalid input" },
+          "404": { description: "Resource not found" }
         }
       }
     },
-    "definitions": {
-      "Book": {
-        "type": "object",
-        "externalDocs": { "url": "http://schema.org/Book" },
-        "properties": {
-          "id": { "type": "integer" },
-          "isbn": { "description": "The ISBN of the book", "type": "string" },
-          "description": {
-            "description": "A description of the item",
-            "type": "string"
+    "/books/{id}": {
+      get: {
+        tags: ["Book"],
+        operationId: "getBookItem",
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Retrieves a Book resource.",
+        parameters: [
+          { name: "id", in: "path", required: true, type: "integer" }
+        ],
+        responses: {
+          "200": {
+            description: "Book resource response",
+            schema: { $ref: "#/definitions/Book" }
           },
-          "author": {
-            "description":
-              "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
-            "type": "string"
-          },
-          "title": { "description": "The title of the book", "type": "string" },
-          "publicationDate": {
-            "description":
-              "The date on which the CreativeWork was created or the item was added to a DataFeed",
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "required": ["description", "author", "title", "publicationDate"]
+          "404": { description: "Resource not found" }
+        }
       },
-      "Review": {
-        "type": "object",
-        "externalDocs": { "url": "http://schema.org/Review" },
-        "properties": {
-          "id": { "type": "integer" },
-          "rating": { "type": "integer" },
-          "body": {
-            "description": "The actual body of the review",
-            "type": "string"
-          },
-          "book": {
-            "description": "The item that is being reviewed/rated",
-            "type": "string"
-          },
-          "author": {
-            "description": "Author the author of the review",
-            "type": "string"
-          },
-          "publicationDate": {
-            "description": "Author the author of the review",
-            "type": "string",
-            "format": "date-time"
+      put: {
+        tags: ["Book"],
+        operationId: "putBookItem",
+        consumes: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Replaces the Book resource.",
+        parameters: [
+          { name: "id", in: "path", type: "integer", required: true },
+          {
+            name: "book",
+            in: "body",
+            description: "The updated Book resource",
+            schema: { $ref: "#/definitions/Book" }
           }
+        ],
+        responses: {
+          "200": {
+            description: "Book resource updated",
+            schema: { $ref: "#/definitions/Book" }
+          },
+          "400": { description: "Invalid input" },
+          "404": { description: "Resource not found" }
+        }
+      },
+      delete: {
+        tags: ["Book"],
+        operationId: "deleteBookItem",
+        summary: "Removes the Book resource.",
+        responses: {
+          "204": { description: "Book resource deleted" },
+          "404": { description: "Resource not found" }
         },
-        "required": ["book"]
+        parameters: [
+          { name: "id", in: "path", type: "integer", required: true }
+        ]
+      }
+    },
+    "/reviews": {
+      get: {
+        tags: ["Review"],
+        operationId: "getReviewCollection",
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Retrieves the collection of Review resources.",
+        responses: {
+          "200": {
+            description: "Review collection response",
+            schema: {
+              type: "array",
+              items: { $ref: "#/definitions/Review" }
+            }
+          }
+        }
+      },
+      post: {
+        tags: ["Review"],
+        operationId: "postReviewCollection",
+        consumes: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Creates a Review resource.",
+        parameters: [
+          {
+            name: "review",
+            in: "body",
+            description: "The new Review resource",
+            schema: { $ref: "#/definitions/Review" }
+          }
+        ],
+        responses: {
+          "201": {
+            description: "Review resource created",
+            schema: { $ref: "#/definitions/Review" }
+          },
+          "400": { description: "Invalid input" },
+          "404": { description: "Resource not found" }
+        }
+      }
+    },
+    "/reviews/{id}": {
+      get: {
+        tags: ["Review"],
+        operationId: "getReviewItem",
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Retrieves a Review resource.",
+        parameters: [
+          { name: "id", in: "path", required: true, type: "integer" }
+        ],
+        responses: {
+          "200": {
+            description: "Review resource response",
+            schema: { $ref: "#/definitions/Review" }
+          },
+          "404": { description: "Resource not found" }
+        }
+      },
+      put: {
+        tags: ["Review"],
+        operationId: "putReviewItem",
+        consumes: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        produces: [
+          "application/ld+json",
+          "application/hal+json",
+          "application/xml",
+          "text/xml",
+          "application/json",
+          "application/x-yaml",
+          "text/csv",
+          "text/html"
+        ],
+        summary: "Replaces the Review resource.",
+        parameters: [
+          { name: "id", in: "path", type: "integer", required: true },
+          {
+            name: "review",
+            in: "body",
+            description: "The updated Review resource",
+            schema: { $ref: "#/definitions/Review" }
+          }
+        ],
+        responses: {
+          "200": {
+            description: "Review resource updated",
+            schema: { $ref: "#/definitions/Review" }
+          },
+          "400": { description: "Invalid input" },
+          "404": { description: "Resource not found" }
+        }
+      },
+      delete: {
+        tags: ["Review"],
+        operationId: "deleteReviewItem",
+        summary: "Removes the Review resource.",
+        responses: {
+          "204": { description: "Review resource deleted" },
+          "404": { description: "Resource not found" }
+        },
+        parameters: [
+          { name: "id", in: "path", type: "integer", required: true }
+        ]
       }
     }
-  };
-
+  },
+  definitions: {
+    Book: {
+      type: "object",
+      externalDocs: { url: "http://schema.org/Book" },
+      properties: {
+        id: { type: "integer" },
+        isbn: { description: "The ISBN of the book", type: "string" },
+        description: {
+          description: "A description of the item",
+          type: "string"
+        },
+        author: {
+          description:
+            "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
+          type: "string"
+        },
+        title: { description: "The title of the book", type: "string" },
+        publicationDate: {
+          description:
+            "The date on which the CreativeWork was created or the item was added to a DataFeed",
+          type: "string",
+          format: "date-time"
+        }
+      },
+      required: ["description", "author", "title", "publicationDate"]
+    },
+    Review: {
+      type: "object",
+      externalDocs: { url: "http://schema.org/Review" },
+      properties: {
+        id: { type: "integer" },
+        rating: { type: "integer" },
+        body: {
+          description: "The actual body of the review",
+          type: "string"
+        },
+        book: {
+          description: "The item that is being reviewed/rated",
+          type: "string"
+        },
+        author: {
+          description: "Author the author of the review",
+          type: "string"
+        },
+        publicationDate: {
+          description: "Author the author of the review",
+          type: "string",
+          format: "date-time"
+        }
+      },
+      required: ["book"]
+    }
+  }
+};
 
 const parsed = [
-    {
-      "name": "books",
-      "url": "https://demo.api-platform.com/books",
-      "id": "http://schema.org/Book",
-      "title": "Book",
-      "fields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
+  {
+    name: "books",
+    url: "https://demo.api-platform.com/books",
+    id: "http://schema.org/Book",
+    title: "Book",
+    fields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "isbn",
+        id: "http://schema.org/isbn",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The ISBN of the book"
+      },
+      {
+        name: "description",
+        id: "http://schema.org/description",
+        range: null,
+        reference: null,
+        required: true,
+        description: "A description of the item"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+      },
+      {
+        name: "title",
+        id: "http://schema.org/name",
+        range: null,
+        reference: null,
+        required: true,
+        description: "The title of the book"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The date on which the CreativeWork was created or the item was added to a DataFeed"
+      }
+    ],
+    readableFields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "isbn",
+        id: "http://schema.org/isbn",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The ISBN of the book"
+      },
+      {
+        name: "description",
+        id: "http://schema.org/description",
+        range: null,
+        reference: null,
+        required: true,
+        description: "A description of the item"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+      },
+      {
+        name: "title",
+        id: "http://schema.org/name",
+        range: null,
+        reference: null,
+        required: true,
+        description: "The title of the book"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The date on which the CreativeWork was created or the item was added to a DataFeed"
+      }
+    ],
+    writableFields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "isbn",
+        id: "http://schema.org/isbn",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The ISBN of the book"
+      },
+      {
+        name: "description",
+        id: "http://schema.org/description",
+        range: null,
+        reference: null,
+        required: true,
+        description: "A description of the item"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+      },
+      {
+        name: "title",
+        id: "http://schema.org/name",
+        range: null,
+        reference: null,
+        required: true,
+        description: "The title of the book"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: true,
+        description:
+          "The date on which the CreativeWork was created or the item was added to a DataFeed"
+      }
+    ]
+  },
+  {
+    name: "reviews",
+    url: "https://demo.api-platform.com/reviews",
+    id: "http://schema.org/Review",
+    title: "Review",
+    fields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "rating",
+        id: "http://schema.org/rating",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "body",
+        id: "http://schema.org/body",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The actual body of the review"
+      },
+      {
+        name: "book",
+        id: "http://schema.org/itemReviewed",
+        range: "http://schema.org/Book",
+        reference: {
+          name: "books",
+          url: "https://demo.api-platform.com/books",
+          id: "http://schema.org/Book",
+          title: "Book",
+          fields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          readableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          writableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ]
         },
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The ISBN of the book"
+        required: true,
+        description: "The item that is being reviewed/rated"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      }
+    ],
+    readableFields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "rating",
+        id: "http://schema.org/rating",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "body",
+        id: "http://schema.org/body",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The actual body of the review"
+      },
+      {
+        name: "book",
+        id: "http://schema.org/itemReviewed",
+        range: "http://schema.org/Book",
+        reference: {
+          name: "books",
+          url: "https://demo.api-platform.com/books",
+          id: "http://schema.org/Book",
+          title: "Book",
+          fields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          readableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          writableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ]
         },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "A description of the item"
+        required: true,
+        description: "The item that is being reviewed/rated"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      }
+    ],
+    writableFields: [
+      {
+        name: "id",
+        id: "http://schema.org/id",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "rating",
+        id: "http://schema.org/rating",
+        range: null,
+        reference: null,
+        required: false,
+        description: ""
+      },
+      {
+        name: "body",
+        id: "http://schema.org/body",
+        range: null,
+        reference: null,
+        required: false,
+        description: "The actual body of the review"
+      },
+      {
+        name: "book",
+        id: "http://schema.org/itemReviewed",
+        range: "http://schema.org/Book",
+        reference: {
+          name: "books",
+          url: "https://demo.api-platform.com/books",
+          id: "http://schema.org/Book",
+          title: "Book",
+          fields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          readableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ],
+          writableFields: [
+            {
+              name: "id",
+              id: "http://schema.org/id",
+              range: null,
+              reference: null,
+              required: false,
+              description: ""
+            },
+            {
+              name: "isbn",
+              id: "http://schema.org/isbn",
+              range: null,
+              reference: null,
+              required: false,
+              description: "The ISBN of the book"
+            },
+            {
+              name: "description",
+              id: "http://schema.org/description",
+              range: null,
+              reference: null,
+              required: true,
+              description: "A description of the item"
+            },
+            {
+              name: "author",
+              id: "http://schema.org/author",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+            },
+            {
+              name: "title",
+              id: "http://schema.org/name",
+              range: null,
+              reference: null,
+              required: true,
+              description: "The title of the book"
+            },
+            {
+              name: "publicationDate",
+              id: "http://schema.org/publicationDate",
+              range: null,
+              reference: null,
+              required: true,
+              description:
+                "The date on which the CreativeWork was created or the item was added to a DataFeed"
+            }
+          ]
         },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "title",
-          "id": "http://schema.org/name",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "The title of the book"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ],
-      "readableFields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The ISBN of the book"
-        },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "A description of the item"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "title",
-          "id": "http://schema.org/name",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "The title of the book"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ],
-      "writableFields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "isbn",
-          "id": "http://schema.org/isbn",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The ISBN of the book"
-        },
-        {
-          "name": "description",
-          "id": "http://schema.org/description",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "A description of the item"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-        },
-        {
-          "name": "title",
-          "id": "http://schema.org/name",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description": "The title of the book"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": true,
-          "description":
-            "The date on which the CreativeWork was created or the item was added to a DataFeed"
-        }
-      ]
-    },
-    {
-      "name": "reviews",
-      "url": "https://demo.api-platform.com/reviews",
-      "id": "http://schema.org/Review",
-      "title": "Review",
-      "fields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "rating",
-          "id": "http://schema.org/rating",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "body",
-          "id": "http://schema.org/body",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review"
-        },
-        {
-          "name": "book",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "https://demo.api-platform.com/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
-          "required": true,
-          "description": "The item that is being reviewed/rated"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        }
-      ],
-      "readableFields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "rating",
-          "id": "http://schema.org/rating",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "body",
-          "id": "http://schema.org/body",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review"
-        },
-        {
-          "name": "book",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "https://demo.api-platform.com/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
-          "required": true,
-          "description": "The item that is being reviewed/rated"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        }
-      ],
-      "writableFields": [
-        {
-          "name": "id",
-          "id": "http://schema.org/id",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "rating",
-          "id": "http://schema.org/rating",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "body",
-          "id": "http://schema.org/body",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "The actual body of the review"
-        },
-        {
-          "name": "book",
-          "id": "http://schema.org/itemReviewed",
-          "range": "http://schema.org/Book",
-          "reference": {
-            "name": "books",
-            "url": "https://demo.api-platform.com/books",
-            "id": "http://schema.org/Book",
-            "title": "Book",
-            "fields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "readableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ],
-            "writableFields": [
-              {
-                "name": "id",
-                "id": "http://schema.org/id",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": ""
-              },
-              {
-                "name": "isbn",
-                "id": "http://schema.org/isbn",
-                "range": null,
-                "reference": null,
-                "required": false,
-                "description": "The ISBN of the book"
-              },
-              {
-                "name": "description",
-                "id": "http://schema.org/description",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "A description of the item"
-              },
-              {
-                "name": "author",
-                "id": "http://schema.org/author",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
-              },
-              {
-                "name": "title",
-                "id": "http://schema.org/name",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description": "The title of the book"
-              },
-              {
-                "name": "publicationDate",
-                "id": "http://schema.org/publicationDate",
-                "range": null,
-                "reference": null,
-                "required": true,
-                "description":
-                  "The date on which the CreativeWork was created or the item was added to a DataFeed"
-              }
-            ]
-          },
-          "required": true,
-          "description": "The item that is being reviewed/rated"
-        },
-        {
-          "name": "author",
-          "id": "http://schema.org/author",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        },
-        {
-          "name": "publicationDate",
-          "id": "http://schema.org/publicationDate",
-          "range": null,
-          "reference": null,
-          "required": false,
-          "description": "Author the author of the review"
-        }
-      ]
-    }
-  ]
+        required: true,
+        description: "The item that is being reviewed/rated"
+      },
+      {
+        name: "author",
+        id: "http://schema.org/author",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      },
+      {
+        name: "publicationDate",
+        id: "http://schema.org/publicationDate",
+        range: null,
+        reference: null,
+        required: false,
+        description: "Author the author of the review"
+      }
+    ]
+  }
+];
 
 describe(`Parse Swagger Documentation from Json`, () => {
-  const toBeParsed = handleJson(swaggerApiDefinition, 'https://demo.api-platform.com');
+  const toBeParsed = handleJson(
+    swaggerApiDefinition,
+    "https://demo.api-platform.com"
+  );
 
   test(`Properties to be equal`, () => {
     expect(toBeParsed[0].name).toBe(parsed[0].name);
@@ -1180,7 +1182,5 @@ describe(`Parse Swagger Documentation from Json`, () => {
     expect(toBeParsed[1].id).toBe(parsed[1].id);
 
     expect(toBeParsed[1].fields[0]).toEqual(parsed[1].fields[0]);
-  })
-})
-
-
+  });
+});

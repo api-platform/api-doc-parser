@@ -1,1 +1,1 @@
-export parseSwaggerDocumentation from './parseSwaggerDocumentation';
+export parseSwaggerDocumentation from "./parseSwaggerDocumentation";
