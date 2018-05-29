@@ -1,17 +1,18 @@
 language: node_js
 node_js:
 - '10'
-- '9'
 - '8'
-- '7'
 - '6'
+
 cache:
   directories:
   - node_modules
+
 script:
 - yarn build
 - yarn test
 - yarn lint
+
 deploy:
   provider: npm
   email: "$NPM_AUTH_EMAIL"
@@ -20,6 +21,7 @@ deploy:
     tags: true
     node_js: '8'
   skip_cleanup: true
+
 env:
   global:
   - secure: cu84Nb1bEkb19PYpgmFd83GJ8iv4EWS3In6WiCcV5eAAQc2Ep6icthuajPHPYyE1XhD16vK0lRStUBe/lBEJv5qzCvpM7VU/1nYLosTPyK/jGa8arGS72CXtCVQePSurYhqaQe6pxYGCgJnRPGpx7El7jIsljJxjX9ZJKhL+eUBD/8zLKOJhzQ6UGoXVfERfVP2GUOgHI/bPOf1pVg/UefCcC/O4y+W1ELoyHyQuPmKVQGFzR+3zBzJvzz0Kf0NOAB3emq5+7kcHKtNrTK8z+I3xIfeqqK+B1z/b+dLXSZ5j0yW55Vdww8rpx9Ux69lq+bSOsMwJbiy+Bu4EIwMs1rJIkEFMsUUWBphI3rAZ3TUKx+EIvu/yYi9P7/ypVwnEvlNRmCcHtgvpnSkPyA2Y1ySxvY3/UshVu0uzCmrPGVlncw2y7Ic0H6ZQLei4OLf3/co5XGDmpehpqHZ5A1pPI48aawpQ/oDuxHEi1Ojz8drhwYbWz1RadzJ7/fUpbPBGixJq+Kl/70gRkHiGsjMIJzAJPQKZXjcqRgsZKrumPGMu87GWJZCH8W54VD2Mzm/jFCueNd9A2eO8DQPXf6MzCN5xsNhA3s95cEoYFtgLDJpjPRIoQcAJ03fUHaz1XTqjyIuhEcbjBwolUOPV2vLZpToQqlk/N+rWP5uOB8+M+hs=
