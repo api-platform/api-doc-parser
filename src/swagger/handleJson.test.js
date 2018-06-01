@@ -366,12 +366,12 @@ const parsed = [
   {
     name: "books",
     url: "https://demo.api-platform.com/books",
-    id: "http://schema.org/Book",
+    id: null,
     title: "Book",
     fields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -379,7 +379,7 @@ const parsed = [
       },
       {
         name: "isbn",
-        id: "http://schema.org/isbn",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -387,7 +387,7 @@ const parsed = [
       },
       {
         name: "description",
-        id: "http://schema.org/description",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -395,7 +395,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -404,7 +404,7 @@ const parsed = [
       },
       {
         name: "title",
-        id: "http://schema.org/name",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -412,7 +412,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -423,7 +423,7 @@ const parsed = [
     readableFields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -431,7 +431,7 @@ const parsed = [
       },
       {
         name: "isbn",
-        id: "http://schema.org/isbn",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -439,7 +439,7 @@ const parsed = [
       },
       {
         name: "description",
-        id: "http://schema.org/description",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -447,7 +447,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -456,7 +456,7 @@ const parsed = [
       },
       {
         name: "title",
-        id: "http://schema.org/name",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -464,7 +464,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -475,7 +475,7 @@ const parsed = [
     writableFields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -483,7 +483,7 @@ const parsed = [
       },
       {
         name: "isbn",
-        id: "http://schema.org/isbn",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -491,7 +491,7 @@ const parsed = [
       },
       {
         name: "description",
-        id: "http://schema.org/description",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -499,7 +499,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -508,7 +508,7 @@ const parsed = [
       },
       {
         name: "title",
-        id: "http://schema.org/name",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -516,7 +516,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: true,
@@ -528,12 +528,12 @@ const parsed = [
   {
     name: "reviews",
     url: "https://demo.api-platform.com/reviews",
-    id: "http://schema.org/Review",
+    id: null,
     title: "Review",
     fields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -541,7 +541,7 @@ const parsed = [
       },
       {
         name: "rating",
-        id: "http://schema.org/rating",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -549,7 +549,7 @@ const parsed = [
       },
       {
         name: "body",
-        id: "http://schema.org/body",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -557,17 +557,17 @@ const parsed = [
       },
       {
         name: "book",
-        id: "http://schema.org/itemReviewed",
-        range: "http://schema.org/Book",
+        id: null,
+        range: null,
         reference: {
           name: "books",
           url: "https://demo.api-platform.com/books",
-          id: "http://schema.org/Book",
+          id: null,
           title: "Book",
           fields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -575,7 +575,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -583,7 +583,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -591,7 +591,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -600,7 +600,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -608,7 +608,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -619,7 +619,7 @@ const parsed = [
           readableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -627,7 +627,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -635,7 +635,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -643,7 +643,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -652,7 +652,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -660,7 +660,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -671,7 +671,7 @@ const parsed = [
           writableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -679,7 +679,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -687,7 +687,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -695,7 +695,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -704,7 +704,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -712,7 +712,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -726,7 +726,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -734,7 +734,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -744,7 +744,7 @@ const parsed = [
     readableFields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -752,7 +752,7 @@ const parsed = [
       },
       {
         name: "rating",
-        id: "http://schema.org/rating",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -760,7 +760,7 @@ const parsed = [
       },
       {
         name: "body",
-        id: "http://schema.org/body",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -768,17 +768,17 @@ const parsed = [
       },
       {
         name: "book",
-        id: "http://schema.org/itemReviewed",
-        range: "http://schema.org/Book",
+        id: null,
+        range: null,
         reference: {
           name: "books",
           url: "https://demo.api-platform.com/books",
-          id: "http://schema.org/Book",
+          id: null,
           title: "Book",
           fields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -786,7 +786,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -794,7 +794,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -802,7 +802,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -811,7 +811,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -819,7 +819,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -830,7 +830,7 @@ const parsed = [
           readableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -838,7 +838,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -846,7 +846,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -854,7 +854,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -863,7 +863,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -871,7 +871,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -882,7 +882,7 @@ const parsed = [
           writableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -890,7 +890,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -898,7 +898,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -906,7 +906,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -915,7 +915,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -923,7 +923,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -937,7 +937,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -945,7 +945,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -955,7 +955,7 @@ const parsed = [
     writableFields: [
       {
         name: "id",
-        id: "http://schema.org/id",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -963,7 +963,7 @@ const parsed = [
       },
       {
         name: "rating",
-        id: "http://schema.org/rating",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -971,7 +971,7 @@ const parsed = [
       },
       {
         name: "body",
-        id: "http://schema.org/body",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -979,17 +979,17 @@ const parsed = [
       },
       {
         name: "book",
-        id: "http://schema.org/itemReviewed",
-        range: "http://schema.org/Book",
+        id: null,
+        range: null,
         reference: {
           name: "books",
           url: "https://demo.api-platform.com/books",
-          id: "http://schema.org/Book",
+          id: null,
           title: "Book",
           fields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -997,7 +997,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -1005,7 +1005,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1013,7 +1013,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1022,7 +1022,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1030,7 +1030,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1041,7 +1041,7 @@ const parsed = [
           readableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -1049,7 +1049,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -1057,7 +1057,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1065,7 +1065,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1074,7 +1074,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1082,7 +1082,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1093,7 +1093,7 @@ const parsed = [
           writableFields: [
             {
               name: "id",
-              id: "http://schema.org/id",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -1101,7 +1101,7 @@ const parsed = [
             },
             {
               name: "isbn",
-              id: "http://schema.org/isbn",
+              id: null,
               range: null,
               reference: null,
               required: false,
@@ -1109,7 +1109,7 @@ const parsed = [
             },
             {
               name: "description",
-              id: "http://schema.org/description",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1117,7 +1117,7 @@ const parsed = [
             },
             {
               name: "author",
-              id: "http://schema.org/author",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1126,7 +1126,7 @@ const parsed = [
             },
             {
               name: "title",
-              id: "http://schema.org/name",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1134,7 +1134,7 @@ const parsed = [
             },
             {
               name: "publicationDate",
-              id: "http://schema.org/publicationDate",
+              id: null,
               range: null,
               reference: null,
               required: true,
@@ -1148,7 +1148,7 @@ const parsed = [
       },
       {
         name: "author",
-        id: "http://schema.org/author",
+        id: null,
         range: null,
         reference: null,
         required: false,
@@ -1156,7 +1156,7 @@ const parsed = [
       },
       {
         name: "publicationDate",
-        id: "http://schema.org/publicationDate",
+        id: null,
         range: null,
         reference: null,
         required: false,

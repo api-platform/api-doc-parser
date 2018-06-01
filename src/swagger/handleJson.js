@@ -1,12 +1,6 @@
-import { get } from "lodash";
+import { get, uniq } from "lodash";
 import Field from "../Field";
 import Resource from "../Resource";
-
-String.prototype.capitalize = function() {
-  return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-const onlyUnique = (value, index, self) => self.indexOf(value) === index;
 
 export const removeTrailingSlash = url => {
   if (/\/$/.test(url)) {
@@ -16,9 +10,9 @@ export const removeTrailingSlash = url => {
 };
 
 export default function(response, entrypointUrl) {
-  const paths = Object.keys(response.paths)
-    .map(item => item.replace(`/{id}`, ``))
-    .filter(onlyUnique);
+  const paths = uniq(
+    Object.keys(response.paths).map(item => item.replace(`/{id}`, ``))
+  );
 
   const resources = paths.map(item => {
     const name = item.replace(`/`, ``);
@@ -30,7 +24,7 @@ export default function(response, entrypointUrl) {
     const fields = fieldNames.map(
       fieldName =>
         new Field(fieldName, {
-          id: `http://schema.org/${fieldName}`,
+          id: null,
           range: null,
           reference: null,
           required: !!response.definitions[title].required.find(
@@ -45,7 +39,7 @@ export default function(response, entrypointUrl) {
     );
 
     return new Resource(name, url, {
-      id: `http://schema.org/` + title,
+      id: null,
       title,
       fields,
       readableFields: fields,
