@@ -5,6 +5,7 @@ import Field from "../Field";
 import Resource from "../Resource";
 import Operation from "../Operation";
 import fetchJsonLd from "./fetchJsonLd";
+import addParameters from "./addParameters";
 
 /**
  * Extracts the short name of a resource.
@@ -413,7 +414,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
               relatedClass,
               '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
               false
-            )
+            ),
+            parameters: []
           })
         );
       }
@@ -438,5 +440,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
         response,
         status: get(response, "status")
       })
+  )
+  .then(({ api, response, status }) =>
+    addParameters(api).then(api => ({ api, response, status }))
   );
 }

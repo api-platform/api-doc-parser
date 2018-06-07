@@ -2,6 +2,7 @@
 
 import Field from "./Field";
 import Operation from "./Operation";
+import Parameter from "./Parameter";
 
 type ResourceOptions = {
   id?: string,
@@ -9,6 +10,7 @@ type ResourceOptions = {
   deprecated?: boolean,
   readableFields?: Field[],
   writableFields?: Field[],
+  parameters?: Parameter[],
   operations?: Operation[]
 };
 
