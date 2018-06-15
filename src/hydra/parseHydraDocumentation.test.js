@@ -1149,7 +1149,7 @@ test("parse a Hydra documentation without authorization", () => {
   });
 });
 
-test('Parse entrypoint without "@type" key', () => {
+test('Parse entrypoint without "@type" key', async () => {
   const entrypoint = `{
   "@context": {
     "@vocab": "http://localhost/docs.jsonld#",
@@ -1175,12 +1175,18 @@ test('Parse entrypoint without "@type" key', () => {
 
   fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation("http://localhost/").catch(data => {
-    expect(data.message).toBe('The API entrypoint has no "@type" key.');
-  });
+  const expectedError = { message: "" };
+
+  try {
+    await parseHydraDocumentation("http://localhost/");
+  } catch (error) {
+    expectedError.message = error.message;
+  }
+
+  expect(expectedError.message).toBe('The API entrypoint has no "@type" key.');
 });
 
-test('Parse entrypoint class without "supportedClass" key', () => {
+test('Parse entrypoint class without "supportedClass" key', async () => {
   const docs = `{
 "@context": {
   "@vocab": "http://localhost/docs.jsonld#",
@@ -1218,14 +1224,20 @@ test('Parse entrypoint class without "supportedClass" key', () => {
 
   fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation("http://localhost/").catch(data => {
-    expect(data.message).toBe(
-      'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
-    );
-  });
+  const expectedError = { message: "" };
+
+  try {
+    await parseHydraDocumentation("http://localhost/");
+  } catch (error) {
+    expectedError.message = error.message;
+  }
+
+  expect(expectedError.message).toBe(
+    'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
+  );
 });
 
-test('Parse entrypoint class without "supportedProperty" key', () => {
+test('Parse entrypoint class without "supportedProperty" key', async () => {
   const docs = `{
 "@context": {
   "@vocab": "http://localhost/docs.jsonld#",
@@ -1276,33 +1288,51 @@ test('Parse entrypoint class without "supportedProperty" key', () => {
 
   fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation("http://localhost/").catch(data => {
-    expect(data.message).toBe(
-      'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.'
-    );
-  });
+  const expectedError = { message: "" };
+
+  try {
+    await parseHydraDocumentation("http://localhost/");
+  } catch (error) {
+    expectedError.message = error.message;
+  }
+
+  expect(expectedError.message).toBe(
+    'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.'
+  );
 });
 
-test("Invalid docs JSON", () => {
+test("Invalid docs JSON", async () => {
   const docs = `{foo,}`;
 
   fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation("http://localhost/").catch(data => {
-    expect(data).toHaveProperty("api");
-    expect(data).toHaveProperty("response");
-    expect(data).toHaveProperty("status");
-  });
+  let expectedError = {};
+
+  try {
+    await parseHydraDocumentation("http://localhost/");
+  } catch (error) {
+    expectedError = error;
+  }
+
+  expect(expectedError).toHaveProperty("api");
+  expect(expectedError).toHaveProperty("response");
+  expect(expectedError).toHaveProperty("status");
 });
 
-test("Invalid entrypoint JSON", () => {
+test("Invalid entrypoint JSON", async () => {
   const entrypoint = `{foo,}`;
 
   fetch.mockResponses([entrypoint, init], [docs, init]);
 
-  parseHydraDocumentation("http://localhost/").catch(data => {
-    expect(data).toHaveProperty("api");
-    expect(data).toHaveProperty("response");
-    expect(data).toHaveProperty("status");
-  });
+  let expectedError = {};
+
+  try {
+    await parseHydraDocumentation("http://localhost/");
+  } catch (error) {
+    expectedError = error;
+  }
+
+  expect(expectedError).toHaveProperty("api");
+  expect(expectedError).toHaveProperty("response");
+  expect(expectedError).toHaveProperty("status");
 });
