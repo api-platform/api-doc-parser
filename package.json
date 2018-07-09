@@ -1,6 +1,6 @@
 {
   "name": "@api-platform/api-doc-parser",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Transform a Hydra API documentation in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building admininistration interfaces.",
   "files": [
     "*.md",
