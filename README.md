@@ -4,7 +4,7 @@
 [![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
-`api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com) API documentations and transform them
+`api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com) or Swagger API documentations and transform them
 in an intermediate representation. This data structure can then be used for various tasks such as creating smart API clients,
 scaffolding code or building administration interfaces.
 
@@ -26,16 +26,24 @@ If you plan to use the library with Node, you also need a polyfill for the `fetc
 
 ## Usage
 
+**Hydra**
 ```javascript
 import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
 
 parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
-## Support for other formats (GraphQL, Swagger/OpenAPI, JSONAPI...)
+**Swagger**
+```javascript
+import parseSwaggerDocumentation from 'api-doc-parser/lib/swagger/parseSwaggerDocumentation';
+
+parseSwaggerDocumentation('https://demo.api-platform.com/docs.json').then(({api}) => console.log(api));
+```
+
+## Support for other formats (GraphQL, JSONAPI...)
 
 API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
-For now, only Hydra is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
+For now, only Hydra and Swagger is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
 to include it in the library.
 
 ## Run tests
