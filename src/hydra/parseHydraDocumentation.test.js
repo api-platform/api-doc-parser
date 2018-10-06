@@ -552,6 +552,25 @@ const docs = `{
 ]
 }`;
 
+const resourceCollection = `{
+  "hydra:search": {
+    "hydra:mapping": []
+  }
+}`;
+
+const resourceCollectionWithParameters = `{
+  "hydra:search": {
+    "hydra:mapping": [
+      {
+        "property": "isbn",
+        "variable": "isbn",
+        "range": "http://www.w3.org/2001/XMLSchema#string",
+        "required": false
+      }
+    ]
+  }
+}`;
+
 const book = {
   name: "books",
   url: "http://localhost/books",
@@ -743,7 +762,15 @@ const book = {
       deprecated: false
     }
   ],
-  deprecated: false
+  deprecated: false,
+  parameters: [
+    {
+      variable: "isbn",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      required: false,
+      description: ""
+    }
+  ]
 };
 
 const review = {
@@ -886,7 +913,8 @@ const review = {
       deprecated: false
     }
   ],
-  deprecated: false
+  deprecated: false,
+  parameters: []
 };
 
 const customResource = {
@@ -1012,7 +1040,8 @@ const customResource = {
       deprecated: false
     }
   ],
-  deprecated: false
+  deprecated: false,
+  parameters: []
 };
 
 const deprecatedResource = {
@@ -1072,13 +1101,16 @@ const deprecatedResource = {
       deprecated: true
     }
   ],
-  deprecated: true
+  deprecated: true,
+  parameters: []
 };
+
+const resources = [book, review, customResource, deprecatedResource];
 
 const expectedApi = {
   entrypoint: "http://localhost",
   title: "API Platform's demo",
-  resources: [book, review, customResource, deprecatedResource]
+  resources: resources
 };
 
 const init = {
@@ -1091,30 +1123,45 @@ const init = {
   })
 };
 
-test("parse a Hydra documentation", () => {
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+test("parse a Hydra documentation", async () => {
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+    [resourceCollectionWithParameters, init],
+    [resourceCollection, init],
+    [resourceCollection, init],
+    [resourceCollection, init]
+  );
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
-  return parseHydraDocumentation("http://localhost", options).then(data => {
+  await parseHydraDocumentation("http://localhost", options).then(data => {
     expect(JSON.stringify(data.api, null, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();
     expect(data.status).toBe(200);
 
-    expect(fetch).toHaveBeenCalledTimes(2);
-    expect(fetch).toHaveBeenLastCalledWith(
+    expect(fetch).toHaveBeenCalledTimes(2 + resources.length);
+    expect(fetch).toHaveBeenNthCalledWith(
+      2,
       "http://localhost/docs.jsonld",
       options
     );
   });
 });
 
-test("parse a Hydra documentation (http://localhost/)", () => {
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+test("parse a Hydra documentation (http://localhost/)", async () => {
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+    [resourceCollectionWithParameters, init],
+    [resourceCollection, init],
+    [resourceCollection, init],
+    [resourceCollection, init]
+  );
 
-  return parseHydraDocumentation("http://localhost/").then(data => {
+  await parseHydraDocumentation("http://localhost/").then(data => {
     expect(JSON.stringify(data.api, null, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
