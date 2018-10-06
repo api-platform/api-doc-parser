@@ -440,11 +440,12 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           status: response.status
         });
       },
-      ({ response }) =>
+      (data) =>
         Promise.reject({
           api: new Api(entrypointUrl, { resources: [] }),
-          response,
-          status: get(response, "status")
+          error: data,
+          response: data.response,
+          status: get(data.response, "status")
         })
     )
     .then(({ api, response, status }) =>
