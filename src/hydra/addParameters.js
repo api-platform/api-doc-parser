@@ -5,7 +5,7 @@ export default api => {
   const promises = [];
 
   for (const resource of api.resources) {
-    const promise = fetchResource(resource.url).then(({ parameters = {} }) => {
+    const promise = fetchResource(resource.url).then(({ parameters = [] }) => {
       const resourceParameters = [];
       parameters.forEach(({ property = null, required, variable }) => {
         if (null === property) {
