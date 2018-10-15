@@ -1,25 +1,27 @@
 import Parameter from "../Parameter";
 import fetchResource from "./fetchResource";
 
-export default api => {
+export default (api, options = {}) => {
   const promises = [];
 
   for (const resource of api.resources) {
-    const promise = fetchResource(resource.url).then(({ parameters = [] }) => {
-      const resourceParameters = [];
-      parameters.forEach(({ property = null, required, variable }) => {
-        if (null === property) {
-          return;
-        }
+    const promise = fetchResource(resource.url, options).then(
+      ({ parameters = [] }) => {
+        const resourceParameters = [];
+        parameters.forEach(({ property = null, required, variable }) => {
+          if (null === property) {
+            return;
+          }
 
-        const { range = null } =
-          resource.fields.find(({ name }) => property === name) || {};
+          const { range = null } =
+            resource.fields.find(({ name }) => property === name) || {};
 
-        resourceParameters.push(new Parameter(variable, range, required, ""));
-      });
+          resourceParameters.push(new Parameter(variable, range, required, ""));
+        });
 
-      return resourceParameters;
-    });
+        return resourceParameters;
+      }
+    );
 
     promises.push(promise);
   }
