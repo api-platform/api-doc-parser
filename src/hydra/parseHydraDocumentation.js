@@ -449,6 +449,6 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
         })
     )
     .then(({ api, response, status }) =>
-      addParameters(api).then(api => ({ api, response, status }))
+      addParameters(api, options).then(api => ({ api, response, status }))
     );
 }
