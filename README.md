@@ -40,13 +40,7 @@ import parseSwaggerDocumentation from 'api-doc-parser/lib/swagger/parseSwaggerDo
 parseSwaggerDocumentation('https://demo.api-platform.com/docs.json').then(({api}) => console.log(api));
 ```
 
-## Support for other formats (GraphQL, JSONAPI...)
-
-API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
-For now, only Hydra and Swagger is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
-to include it in the library.
-
-## Serialization
+### Serialization
 
 In order to allow caching (e.g. for performance or offline fallback purpose) you can utilize the `ApiSerializer` which can serialize the `Api` object graph to a plain javascript object tree which can be json-serialized easily (the `Api` object graph may have circular references which means it is in some circumstances not json-serializable as is).
 
@@ -85,6 +79,12 @@ const getApiSpecs = () => new Promise(resolve => {
 
 getApiSpecs().then(specs => console.log(specs));
 ```
+
+## Support for other formats (GraphQL, JSONAPI...)
+
+API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
+For now, only Hydra and Swagger is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
+to include it in the library.
 
 ## Run tests
 
