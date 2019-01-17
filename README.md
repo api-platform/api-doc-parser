@@ -46,6 +46,46 @@ API Doc Parser is designed to parse any API documentation format and convert it 
 For now, only Hydra and Swagger is supported but if you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
 to include it in the library.
 
+## Serialization
+
+In order to allow caching (e.g. for performance or offline fallback purpose) you can utilize the `ApiSerializer` which can serialize the `Api` object graph to a plain javascript object tree which can be json-serialized easily (the `Api` object graph may have circular references which means it is in some circumstances not json-serializable as is).
+
+```javascript
+import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
+import ApiSerializer from 'api-doc-parse/lib/ApiSerializer';
+
+parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => {
+  const serializer = new ApiSerializer();
+  const serialized = serializer.serialize(api);
+  
+  console.log(JSON.stringify(serialized));
+});
+```
+
+A scenario where you'd like to utilize some storage (e.g. `localStorage`) for caching you could implement something like this:
+
+```javascript
+import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
+import ApiSerializer from 'api-doc-parse/lib/ApiSerializer';
+
+const getApiSpecs = () => new Promise(resolve => {
+  const serializer = new ApiSerializer();
+  const serializedSpecs = localStorage.getItem('apiSpecs');
+  
+  if (!serializedSpecs) {
+    parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => {
+      localStorage.setItem('apiSpecs', serializer.serialize(api));
+      
+      resolve(api);
+    });    
+  } else {
+    resolve(serializer.deserialize(serializedSpecs));
+  }
+});
+
+getApiSpecs().then(specs => console.log(specs));
+```
+
 ## Run tests
 
     yarn test
