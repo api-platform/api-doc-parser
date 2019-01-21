@@ -11,6 +11,7 @@ type ResourceOptions = {
   readableFields?: Field[],
   writableFields?: Field[],
   parameters?: Parameter[],
+  getParameters?: Function,
   operations?: Operation[]
 };
 
