@@ -71,7 +71,7 @@ export default class ApiSerializer {
 
   /**
    * @param {object} data the serialized POJO
-   * @return {Api}
+   * @return {Api|false}
    */
   deserialize(data) {
     const { resources = [], entrypointUrl, ...rest } = data;
@@ -80,79 +80,78 @@ export default class ApiSerializer {
     const allOperations = [];
     const allParameters = [];
 
-    if (resources) {
-      for (const resourceData of resources) {
-        const {
-          name,
-          url,
-          readableFields,
-          writableFields,
-          operations,
-          parameters,
-          ...resourceRest
-        } = resourceData;
-        const resourceOptions = { ...resourceRest };
-        const resourceReadableFields = [];
-        const resourceWritableFields = [];
-        const resourceOperations = [];
-        const resourceParameters = [];
+    if (!resources) return false;
 
-        if (readableFields) {
-          for (const { fieldName, ...fieldOptions } of readableFields) {
-            const field = new Field(fieldName, fieldOptions);
-            resourceReadableFields.push(field);
-            allFields.push(field);
-          }
+    for (const resourceData of resources) {
+      const {
+        name,
+        url,
+        readableFields,
+        writableFields,
+        operations,
+        parameters,
+        ...resourceRest
+      } = resourceData;
+      const resourceOptions = { ...resourceRest };
+      const resourceReadableFields = [];
+      const resourceWritableFields = [];
+      const resourceOperations = [];
+      const resourceParameters = [];
 
-          resourceOptions.readableFields = resourceReadableFields;
+      if (readableFields) {
+        for (const { fieldName, ...fieldOptions } of readableFields) {
+          const field = new Field(fieldName, fieldOptions);
+          resourceReadableFields.push(field);
+          allFields.push(field);
         }
 
-        if (writableFields) {
-          for (const { fieldName, ...fieldOptions } of writableFields) {
-            const field = new Field(fieldName, fieldOptions);
-            resourceWritableFields.push(field);
-            allFields.push(field);
-          }
-
-          resourceOptions.writableFields = resourceWritableFields;
-        }
-
-        if (operations) {
-          for (const { operationName, ...operationOptions } of operations) {
-            const operation = new Operation(operationName, operationOptions);
-            resourceOperations.push(operation);
-            allOperations.push(operation);
-          }
-
-          resourceOptions.operations = resourceOperations;
-        }
-
-        if (parameters) {
-          for (const { variable, range, required, description } of parameters) {
-            const parameter = new Parameter(
-              variable,
-              range,
-              required,
-              description
-            );
-            resourceParameters.push(parameter);
-            allParameters.push(parameter);
-          }
-
-          resourceOptions.parameters = resourceParameters;
-        }
-
-        preparedResources.push(new Resource(name, url, resourceOptions));
+        resourceOptions.readableFields = resourceReadableFields;
       }
 
-      // Resolve references
-      for (const field of allFields) {
-        if (null !== field.reference) {
-          field.reference =
-            preparedResources.find(
-              resource => resource.id === field.reference
-            ) || null;
+      if (writableFields) {
+        for (const { fieldName, ...fieldOptions } of writableFields) {
+          const field = new Field(fieldName, fieldOptions);
+          resourceWritableFields.push(field);
+          allFields.push(field);
         }
+
+        resourceOptions.writableFields = resourceWritableFields;
+      }
+
+      if (operations) {
+        for (const { operationName, ...operationOptions } of operations) {
+          const operation = new Operation(operationName, operationOptions);
+          resourceOperations.push(operation);
+          allOperations.push(operation);
+        }
+
+        resourceOptions.operations = resourceOperations;
+      }
+
+      if (parameters) {
+        for (const { variable, range, required, description } of parameters) {
+          const parameter = new Parameter(
+            variable,
+            range,
+            required,
+            description
+          );
+          resourceParameters.push(parameter);
+          allParameters.push(parameter);
+        }
+
+        resourceOptions.parameters = resourceParameters;
+      }
+
+      preparedResources.push(new Resource(name, url, resourceOptions));
+    }
+
+    // Resolve references
+    for (const field of allFields) {
+      if (null !== field.reference) {
+        field.reference =
+          preparedResources.find(resource => resource.id === field.reference) ||
+          null;
       }
     }
 

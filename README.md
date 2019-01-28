@@ -66,14 +66,14 @@ const getApiSpecs = () => new Promise(resolve => {
   const serializer = new ApiSerializer();
   const serializedSpecs = localStorage.getItem('apiSpecs');
   
-  if (!serializedSpecs) {
+  if (serializedSpecs) {
+    resolve(serializer.deserialize(serializedSpecs));
+  } else {
     parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => {
       localStorage.setItem('apiSpecs', serializer.serialize(api));
       
       resolve(api);
-    });    
-  } else {
-    resolve(serializer.deserialize(serializedSpecs));
+    });
   }
 });
 
