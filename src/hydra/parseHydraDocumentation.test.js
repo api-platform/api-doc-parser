@@ -763,14 +763,7 @@ const book = {
     }
   ],
   deprecated: false,
-  parameters: [
-    {
-      variable: "isbn",
-      range: "http://www.w3.org/2001/XMLSchema#string",
-      required: false,
-      description: ""
-    }
-  ]
+  parameters: []
 };
 
 const review = {
@@ -1124,14 +1117,7 @@ const init = {
 };
 
 test("parse a Hydra documentation", async () => {
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-    [resourceCollectionWithParameters, init],
-    [resourceCollection, init],
-    [resourceCollection, init],
-    [resourceCollection, init]
-  );
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
@@ -1142,7 +1128,7 @@ test("parse a Hydra documentation", async () => {
     expect(data.response).toBeDefined();
     expect(data.status).toBe(200);
 
-    expect(fetch).toHaveBeenCalledTimes(2 + resources.length);
+    expect(fetch).toHaveBeenCalledTimes(2);
     expect(fetch).toHaveBeenNthCalledWith(
       2,
       "http://localhost/docs.jsonld",
@@ -1152,14 +1138,7 @@ test("parse a Hydra documentation", async () => {
 });
 
 test("parse a Hydra documentation (http://localhost/)", async () => {
-  fetch.mockResponses(
-    [entrypoint, init],
-    [docs, init],
-    [resourceCollectionWithParameters, init],
-    [resourceCollection, init],
-    [resourceCollection, init],
-    [resourceCollection, init]
-  );
+  fetch.mockResponses([entrypoint, init], [docs, init]);
 
   await parseHydraDocumentation("http://localhost/").then(data => {
     expect(JSON.stringify(data.api, null, 2)).toBe(
@@ -1369,7 +1348,7 @@ test("Invalid docs JSON", async () => {
 test("Invalid entrypoint JSON", async () => {
   const entrypoint = `{foo,}`;
 
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetch.mockResponses([entrypoint, init]);
 
   let expectedError = {};
 
@@ -1382,4 +1361,25 @@ test("Invalid entrypoint JSON", async () => {
   expect(expectedError).toHaveProperty("api");
   expect(expectedError).toHaveProperty("response");
   expect(expectedError).toHaveProperty("status");
+});
+
+test("Resource parameters can be retrieved", async () => {
+  fetch.mockResponses(
+    [entrypoint, init],
+    [docs, init],
+    [resourceCollectionWithParameters, init]
+  );
+
+  await parseHydraDocumentation("http://localhost").then(async data => {
+    await data.api.resources[0].getParameters().then(parameters => {
+      expect(parameters).toEqual([
+        {
+          description: "",
+          range: "http://www.w3.org/2001/XMLSchema#string",
+          required: false,
+          variable: "isbn"
+        }
+      ]);
+    });
+  });
 });
