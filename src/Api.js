@@ -12,6 +12,8 @@ type ApiOptions = {
  */
 export default class Api {
   entrypoint: string;
+  title: string;
+  resources: Array<Resource>;
 
   /**
    * @param {string}      entrypoint
