@@ -19,6 +19,10 @@ const entrypoint = `{
     "deprecatedResource": {
       "@id": "Entrypoint/deprecatedResource",
       "@type": "@id"
+    },
+    "onlyPostResource": {
+      "@id": "Entrypoint/onlyPostResource",
+      "@type": "@id"
     }
   },
   "@id": "/",
@@ -319,6 +323,30 @@ const docs = `{
     ]
   },
   {
+    "@id": "#OnlyPostResource",
+    "@type": "hydra:Class",
+    "rdfs:label": "OnlyPostResource",
+    "hydra:title": "OnlyPostResource",
+    "hydra:description": "A only post resource.",
+    "hydra:supportedProperty": [
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+          "@id": "#OnlyPostResource/label",
+          "@type": "rdf:Property",
+          "rdfs:label": "label",
+          "domain": "#OnlyPostResource",
+          "range": "xmls:string"
+        },
+        "hydra:title": "label",
+        "hydra:required": true,
+        "hydra:readable": false,
+        "hydra:writable": true
+      }
+    ],
+    "hydra:supportedOperation": []
+  },
+  {
     "@id": "#DeprecatedResource",
     "@type": "hydra:Class",
     "rdfs:label": "DeprecatedResource",
@@ -442,6 +470,29 @@ const docs = `{
         "hydra:title": "The collection of custom resources",
         "hydra:readable": true,
         "hydra:writable": false
+      },
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+          "@id": "#Entrypoint/onlyPostResource",
+          "@type": "hydra:Link",
+          "domain": "#Entrypoint",
+          "rdfs:label": "The collection of only post resources",
+          "range": "hydra:PagedCollection",
+          "hydra:supportedOperation": [
+            {
+              "@type": "hydra:CreateResourceOperation",
+              "expects": "#OnlyPostResource",
+              "hydra:method": "POST",
+              "hydra:title": "Creates a only post resource.",
+              "rdfs:label": "Creates a only post resource.",
+              "returns": "#OnlyPostResource"
+            }
+          ]
+        },
+        "hydra:title": "The collection of only post resources",
+        "hydra:readable": false,
+        "hydra:writable": true
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -1098,7 +1149,57 @@ const deprecatedResource = {
   parameters: []
 };
 
-const resources = [book, review, customResource, deprecatedResource];
+const onlyPostResource = {
+  name: "onlyPostResources",
+  url: "http://localhost/onlyPostResources",
+  id: "http://localhost/docs.jsonld#OnlyPostResource",
+  title: "OnlyPostResource",
+  fields: [
+    {
+      name: "label",
+      id: "http://localhost/docs.jsonld#OnlyPostResource/label",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
+    }
+  ],
+  readableFields: [],
+  writableFields: [
+    {
+      name: "label",
+      id: "http://localhost/docs.jsonld#OnlyPostResource/label",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      reference: null,
+      required: true,
+      description: "",
+      maxCardinality: null,
+      deprecated: false
+    }
+  ],
+  operations: [
+    {
+      name: "Creates a only post resource.",
+      method: "POST",
+      expects: "http://localhost/docs.jsonld#OnlyPostResource",
+      returns: "http://localhost/docs.jsonld#OnlyPostResource",
+      types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
+      deprecated: false
+    }
+  ],
+  deprecated: false,
+  parameters: []
+};
+
+const resources = [
+  book,
+  review,
+  customResource,
+  onlyPostResource,
+  deprecatedResource
+];
 
 const expectedApi = {
   entrypoint: "http://localhost",

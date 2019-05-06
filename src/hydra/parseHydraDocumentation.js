@@ -8,6 +8,16 @@ import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
 
 /**
+ * Extracts the url of a resource.
+ *
+ * @param {string} propertyId
+ * @return {string}
+ */
+function guessUrlFromPropertyId(propertyId) {
+  return `${propertyId.replace("docs.jsonld#Entrypoint/", "")}s`;
+}
+
+/**
  * Extracts the short name of a resource.
  *
  * @param {string} url
@@ -393,9 +403,9 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
           operations.push(operation);
         }
 
-        const url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`);
+        let url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`);
         if (!url) {
-          throw new Error(`Unable to find the URL for "${property["@id"]}".`);
+          url = guessUrlFromPropertyId(property["@id"]);
         }
 
         const resource = new Resource(
