@@ -16,6 +16,7 @@ export default (resource, options = {}, doNotFetchAgain = false) =>
 
           resourceParameters.push(new Parameter(variable, range, required, ""));
         });
+        resource.parameters = resourceParameters;
 
         return resourceParameters;
       });
