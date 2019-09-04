@@ -4,7 +4,7 @@
 [![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
-`api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com), Swagger and OpenAPI documentations and transform them
+`api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com), [Swagger](https://swagger.io/specification/v2/) and [OpenAPI](https://github.com/OAI/OpenAPI-Specification#the-openapi-specification) documentations and transform them
 in an intermediate representation. This data structure can then be used for various tasks such as creating smart API clients,
 scaffolding code or building administration interfaces.
 
