@@ -21,6 +21,9 @@ export default function(response, entrypointUrl) {
     const firstMethod = Object.keys(response.paths[item])[0];
     const title = response.paths[item][firstMethod]["tags"][0];
     const fieldNames = Object.keys(response.definitions[title].properties);
+    const hasRequiredFields = response.definitions[title].hasOwnProperty(
+      "required"
+    );
 
     const fields = fieldNames.map(
       fieldName =>
@@ -28,9 +31,11 @@ export default function(response, entrypointUrl) {
           id: null,
           range: null,
           reference: null,
-          required: !!response.definitions[title].required.find(
-            value => value === fieldName
-          ),
+          required:
+            hasRequiredFields &&
+            !!response.definitions[title].required.find(
+              value => value === fieldName
+            ),
           description: get(
             response.definitions[title].properties[fieldName],
             `description`,
