@@ -23,8 +23,10 @@ export default function(response, entrypointUrl) {
     const fieldNames = Object.keys(
       response.components.schemas[title].properties
     );
-    const hasRequiredFields = response.components.schemas[title].hasOwnProperty(
-      "required"
+    const requiredFields = get(
+      response,
+      ["components", "schemas", title, "required"],
+      []
     );
 
     const fields = fieldNames.map(fieldName => {
@@ -32,11 +34,7 @@ export default function(response, entrypointUrl) {
         id: null,
         range: null,
         reference: null,
-        required:
-          hasRequiredFields &&
-          !!response.components.schemas[title].required.find(
-            value => value === fieldName
-          ),
+        required: !!requiredFields.find(value => value === fieldName),
         description: get(
           response.components.schemas[title].properties[fieldName],
           `description`,
