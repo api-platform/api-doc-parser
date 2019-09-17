@@ -422,7 +422,7 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
 
         resource.parameters = [];
         resource.getParameters = () => {
-          return getParameters(resource);
+          return getParameters(resource, options);
         };
 
         resources.push(resource);
