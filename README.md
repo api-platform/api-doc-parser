@@ -33,7 +33,7 @@ import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocument
 parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
-**Swagger**
+**OpenApi v2 (formerly known as Swagger)**
 ```javascript
 import parseSwaggerDocumentation from 'api-doc-parser/lib/swagger/parseSwaggerDocumentation';
 
