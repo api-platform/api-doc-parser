@@ -1,6 +1,6 @@
 {
   "name": "@api-platform/api-doc-parser",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Transform a Hydra API documentation in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building admininistration interfaces.",
   "files": [
     "*.md",
@@ -17,12 +17,12 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
-    "babel-eslint": "^7.2.0",
-    "babel-jest": "^24.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-transform-flow-strip-types": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/preset-env": "^7.6.0",
+    "babel-eslint": "^7.2.0",
+    "babel-jest": "^24.0.0",
     "eslint": "^3.18.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-flowtype": "^2.47.1",
