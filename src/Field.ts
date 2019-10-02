@@ -23,10 +23,9 @@ export default class Field {
 
     Object.keys(options).forEach(key => {
       Object.defineProperty(this, key, {
-        readable: true,
         writable: true,
         enumerable: true,
-        value: options[key]
+        value: options[key as keyof FieldOptions]
       });
     });
   }

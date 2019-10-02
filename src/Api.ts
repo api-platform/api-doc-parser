@@ -2,7 +2,7 @@ import Resource from "./Resource";
 
 type ApiOptions = {
   title?: string;
-  resources?: Map<string, Resource>;
+  resources?: Resource[];
 };
 
 /**
@@ -20,10 +20,9 @@ export default class Api {
 
     Object.keys(options).forEach(key => {
       Object.defineProperty(this, key, {
-        readable: true,
         writable: true,
         enumerable: true,
-        value: options[key]
+        value: options[key as keyof ApiOptions]
       });
     });
   }

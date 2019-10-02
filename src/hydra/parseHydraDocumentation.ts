@@ -1,5 +1,5 @@
-import { promises } from "jsonld";
-import get from "lodash.get";
+import promises from "jsonld";
+import { get } from "lodash";
 import Api from "../Api";
 import Field from "../Field";
 import Resource from "../Resource";
@@ -14,7 +14,7 @@ import getParameters from "./getParameters";
  * @param {string} entrypointUrl
  * @return {string}
  */
-function guessNameFromUrl(url, entrypointUrl) {
+function guessNameFromUrl(url: string, entrypointUrl: string): string {
   return url.substr(entrypointUrl.length + 1);
 }
 
@@ -25,7 +25,7 @@ function guessNameFromUrl(url, entrypointUrl) {
  * @param {string} classToFind
  * @return {object}
  */
-function findSupportedClass(docs, classToFind) {
+function findSupportedClass(docs, classToFind: string) {
   const supportedClasses = get(
     docs,
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
@@ -72,7 +72,7 @@ export function getDocumentationUrlFromHeaders(headers) {
  * @param {object} options
  * @return {Promise}
  */
-function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
+function fetchEntrypointAndDocs(entrypointUrl: string, options = {}) {
   return fetchJsonLd(entrypointUrl, options)
     .then(d => {
       const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
@@ -118,7 +118,7 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
     );
 }
 
-function removeTrailingSlash(url) {
+function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
@@ -132,7 +132,7 @@ function removeTrailingSlash(url) {
  * @param {object} property
  * @return {string|null}
  */
-function findRelatedClass(docs, property) {
+function findRelatedClass(docs, property): string | null {
   // Use the entrypoint property's owl:equivalentClass if available
   if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
     for (const range of property[
@@ -188,7 +188,10 @@ function findRelatedClass(docs, property) {
  * @param {object} options
  * @return {Promise.<Api>}
  */
-export default function parseHydraDocumentation(entrypointUrl, options = {}) {
+export default function parseHydraDocumentation(
+  entrypointUrl: string,
+  options = {}
+) {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
 
   return fetchEntrypointAndDocs(entrypointUrl, options).then(

@@ -1,16 +1,18 @@
-import get from "lodash.get";
-import uniq from "lodash.uniq";
+import { get, uniq } from "lodash";
 import Field from "../Field";
 import Resource from "../Resource";
 
-export const removeTrailingSlash = url => {
+export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
   return url;
 };
 
-export default function(response, entrypointUrl) {
+export default function(
+  response: any, // @TODO is this externally typed somewhere
+  entrypointUrl: string
+) {
   const paths = uniq(
     Object.keys(response.paths).map(item => item.replace(`/{id}`, ``))
   );
@@ -30,9 +32,12 @@ export default function(response, entrypointUrl) {
     const fields = fieldNames.map(
       fieldName =>
         new Field(fieldName, {
-          id: null,
-          range: null,
-          reference: null,
+          // @TODO double check this. if these are required, type def should be
+          // changed from optional (?) to `string | null`
+          //
+          // id: null,
+          // range: null,
+          // reference: null,
           required: !!requiredFields.find(value => value === fieldName),
           description: get(
             response.definitions[title].properties[fieldName],
@@ -43,7 +48,9 @@ export default function(response, entrypointUrl) {
     );
 
     return new Resource(name, url, {
-      id: null,
+      // @TODO see above
+      //
+      // id: null,
       title,
       fields,
       readableFields: fields,

@@ -1,7 +1,7 @@
 import Api from "../Api";
 import handleJson, { removeTrailingSlash } from "./handleJson";
 
-export default function parseSwaggerDocumentation(entrypointUrl) {
+export default function parseSwaggerDocumentation(entrypointUrl: string) {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
   return fetch(entrypointUrl)
     .then(res => res.json())

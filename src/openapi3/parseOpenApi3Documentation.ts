@@ -1,7 +1,7 @@
 import Api from "../Api";
 import handleJson, { removeTrailingSlash } from "./handleJson";
 
-export default function parseOpenApi3Documentation(entrypointUrl) {
+export default function parseOpenApi3Documentation(entrypointUrl: string) {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
   return fetch(entrypointUrl)
     .then(res => res.json())

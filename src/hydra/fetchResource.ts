@@ -1,7 +1,7 @@
+import { get } from "lodash";
 import fetchJsonLd from "./fetchJsonLd";
-import get from "lodash.get";
 
-export default async (resourceUrl, options = {}) => {
+export default async (resourceUrl: string, options = {}) => {
   return await fetchJsonLd(
     resourceUrl,
     Object.assign({ itemsPerPage: 0 }, options)
