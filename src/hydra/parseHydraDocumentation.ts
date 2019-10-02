@@ -119,7 +119,7 @@ function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
 }
 
 function removeTrailingSlash(url) {
-  if (/\/$/.test(url)) {
+  if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
 

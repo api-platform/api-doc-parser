@@ -1,8 +1,8 @@
 import Resource from "./Resource";
 
 type ApiOptions = {
-  title?: string,
-  resources?: Map<string, Resource>
+  title?: string;
+  resources?: Map<string, Resource>;
 };
 
 /**

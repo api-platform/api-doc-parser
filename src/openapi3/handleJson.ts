@@ -4,7 +4,7 @@ import Field from "../Field";
 import Resource from "../Resource";
 
 export const removeTrailingSlash = url => {
-  if (/\/$/.test(url)) {
+  if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
   return url;

@@ -3,14 +3,14 @@ import Operation from "./Operation";
 import Parameter from "./Parameter";
 
 type ResourceOptions = {
-  id?: string,
-  title?: string,
-  deprecated?: boolean,
-  readableFields?: Field[],
-  writableFields?: Field[],
-  parameters?: Parameter[],
-  getParameters?: Function,
-  operations?: Operation[]
+  id?: string;
+  title?: string;
+  deprecated?: boolean;
+  readableFields?: Field[];
+  writableFields?: Field[];
+  parameters?: Parameter[];
+  getParameters?: Function;
+  operations?: Operation[];
 };
 
 /**

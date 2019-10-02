@@ -1,11 +1,11 @@
 type FieldOptions = {
-  id?: string,
-  range?: string,
-  reference?: string,
-  required?: boolean,
-  description?: string,
-  maxCardinality?: number,
-  deprecated?: boolean
+  id?: string;
+  range?: string;
+  reference?: string;
+  required?: boolean;
+  description?: string;
+  maxCardinality?: number;
+  deprecated?: boolean;
 };
 
 /**
