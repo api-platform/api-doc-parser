@@ -1,5 +1,3 @@
-// @flow
-
 import Field from "./Field";
 import Operation from "./Operation";
 import Parameter from "./Parameter";

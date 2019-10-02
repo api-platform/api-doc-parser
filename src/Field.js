@@ -1,5 +1,3 @@
-// @flow
-
 type FieldOptions = {
   id?: string,
   range?: string,

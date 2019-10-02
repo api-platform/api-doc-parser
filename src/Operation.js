@@ -1,5 +1,3 @@
-// @flow
-
 type OperationOptions = {
   method?: string,
   returns?: string,

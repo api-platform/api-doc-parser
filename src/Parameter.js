@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * @property {string} variable - The variable of this field
  */

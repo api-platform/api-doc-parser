@@ -1,5 +1,3 @@
-// @flow
-
 import Resource from "./Resource";
 
 type ApiOptions = {
