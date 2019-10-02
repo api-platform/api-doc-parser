@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
   env: {
     browser: true,
@@ -6,14 +8,21 @@ module.exports = {
     jest: true,
     node: true
   },
-  parser: "babel-eslint",
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 7,
-    sourceType: "module"
+    sourceType: "module",
+    project: ["./tsconfig.json"]
   },
-  plugins: ["import", "prettier"],
+  plugins: ["@typescript-eslint"],
 
-  extends: ["plugin:prettier/recommended"],
+  extends: [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
 
   rules: {
     "prettier/prettier": "error"
