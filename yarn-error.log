@@ -1,5 +1,5 @@
 Arguments: 
-  /home/casey/.fnm/node-versions/v12.3.1/installation/bin/node /usr/bin/yarn add -D @types//lodash.get
+  /home/casey/.fnm/node-versions/v12.3.1/installation/bin/node /usr/bin/yarn add -D @types/swagger
 
 PATH: 
   /tmp/fnm-shell-8581440/bin:/home/casey/.gem/ruby/2.6.0/bin:/home/casey/.yarn/bin:/tmp/fnm-shell-8343792/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
@@ -14,8 +14,8 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2f/lodash.get: Request "https://registry.yarnpkg.com/@types%2f/lodash.get" returned a 405
-      at Request.params.callback [as _callback] (/usr/lib/node_modules/yarn/lib/cli.js:66839:18)
+  Error: https://registry.yarnpkg.com/@types%2fswagger: Not found
+      at Request.params.callback [as _callback] (/usr/lib/node_modules/yarn/lib/cli.js:66830:18)
       at Request.self.callback (/usr/lib/node_modules/yarn/lib/cli.js:140464:22)
       at Request.emit (events.js:200:13)
       at Request.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:141436:10)
@@ -50,6 +50,7 @@ npm manifest:
       "@babel/plugin-transform-runtime": "^7.0.0",
       "@babel/preset-env": "^7.6.0",
       "@types/jest": "^24.0.18",
+      "@types/jsonld": "^1.5.0",
       "@types/lodash": "^4.14.141",
       "@typescript-eslint/eslint-plugin": "^2.3.2",
       "@typescript-eslint/parser": "^2.3.2",
@@ -68,8 +69,7 @@ npm manifest:
     "dependencies": {
       "@babel/runtime": "^7.0.0",
       "jsonld": "^1.5.0",
-      "lodash.get": "^4.4.2",
-      "lodash.uniq": "^4.5.0"
+      "lodash": "^4.17.15"
     },
     "scripts": {
       "test": "jest",
@@ -1019,6 +1019,11 @@ Lockfile:
     version "7.0.3"
     resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
     integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
+  
+  "@types/jsonld@^1.5.0":
+    version "1.5.0"
+    resolved "https://registry.yarnpkg.com/@types/jsonld/-/jsonld-1.5.0.tgz#cd5cb660dcbeffd391290f820efebab571af65d9"
+    integrity sha512-EG2N8JLQ1xDfO6Z/1QRdiUcYX3428CqVRqmY7LyK5or5J1RQ16dpKH6qQ4umVD0vBHU47xHlMeyMbQ6o+6tiYg==
   
   "@types/lodash@^4.14.141":
     version "4.14.141"
@@ -3280,11 +3285,6 @@ Lockfile:
       p-locate "^3.0.0"
       path-exists "^3.0.0"
   
-  lodash.get@^4.4.2:
-    version "4.4.2"
-    resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-    integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
-  
   lodash.memoize@4.x:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -3300,12 +3300,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lodash.unescape/-/lodash.unescape-4.0.1.tgz#bf2249886ce514cda112fae9218cdc065211fc9c"
     integrity sha1-vyJJiGzlFM2hEvrpIYzcBlIR/Jw=
   
-  lodash.uniq@^4.5.0:
-    version "4.5.0"
-    resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
-    integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
-  
-  lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14:
+  lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
     version "4.17.15"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
     integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==

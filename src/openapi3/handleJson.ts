@@ -1,4 +1,5 @@
 import { get, uniq } from "lodash";
+import { OpenAPIV3 } from "openapi-types";
 import Field from "../Field";
 import Resource from "../Resource";
 
@@ -10,7 +11,7 @@ export const removeTrailingSlash = (url: string): string => {
 };
 
 export default function(
-  response: any, // @TODO check for external type definitions
+  response: OpenAPIV3.Document,
   entrypointUrl: string
 ): Resource[] {
   const paths = uniq(
@@ -20,12 +21,36 @@ export default function(
   const resources = paths.map(item => {
     const name = item.replace(`/`, ``);
     const url = removeTrailingSlash(entrypointUrl) + item;
-    const firstMethod = Object.keys(response.paths[item])[0];
-    const title = response.paths[item][firstMethod]["tags"][0];
-    const fieldNames = Object.keys(
-      response.components.schemas[title].properties
-    );
-    const requiredFields = get(
+    const firstMethod = Object.keys(
+      response.paths[item]
+    )[0] as keyof OpenAPIV3.PathItemObject;
+    const responsePathItem = response.paths[item][
+      firstMethod
+    ] as OpenAPIV3.OperationObject;
+
+    if (!responsePathItem.tags) {
+      throw new Error(); // @TODO
+    }
+
+    const title = responsePathItem.tags[0];
+
+    if (!response.components) {
+      throw new Error(); // @TODO
+    }
+
+    if (!response.components.schemas) {
+      throw new Error(); // @TODO
+    }
+
+    const schema = response.components.schemas[title] as OpenAPIV3.SchemaObject;
+    const properties = schema.properties;
+
+    if (!properties) {
+      throw new Error(); // @TODO
+    }
+
+    const fieldNames = Object.keys(properties);
+    const requiredFields: string[] = get(
       response,
       ["components", "schemas", title, "required"],
       []
@@ -37,11 +62,7 @@ export default function(
         // range: null,
         // reference: null,
         required: !!requiredFields.find(value => value === fieldName),
-        description: get(
-          response.components.schemas[title].properties[fieldName],
-          `description`,
-          ``
-        )
+        description: get(properties[fieldName], `description`, ``)
       });
     });
 

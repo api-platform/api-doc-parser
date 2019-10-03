@@ -1,4 +1,5 @@
 import { get, uniq } from "lodash";
+import { OpenAPIV2 } from "openapi-types";
 import Field from "../Field";
 import Resource from "../Resource";
 
@@ -10,9 +11,9 @@ export const removeTrailingSlash = (url: string): string => {
 };
 
 export default function(
-  response: any, // @TODO is this externally typed somewhere
+  response: OpenAPIV2.Document,
   entrypointUrl: string
-) {
+): Resource[] {
   const paths = uniq(
     Object.keys(response.paths).map(item => item.replace(`/{id}`, ``))
   );
@@ -22,8 +23,25 @@ export default function(
     const url = removeTrailingSlash(entrypointUrl) + item;
     const firstMethod = Object.keys(response.paths[item])[0];
     const title = response.paths[item][firstMethod]["tags"][0];
-    const fieldNames = Object.keys(response.definitions[title].properties);
-    const requiredFields = get(
+
+    if (!response.definitions) {
+      throw new Error(); // @TODO
+    }
+
+    const definition = response.definitions[title];
+
+    if (!definition) {
+      throw new Error(); // @TODO
+    }
+
+    const properties = definition.properties;
+
+    if (!properties) {
+      throw new Error(); // @TODO
+    }
+
+    const fieldNames = Object.keys(properties);
+    const requiredFields: string[] = get(
       response,
       ["definitions", title, "required"],
       []
@@ -39,11 +57,7 @@ export default function(
           // range: null,
           // reference: null,
           required: !!requiredFields.find(value => value === fieldName),
-          description: get(
-            response.definitions[title].properties[fieldName],
-            `description`,
-            ``
-          )
+          description: get(properties[fieldName], `description`, ``)
         })
     );
 
