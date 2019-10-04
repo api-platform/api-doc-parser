@@ -25,6 +25,11 @@ module.exports = {
   ],
 
   rules: {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      { allowSingleExtends: true }
+    ],
+    "@typescript-eslint/no-use-before-define": ["error", { functions: false }]
   }
 };
