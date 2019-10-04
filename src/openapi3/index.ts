@@ -1,1 +1,1 @@
-export parseOpenApi3Documentation from "./parseOpenApi3Documentation";
+export * from "./parseOpenApi3Documentation";

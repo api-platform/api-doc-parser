@@ -1,7 +1,6 @@
 import { get, uniq } from "lodash";
 import { OpenAPIV3 } from "openapi-types";
-import Field from "../Field";
-import Resource from "../Resource";
+import { Field, Resource } from "../";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -58,6 +57,7 @@ export default function(
 
     const fields = fieldNames.map(fieldName => {
       return new Field(fieldName, {
+        // @TODO code review re: strict null checks
         // id: null,
         // range: null,
         // reference: null,
@@ -67,6 +67,7 @@ export default function(
     });
 
     return new Resource(name, url, {
+      // @TODO code review re: strict null checks
       // id: null,
       title,
       fields,
