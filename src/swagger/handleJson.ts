@@ -1,6 +1,7 @@
 import { get, uniq } from "lodash";
 import { OpenAPIV2 } from "openapi-types";
-import { Field, Resource } from "../";
+import { Field } from "../Field";
+import { Resource } from "../Resource";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {

@@ -1,5 +1,5 @@
 import { OpenAPIV3 } from "openapi-types";
-import { Field } from "../";
+import { Field } from "../Field";
 import handleJson from "./handleJson";
 
 const openApi3Definition: OpenAPIV3.Document = {
