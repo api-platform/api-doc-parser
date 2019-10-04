@@ -10,7 +10,11 @@ const jsonLdMimeType = "application/ld+json";
 export default async function fetchJsonLd(
   url: string,
   options: RequestInit = {}
-): Promise<any> {
+): Promise<{
+  response: Response;
+  body?: any;
+  document?: any;
+}> {
   const response = await fetch(url, setHeaders(options));
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");

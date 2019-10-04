@@ -1,11 +1,12 @@
-import promises from "jsonld";
+import jsonld from "jsonld";
 import { get } from "lodash";
-import Api from "../Api";
-import Field from "../Field";
-import Resource from "../Resource";
-import Operation from "../Operation";
+import { Api } from "../Api";
+import { Field } from "../Field";
+import { Resource } from "../Resource";
+import { Operation } from "../Operation";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
+import { RemoteDocument } from "jsonld/jsonld-spec";
 
 /**
  * Extracts the short name of a resource.
@@ -25,7 +26,7 @@ function guessNameFromUrl(url: string, entrypointUrl: string): string {
  * @param {string} classToFind
  * @return {object}
  */
-function findSupportedClass(docs, classToFind: string) {
+function findSupportedClass(docs: any[], classToFind: string): any {
   const supportedClasses = get(
     docs,
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
@@ -47,16 +48,16 @@ function findSupportedClass(docs, classToFind: string) {
   );
 }
 
-export function getDocumentationUrlFromHeaders(headers) {
+export function getDocumentationUrlFromHeaders(headers: Headers): string {
   const linkHeader = headers.get("Link");
   if (!linkHeader) {
     throw new Error('The response has no "Link" HTTP header.');
   }
 
-  const matches = linkHeader.match(
-    /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/
+  const matches = /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
+    linkHeader
   );
-  if (!matches[1]) {
+  if (matches === null) {
     throw new Error(
       'The "Link" HTTP header is not of the type "http://www.w3.org/ns/hydra/core#apiDocumentation".'
     );
@@ -72,50 +73,37 @@ export function getDocumentationUrlFromHeaders(headers) {
  * @param {object} options
  * @return {Promise}
  */
-function fetchEntrypointAndDocs(entrypointUrl: string, options = {}) {
-  return fetchJsonLd(entrypointUrl, options)
-    .then(d => {
-      const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
+async function fetchEntrypointAndDocs(
+  entrypointUrl: string,
+  options: RequestInit = {}
+) {
+  const d = await fetchJsonLd(entrypointUrl, options);
+  const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
 
-      return {
-        entrypointUrl,
-        docsUrl,
-        entrypoint: d.body,
-        response: d.response
-      };
+  // @TODO this is suspect according to the jsonld type defs
+  const documentLoader = (input: string): Promise<any /* RemoteDocument */> =>
+    fetchJsonLd(input, options);
+
+  const docsJsonLd = (await fetchJsonLd(docsUrl, options)).body;
+
+  const [docs, entrypoint] = await Promise.all([
+    jsonld.expand(docsJsonLd, {
+      base: docsUrl,
+      documentLoader
+    }),
+    jsonld.expand(d.body, {
+      base: d.body,
+      documentLoader
     })
-    .then(data =>
-      fetchJsonLd(data.docsUrl, options)
-        .then(d => {
-          data.docs = d.body;
+  ]);
 
-          return data;
-        })
-        .then(data =>
-          promises
-            .expand(data.docs, {
-              base: data.docsUrl,
-              documentLoader: input => fetchJsonLd(input, options)
-            })
-            .then(docs => {
-              data.docs = docs;
-
-              return data;
-            })
-        )
-        .then(data =>
-          promises
-            .expand(data.entrypoint, {
-              base: data.entrypointUrl,
-              documentLoader: input => fetchJsonLd(input, options)
-            })
-            .then(entrypoint => {
-              data.entrypoint = entrypoint;
-
-              return data;
-            })
-        )
-    );
+  return {
+    entrypointUrl,
+    docsUrl,
+    entrypoint,
+    response: d.response,
+    docs
+  };
 }
 
 function removeTrailingSlash(url: string): string {
