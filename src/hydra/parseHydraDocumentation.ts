@@ -7,7 +7,6 @@ import { Operation } from "../Operation";
 import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
-import { RemoteDocument, JsonLd } from "jsonld/jsonld-spec";
 
 /**
  * Extracts the short name of a resource.

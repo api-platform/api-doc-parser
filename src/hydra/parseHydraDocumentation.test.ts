@@ -555,12 +555,6 @@ const docs = `{
 ]
 }`;
 
-const resourceCollection = `{
-  "hydra:search": {
-    "hydra:mapping": []
-  }
-}`;
-
 const resourceCollectionWithParameters = `{
   "hydra:search": {
     "hydra:mapping": [
