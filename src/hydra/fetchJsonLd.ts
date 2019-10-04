@@ -1,3 +1,5 @@
+const jsonLdMimeType = "application/ld+json";
+
 /**
  * Sends a JSON-LD request to the API.
  *
@@ -5,11 +7,27 @@
  * @param {object} options
  * @return {Promise.<object>} An object with a response key (the original HTTP response) and an optional body key (the parsed JSON-LD body)
  */
-export default function fetchJsonLd(url: string, options = {}) {
-  const jsonLdMimeType = "application/ld+json";
+export default async function fetchJsonLd(
+  url: string,
+  options: RequestInit = {}
+): Promise<any> {
+  const response = await fetch(url, setHeaders(options));
+  const { headers, status } = response;
+  const contentType = headers.get("Content-Type");
 
-  if ("undefined" === typeof options.headers) {
-    options.headers = new Headers();
+  if (204 === status) {
+    return Promise.resolve({ response });
+  }
+  if (500 <= status || !contentType || !contentType.includes(jsonLdMimeType)) {
+    return Promise.reject({ response });
+  }
+
+  return response.json().then(body => ({ response, body, document: body }));
+}
+
+function setHeaders(options: RequestInit): RequestInit {
+  if (!(options.headers instanceof Headers)) {
+    options.headers = new Headers(options.headers);
   }
 
   if (null === options.headers.get("Accept")) {
@@ -24,21 +42,5 @@ export default function fetchJsonLd(url: string, options = {}) {
     options.headers.set("Content-Type", jsonLdMimeType);
   }
 
-  return fetch(url, options).then(response => {
-    const { headers, status } = response;
-    if (204 === status) {
-      return Promise.resolve({ response });
-    }
-    if (
-      500 <= status ||
-      !headers.has("Content-Type") ||
-      !headers.get("Content-Type").includes(jsonLdMimeType)
-    ) {
-      return Promise.reject({ response });
-    }
-
-    return Promise.resolve(
-      response.json().then(body => ({ response, body, document: body }))
-    );
-  });
+  return options;
 }
