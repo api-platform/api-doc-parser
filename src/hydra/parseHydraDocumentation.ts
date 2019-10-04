@@ -4,9 +4,10 @@ import { Api } from "../Api";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
 import { Operation } from "../Operation";
+import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
-import { RemoteDocument } from "jsonld/jsonld-spec";
+import { RemoteDocument, JsonLd } from "jsonld/jsonld-spec";
 
 /**
  * Extracts the short name of a resource.
@@ -26,7 +27,10 @@ function guessNameFromUrl(url: string, entrypointUrl: string): string {
  * @param {string} classToFind
  * @return {object}
  */
-function findSupportedClass(docs: any[], classToFind: string): any {
+function findSupportedClass(
+  docs: any[],
+  classToFind: string
+): Record<string, any> {
   const supportedClasses = get(
     docs,
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
@@ -76,7 +80,13 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
   options: RequestInit = {}
-) {
+): Promise<{
+  entrypointUrl: string;
+  docsUrl: string;
+  response: Response;
+  entrypoint: any;
+  docs: any;
+}> {
   const d = await fetchJsonLd(entrypointUrl, options);
   const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
 
@@ -120,7 +130,10 @@ function removeTrailingSlash(url: string): string {
  * @param {object} property
  * @return {string|null}
  */
-function findRelatedClass(docs, property): string | null {
+function findRelatedClass(
+  docs: any,
+  property: Record<string, any>
+): Record<string, any> {
   // Use the entrypoint property's owl:equivalentClass if available
   if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
     for (const range of property[
@@ -178,8 +191,12 @@ function findRelatedClass(docs, property): string | null {
  */
 export default function parseHydraDocumentation(
   entrypointUrl: string,
-  options = {}
-) {
+  options: RequestInit = {}
+): Promise<{
+  api: Api;
+  response: Response;
+  status: number;
+}> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
 
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
@@ -412,9 +429,8 @@ export default function parseHydraDocumentation(
         );
 
         resource.parameters = [];
-        resource.getParameters = () => {
-          return getParameters(resource, options);
-        };
+        resource.getParameters = (): Promise<Parameter[]> =>
+          getParameters(resource, options);
 
         resources.push(resource);
       }
@@ -423,15 +439,16 @@ export default function parseHydraDocumentation(
       for (const field of fields) {
         if (null !== field.reference) {
           field.reference =
-            resources.find(resource => resource.id === field.reference) || null;
+            resources.find(resource => resource.id === field.reference) ||
+            (null as any);
         }
       }
 
-      return Promise.resolve({
+      return {
         api: new Api(entrypointUrl, { title, resources }),
         response,
         status: response.status
-      });
+      };
     },
     data =>
       Promise.reject({

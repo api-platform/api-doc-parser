@@ -2,6 +2,7 @@ import { BaseClass } from "./_BaseClass";
 
 export interface OperationOptions {
   method?: string;
+  expects?: any;
   returns?: string;
   types?: string[];
   deprecated?: boolean;
