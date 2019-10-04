@@ -1,4 +1,3 @@
-import { BaseClass } from "./_BaseClass";
 import { Field } from "./Field";
 import { Operation } from "./Operation";
 import { Parameter } from "./Parameter";
@@ -20,7 +19,7 @@ export interface ResourceOptions {
  * @property {string} url             - The base URL for this resource
  */
 export interface Resource extends ResourceOptions {}
-export class Resource extends BaseClass<ResourceOptions> {
+export class Resource {
   /**
    * @param {string}          name
    * @param {string}          url
@@ -29,8 +28,8 @@ export class Resource extends BaseClass<ResourceOptions> {
   constructor(
     public name: string,
     public url: string,
-    options?: ResourceOptions
+    options: ResourceOptions = {}
   ) {
-    super(options);
+    Object.assign(this, Object.seal(options));
   }
 }

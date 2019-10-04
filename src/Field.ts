@@ -1,5 +1,3 @@
-import { BaseClass } from "./_BaseClass";
-
 export interface FieldOptions {
   id?: string;
   range?: string;
@@ -14,12 +12,12 @@ export interface FieldOptions {
  * @property {string} name - The name of this field
  */
 export interface Field extends FieldOptions {}
-export class Field extends BaseClass<FieldOptions> {
+export class Field {
   /**
    * @param {string}        name
    * @param {?FieldOptions}  options
    */
-  constructor(public name: string, options?: FieldOptions) {
-    super(options);
+  constructor(public name: string, options: FieldOptions = {}) {
+    Object.assign(this, Object.seal(options));
   }
 }
