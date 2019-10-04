@@ -1,6 +1,6 @@
-import BaseClass from "./_BaseClass";
+import { BaseClass } from "./_BaseClass";
 
-interface FieldOptions {
+export interface FieldOptions {
   id?: string;
   range?: string;
   reference?: string;
@@ -13,8 +13,8 @@ interface FieldOptions {
 /**
  * @property {string} name - The name of this field
  */
-export default interface Field extends FieldOptions {}
-export default class Field extends BaseClass<FieldOptions> {
+export interface Field extends FieldOptions {}
+export class Field extends BaseClass<FieldOptions> {
   /**
    * @param {string}        name
    * @param {?FieldOptions}  options

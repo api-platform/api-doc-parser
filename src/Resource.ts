@@ -1,9 +1,9 @@
-import BaseClass from "./_BaseClass";
-import Field from "./Field";
-import Operation from "./Operation";
-import Parameter from "./Parameter";
+import { BaseClass } from "./_BaseClass";
+import { Field } from "./Field";
+import { Operation } from "./Operation";
+import { Parameter } from "./Parameter";
 
-interface ResourceOptions {
+export interface ResourceOptions {
   id?: string;
   title?: string;
   deprecated?: boolean;
@@ -19,8 +19,8 @@ interface ResourceOptions {
  * @property {string} name            - The name of the resource
  * @property {string} url             - The base URL for this resource
  */
-export default interface Resource extends ResourceOptions {}
-export default class Resource extends BaseClass<ResourceOptions> {
+export interface Resource extends ResourceOptions {}
+export class Resource extends BaseClass<ResourceOptions> {
   /**
    * @param {string}          name
    * @param {string}          url

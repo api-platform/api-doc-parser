@@ -1,6 +1,6 @@
-import BaseClass from "./_BaseClass";
+import { BaseClass } from "./_BaseClass";
 
-interface OperationOptions {
+export interface OperationOptions {
   method?: string;
   returns?: string;
   types?: string[];
@@ -10,8 +10,8 @@ interface OperationOptions {
 /**
  * @property {string} name - The name of this operation
  */
-export default interface Operation extends OperationOptions {}
-export default class Operation extends BaseClass<OperationOptions> {
+export interface Operation extends OperationOptions {}
+export class Operation extends BaseClass<OperationOptions> {
   /**
    * @param {string}            name
    * @param {?OperationOptions} options

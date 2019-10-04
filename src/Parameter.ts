@@ -1,7 +1,7 @@
 /**
  * @property {string} variable - The variable of this field
  */
-export default class Parameter {
+export class Parameter {
   /**
    * @param {string} variable
    * @param {string} range

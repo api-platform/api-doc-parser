@@ -1,4 +1,4 @@
-export default abstract class BaseClass<T extends Record<string, any>> {
+export abstract class BaseClass<T extends Record<string, any>> {
   constructor(options?: T) {
     if (options) {
       Object.assign(this, options);

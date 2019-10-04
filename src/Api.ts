@@ -1,7 +1,7 @@
-import BaseClass from "./_BaseClass";
-import Resource from "./Resource";
+import { BaseClass } from "./_BaseClass";
+import { Resource } from "./Resource";
 
-interface ApiOptions {
+export interface ApiOptions {
   title?: string;
   resources?: Resource[];
 }
@@ -9,8 +9,8 @@ interface ApiOptions {
 /**
  * @property {string} entrypoint  - The URL of the API's entrypoint
  */
-export default interface Api extends ApiOptions {}
-export default class Api extends BaseClass<ApiOptions> {
+export interface Api extends ApiOptions {}
+export class Api extends BaseClass<ApiOptions> {
   /**
    * @param {string}      entrypoint
    * @param {?ApiOptions} options
