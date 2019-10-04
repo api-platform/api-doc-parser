@@ -1,29 +1,22 @@
-type OperationOptions = {
+import BaseClass from "./_BaseClass";
+
+interface OperationOptions {
   method?: string;
   returns?: string;
   types?: string[];
   deprecated?: boolean;
-};
+}
 
 /**
  * @property {string} name - The name of this operation
  */
-export default class Operation {
-  name: string;
-
+export default interface Operation extends OperationOptions {}
+export default class Operation extends BaseClass<OperationOptions> {
   /**
    * @param {string}            name
    * @param {?OperationOptions} options
    */
-  constructor(name: string, options: OperationOptions = {}) {
-    this.name = name;
-
-    Object.keys(options).forEach(key => {
-      Object.defineProperty(this, key, {
-        writable: true,
-        enumerable: true,
-        value: options[key as keyof OperationOptions]
-      });
-    });
+  constructor(public name: string, options?: OperationOptions) {
+    super(options);
   }
 }

@@ -1,4 +1,6 @@
-type FieldOptions = {
+import BaseClass from "./_BaseClass";
+
+interface FieldOptions {
   id?: string;
   range?: string;
   reference?: string;
@@ -6,27 +8,18 @@ type FieldOptions = {
   description?: string;
   maxCardinality?: number;
   deprecated?: boolean;
-};
+}
 
 /**
  * @property {string} name - The name of this field
  */
-export default class Field {
-  name: string;
-
+export default interface Field extends FieldOptions {}
+export default class Field extends BaseClass<FieldOptions> {
   /**
    * @param {string}        name
    * @param {?FieldOptions}  options
    */
-  constructor(name: string, options: FieldOptions = {}) {
-    this.name = name;
-
-    Object.keys(options).forEach(key => {
-      Object.defineProperty(this, key, {
-        writable: true,
-        enumerable: true,
-        value: options[key as keyof FieldOptions]
-      });
-    });
+  constructor(public name: string, options?: FieldOptions) {
+    super(options);
   }
 }

@@ -1,29 +1,21 @@
+import BaseClass from "./_BaseClass";
 import Resource from "./Resource";
 
-type ApiOptions = {
+interface ApiOptions {
   title?: string;
   resources?: Resource[];
-};
+}
 
 /**
  * @property {string} entrypoint  - The URL of the API's entrypoint
  */
-export default class Api {
-  entrypoint: string;
-
+export default interface Api extends ApiOptions {}
+export default class Api extends BaseClass<ApiOptions> {
   /**
    * @param {string}      entrypoint
    * @param {?ApiOptions} options
    */
-  constructor(entrypoint: string, options: ApiOptions = {}) {
-    this.entrypoint = entrypoint;
-
-    Object.keys(options).forEach(key => {
-      Object.defineProperty(this, key, {
-        writable: true,
-        enumerable: true,
-        value: options[key as keyof ApiOptions]
-      });
-    });
+  constructor(public entrypoint: string, options?: ApiOptions) {
+    super(options);
   }
 }
