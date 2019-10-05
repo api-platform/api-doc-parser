@@ -8,7 +8,7 @@ export interface ParsedOpenApi3Documentation {
   status: string;
 }
 
-export function parseOpenApi3Documentation(
+export default function parseOpenApi3Documentation(
   entrypointUrl: string
 ): Promise<ParsedOpenApi3Documentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);

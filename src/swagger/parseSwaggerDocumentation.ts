@@ -8,7 +8,7 @@ export interface ParsedSwaggerDocumentation {
   status: string;
 }
 
-export function parseSwaggerDocumentation(
+export default function parseSwaggerDocumentation(
   entrypointUrl: string
 ): Promise<ParsedSwaggerDocumentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
