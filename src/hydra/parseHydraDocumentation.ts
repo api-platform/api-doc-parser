@@ -1,5 +1,5 @@
 import jsonld from "jsonld";
-import { get } from "lodash";
+import get from "lodash.get";
 import { Api } from "../Api";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
