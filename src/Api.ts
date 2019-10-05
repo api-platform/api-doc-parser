@@ -1,4 +1,5 @@
 import { Resource } from "./Resource";
+import { assignSealed } from "./utils/assignSealed";
 
 export interface ApiOptions {
   title?: string;
@@ -15,6 +16,6 @@ export class Api {
    * @param {?ApiOptions} options
    */
   constructor(public entrypoint: string, options: ApiOptions = {}) {
-    Object.assign(this, Object.seal(options));
+    assignSealed(this, options);
   }
 }

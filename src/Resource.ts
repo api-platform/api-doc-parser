@@ -1,6 +1,7 @@
 import { Field } from "./Field";
 import { Operation } from "./Operation";
 import { Parameter } from "./Parameter";
+import { assignSealed } from "./utils/assignSealed";
 
 export interface ResourceOptions {
   id?: string;
@@ -30,6 +31,6 @@ export class Resource {
     public url: string,
     options: ResourceOptions = {}
   ) {
-    Object.assign(this, Object.seal(options));
+    assignSealed(this, options);
   }
 }

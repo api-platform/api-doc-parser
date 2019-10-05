@@ -1,3 +1,5 @@
+import { assignSealed } from "./utils/assignSealed";
+
 export interface FieldOptions {
   id?: string;
   range?: string;
@@ -18,6 +20,6 @@ export class Field {
    * @param {?FieldOptions}  options
    */
   constructor(public name: string, options: FieldOptions = {}) {
-    Object.assign(this, Object.seal(options));
+    assignSealed(this, options);
   }
 }

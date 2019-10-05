@@ -1,3 +1,5 @@
+import { assignSealed } from "./utils/assignSealed";
+
 export interface OperationOptions {
   method?: string;
   expects?: any;
@@ -16,6 +18,6 @@ export class Operation {
    * @param {?OperationOptions} options
    */
   constructor(public name: string, options: OperationOptions = {}) {
-    Object.assign(this, Object.seal(options));
+    assignSealed(this, options);
   }
 }
