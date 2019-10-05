@@ -101,7 +101,7 @@ async function fetchEntrypointAndDocs(
       documentLoader
     }),
     jsonld.expand(d.body, {
-      base: d.body,
+      base: entrypointUrl,
       documentLoader
     })
   ]);
