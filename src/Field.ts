@@ -1,14 +1,15 @@
 import { assignSealed } from "./utils/assignSealed";
 
-export interface FieldOptions {
-  id?: string;
-  range?: string;
-  reference?: string;
-  required?: boolean;
-  description?: string;
-  maxCardinality?: number;
-  deprecated?: boolean;
-}
+export interface FieldOptions
+  extends Nullable<{
+    id?: string;
+    range?: string;
+    reference?: string;
+    required?: boolean;
+    description?: string;
+    maxCardinality?: number;
+    deprecated?: boolean;
+  }> {}
 
 /**
  * @property {string} name - The name of this field

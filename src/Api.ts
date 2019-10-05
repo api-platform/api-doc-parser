@@ -1,10 +1,11 @@
 import { Resource } from "./Resource";
 import { assignSealed } from "./utils/assignSealed";
 
-export interface ApiOptions {
-  title?: string;
-  resources?: Resource[];
-}
+export interface ApiOptions
+  extends Nullable<{
+    title?: string;
+    resources?: Resource[];
+  }> {}
 
 /**
  * @property {string} entrypoint  - The URL of the API's entrypoint

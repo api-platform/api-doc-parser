@@ -1,12 +1,13 @@
 import { assignSealed } from "./utils/assignSealed";
 
-export interface OperationOptions {
-  method?: string;
-  expects?: any;
-  returns?: string;
-  types?: string[];
-  deprecated?: boolean;
-}
+export interface OperationOptions
+  extends Nullable<{
+    method?: string;
+    expects?: any;
+    returns?: string;
+    types?: string[];
+    deprecated?: boolean;
+  }> {}
 
 /**
  * @property {string} name - The name of this operation

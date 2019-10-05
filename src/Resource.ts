@@ -3,17 +3,18 @@ import { Operation } from "./Operation";
 import { Parameter } from "./Parameter";
 import { assignSealed } from "./utils/assignSealed";
 
-export interface ResourceOptions {
-  id?: string;
-  title?: string;
-  deprecated?: boolean;
-  fields?: Field[];
-  readableFields?: Field[];
-  writableFields?: Field[];
-  parameters?: Parameter[];
-  getParameters?: Function;
-  operations?: Operation[];
-}
+export interface ResourceOptions
+  extends Nullable<{
+    id?: string;
+    title?: string;
+    deprecated?: boolean;
+    fields?: Field[];
+    readableFields?: Field[];
+    writableFields?: Field[];
+    parameters?: Parameter[];
+    getParameters?: Function;
+    operations?: Operation[];
+  }> {}
 
 /**
  * @property {string} name            - The name of the resource

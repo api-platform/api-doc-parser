@@ -58,18 +58,16 @@ export default function(
 
     const fields = fieldNames.map(fieldName => {
       return new Field(fieldName, {
-        // @TODO code review re: strict null checks
-        // id: null,
-        // range: null,
-        // reference: null,
+        id: null,
+        range: null,
+        reference: null,
         required: !!requiredFields.find(value => value === fieldName),
         description: get(properties[fieldName], `description`, ``)
       });
     });
 
     return new Resource(name, url, {
-      // @TODO code review re: strict null checks
-      // id: null,
+      id: null,
       title,
       fields,
       readableFields: fields,
