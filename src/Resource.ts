@@ -16,17 +16,8 @@ export interface ResourceOptions
     operations?: Operation[];
   }> {}
 
-/**
- * @property {string} name            - The name of the resource
- * @property {string} url             - The base URL for this resource
- */
 export interface Resource extends ResourceOptions {}
 export class Resource {
-  /**
-   * @param {string}          name
-   * @param {string}          url
-   * @param {ResourceOptions} options
-   */
   constructor(
     public name: string,
     public url: string,

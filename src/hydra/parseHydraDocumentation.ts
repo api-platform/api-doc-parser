@@ -10,10 +10,6 @@ import getParameters from "./getParameters";
 
 /**
  * Extracts the short name of a resource.
- *
- * @param {string} url
- * @param {string} entrypointUrl
- * @return {string}
  */
 function guessNameFromUrl(url: string, entrypointUrl: string): string {
   return url.substr(entrypointUrl.length + 1);
@@ -21,10 +17,6 @@ function guessNameFromUrl(url: string, entrypointUrl: string): string {
 
 /**
  * Finds the description of the class with the given id.
- *
- * @param {object[]} docs
- * @param {string} classToFind
- * @return {object}
  */
 function findSupportedClass(
   docs: any[],
@@ -71,10 +63,6 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
 
 /**
  * Retrieves Hydra's entrypoint and API docs.
- *
- * @param {string} entrypointUrl
- * @param {object} options
- * @return {Promise}
  */
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
@@ -123,12 +111,6 @@ function removeTrailingSlash(url: string): string {
   return url;
 }
 
-/**
- *
- * @param {object} docs
- * @param {object} property
- * @return {string|null}
- */
 function findRelatedClass(
   docs: any,
   property: Record<string, any>
@@ -182,11 +164,7 @@ function findRelatedClass(
 }
 
 /**
- * Parses a Hydra documentation and converts it to an intermediate representation.
- *
- * @param {string} entrypointUrl
- * @param {object} options
- * @return {Promise.<Api>}
+ * Parses Hydra documentation and converts it to an intermediate representation.
  */
 export default function parseHydraDocumentation(
   entrypointUrl: string,

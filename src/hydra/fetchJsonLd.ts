@@ -2,10 +2,6 @@ const jsonLdMimeType = "application/ld+json";
 
 /**
  * Sends a JSON-LD request to the API.
- *
- * @param {string} url
- * @param {object} options
- * @return {Promise.<object>} An object with a response key (the original HTTP response) and an optional body key (the parsed JSON-LD body)
  */
 export default async function fetchJsonLd(
   url: string,
