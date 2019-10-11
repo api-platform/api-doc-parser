@@ -1,7 +1,16 @@
-import Api from "../Api";
+import { OpenAPIV3 } from "openapi-types";
+import { Api } from "../Api";
 import handleJson, { removeTrailingSlash } from "./handleJson";
 
-export default function parseOpenApi3Documentation(entrypointUrl) {
+export interface ParsedOpenApi3Documentation {
+  api: Api;
+  response: OpenAPIV3.Document;
+  status: string;
+}
+
+export default function parseOpenApi3Documentation(
+  entrypointUrl: string
+): Promise<ParsedOpenApi3Documentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
   return fetch(entrypointUrl)
     .then(res => res.json())

@@ -1,7 +1,10 @@
+import { FetchMock } from "jest-fetch-mock";
 import fetchJsonLd from "./fetchJsonLd";
 
+const fetchMock = fetch as FetchMock;
+
 test("fetch a JSON-LD document", () => {
-  fetch.mockResponseOnce(
+  fetchMock.mockResponseOnce(
     `{
     "@context": "http://json-ld.org/contexts/person.jsonld",
     "@id": "http://dbpedia.org/resource/John_Lennon",
@@ -12,7 +15,7 @@ test("fetch a JSON-LD document", () => {
     {
       status: 200,
       statusText: "OK",
-      headers: new Headers({ "Content-Type": "application/ld+json" })
+      headers: { "Content-Type": "application/ld+json" }
     }
   );
 
@@ -23,10 +26,10 @@ test("fetch a JSON-LD document", () => {
 });
 
 test("fetch a non JSON-LD document", () => {
-  fetch.mockResponseOnce(`<body>Hello</body>`, {
+  fetchMock.mockResponseOnce(`<body>Hello</body>`, {
     status: 200,
     statusText: "OK",
-    headers: new Headers({ "Content-Type": "text/html" })
+    headers: { "Content-Type": "text/html" }
   });
 
   return fetchJsonLd("/foo.jsonld").catch(data => {
@@ -36,7 +39,7 @@ test("fetch a non JSON-LD document", () => {
 });
 
 test("fetch an error", () => {
-  fetch.mockResponseOnce(
+  fetchMock.mockResponseOnce(
     `{
     "@context": "http://json-ld.org/contexts/person.jsonld",
     "@id": "http://dbpedia.org/resource/John_Lennon",
@@ -47,12 +50,12 @@ test("fetch an error", () => {
     {
       status: 400,
       statusText: "Bad Request",
-      headers: new Headers({ "Content-Type": "application/ld+json" })
+      headers: { "Content-Type": "application/ld+json" }
     }
   );
 
   return fetchJsonLd("/foo.jsonld").catch(({ response }) => {
-    response.json().then(body => {
+    response.json().then((body: any) => {
       expect(response.ok).toBe(false);
       expect(body.born).toBe("1940-10-09");
     });
@@ -60,10 +63,10 @@ test("fetch an error", () => {
 });
 
 test("fetch an empty document", () => {
-  fetch.mockResponseOnce("", {
+  fetchMock.mockResponseOnce("", {
     status: 204,
     statusText: "No Content",
-    headers: new Headers({ "Content-Type": "text/html" })
+    headers: { "Content-Type": "text/html" }
   });
 
   return fetchJsonLd("/foo.jsonld").then(data => {

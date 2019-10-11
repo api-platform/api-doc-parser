@@ -1,4 +1,7 @@
+import { FetchMock, MockParams } from "jest-fetch-mock";
 import parseHydraDocumentation from "./parseHydraDocumentation";
+
+const fetchMock = fetch as FetchMock;
 
 const entrypoint = `{
   "@context": {
@@ -552,12 +555,6 @@ const docs = `{
 ]
 }`;
 
-const resourceCollection = `{
-  "hydra:search": {
-    "hydra:mapping": []
-  }
-}`;
-
 const resourceCollectionWithParameters = `{
   "hydra:search": {
     "hydra:mapping": [
@@ -1106,18 +1103,18 @@ const expectedApi = {
   resources: resources
 };
 
-const init = {
+const init: MockParams = {
   status: 200,
   statusText: "OK",
-  headers: new Headers({
+  headers: {
     Link:
       '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
     "Content-Type": "application/ld+json"
-  })
+  }
 };
 
 test("parse a Hydra documentation", async () => {
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
@@ -1138,7 +1135,7 @@ test("parse a Hydra documentation", async () => {
 });
 
 test("parse a Hydra documentation (http://localhost/)", async () => {
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   await parseHydraDocumentation("http://localhost/").then(data => {
     expect(JSON.stringify(data.api, null, 2)).toBe(
@@ -1165,7 +1162,7 @@ test("parse a Hydra documentation without authorization", () => {
     message: "JWT Token not found"
   };
 
-  fetch.mockResponses([JSON.stringify(expectedResponse), init]);
+  fetchMock.mockResponses([JSON.stringify(expectedResponse), init]);
 
   return parseHydraDocumentation("http://localhost").catch(async data => {
     expect(data.api).toEqual(expectedApi);
@@ -1199,7 +1196,7 @@ test('Parse entrypoint without "@type" key', async () => {
   "customResource": "/customResources"
 }`;
 
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const expectedError = { message: "" };
 
@@ -1248,7 +1245,7 @@ test('Parse entrypoint class without "supportedClass" key', async () => {
 "hydra:entrypoint": "/"
 }`;
 
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const expectedError = { message: "" };
 
@@ -1312,7 +1309,7 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
 ]
 }`;
 
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const expectedError = { message: "" };
 
@@ -1330,7 +1327,7 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
 test("Invalid docs JSON", async () => {
   const docs = `{foo,}`;
 
-  fetch.mockResponses([entrypoint, init], [docs, init]);
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   let expectedError = {};
 
@@ -1348,7 +1345,7 @@ test("Invalid docs JSON", async () => {
 test("Invalid entrypoint JSON", async () => {
   const entrypoint = `{foo,}`;
 
-  fetch.mockResponses([entrypoint, init]);
+  fetchMock.mockResponses([entrypoint, init]);
 
   let expectedError = {};
 
@@ -1364,14 +1361,14 @@ test("Invalid entrypoint JSON", async () => {
 });
 
 test("Resource parameters can be retrieved", async () => {
-  fetch.mockResponses(
+  fetchMock.mockResponses(
     [entrypoint, init],
     [docs, init],
     [resourceCollectionWithParameters, init]
   );
 
-  await parseHydraDocumentation("http://localhost").then(async data => {
-    await data.api.resources[0].getParameters().then(parameters => {
+  await parseHydraDocumentation("http://localhost").then(async (data: any) => {
+    await data.api.resources[0].getParameters().then((parameters: any) => {
       expect(parameters).toEqual([
         {
           description: "",

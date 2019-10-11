@@ -1,6 +1,8 @@
+import { OpenAPIV2 } from "openapi-types";
+import { Field } from "../Field";
 import handleJson from "./handleJson";
 
-const swaggerApiDefinition = {
+const swaggerApiDefinition: OpenAPIV2.Document = {
   swagger: "2.0",
   basePath: "/",
   info: {
@@ -1181,6 +1183,6 @@ describe(`Parse Swagger Documentation from Json`, () => {
     expect(toBeParsed[1].url).toBe(parsed[1].url);
     expect(toBeParsed[1].id).toBe(parsed[1].id);
 
-    expect(toBeParsed[1].fields[0]).toEqual(parsed[1].fields[0]);
+    expect((toBeParsed[1].fields as Field[])[0]).toEqual(parsed[1].fields[0]);
   });
 });

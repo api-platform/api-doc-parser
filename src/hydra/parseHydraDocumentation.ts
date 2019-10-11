@@ -1,31 +1,27 @@
-import { promises } from "jsonld";
+import jsonld from "jsonld";
 import get from "lodash.get";
-import Api from "../Api";
-import Field from "../Field";
-import Resource from "../Resource";
-import Operation from "../Operation";
+import { Api } from "../Api";
+import { Field } from "../Field";
+import { Resource } from "../Resource";
+import { Operation } from "../Operation";
+import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
 
 /**
  * Extracts the short name of a resource.
- *
- * @param {string} url
- * @param {string} entrypointUrl
- * @return {string}
  */
-function guessNameFromUrl(url, entrypointUrl) {
+function guessNameFromUrl(url: string, entrypointUrl: string): string {
   return url.substr(entrypointUrl.length + 1);
 }
 
 /**
  * Finds the description of the class with the given id.
- *
- * @param {object[]} docs
- * @param {string} classToFind
- * @return {object}
  */
-function findSupportedClass(docs, classToFind) {
+function findSupportedClass(
+  docs: any[],
+  classToFind: string
+): Record<string, any> {
   const supportedClasses = get(
     docs,
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
@@ -47,16 +43,16 @@ function findSupportedClass(docs, classToFind) {
   );
 }
 
-export function getDocumentationUrlFromHeaders(headers) {
+export function getDocumentationUrlFromHeaders(headers: Headers): string {
   const linkHeader = headers.get("Link");
   if (!linkHeader) {
     throw new Error('The response has no "Link" HTTP header.');
   }
 
-  const matches = linkHeader.match(
-    /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/
+  const matches = /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
+    linkHeader
   );
-  if (!matches[1]) {
+  if (matches === null) {
     throw new Error(
       'The "Link" HTTP header is not of the type "http://www.w3.org/ns/hydra/core#apiDocumentation".'
     );
@@ -67,72 +63,58 @@ export function getDocumentationUrlFromHeaders(headers) {
 
 /**
  * Retrieves Hydra's entrypoint and API docs.
- *
- * @param {string} entrypointUrl
- * @param {object} options
- * @return {Promise}
  */
-function fetchEntrypointAndDocs(entrypointUrl, options = {}) {
-  return fetchJsonLd(entrypointUrl, options)
-    .then(d => {
-      const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
+async function fetchEntrypointAndDocs(
+  entrypointUrl: string,
+  options: RequestInit = {}
+): Promise<{
+  entrypointUrl: string;
+  docsUrl: string;
+  response: Response;
+  entrypoint: any;
+  docs: any;
+}> {
+  const d = await fetchJsonLd(entrypointUrl, options);
+  const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
 
-      return {
-        entrypointUrl,
-        docsUrl,
-        entrypoint: d.body,
-        response: d.response
-      };
+  // @TODO this is suspect according to the jsonld type defs
+  const documentLoader = (input: string): Promise<any /* RemoteDocument */> =>
+    fetchJsonLd(input, options);
+
+  const docsJsonLd = (await fetchJsonLd(docsUrl, options)).body;
+
+  const [docs, entrypoint] = await Promise.all([
+    jsonld.expand(docsJsonLd, {
+      base: docsUrl,
+      documentLoader
+    }),
+    jsonld.expand(d.body, {
+      base: entrypointUrl,
+      documentLoader
     })
-    .then(data =>
-      fetchJsonLd(data.docsUrl, options)
-        .then(d => {
-          data.docs = d.body;
+  ]);
 
-          return data;
-        })
-        .then(data =>
-          promises
-            .expand(data.docs, {
-              base: data.docsUrl,
-              documentLoader: input => fetchJsonLd(input, options)
-            })
-            .then(docs => {
-              data.docs = docs;
-
-              return data;
-            })
-        )
-        .then(data =>
-          promises
-            .expand(data.entrypoint, {
-              base: data.entrypointUrl,
-              documentLoader: input => fetchJsonLd(input, options)
-            })
-            .then(entrypoint => {
-              data.entrypoint = entrypoint;
-
-              return data;
-            })
-        )
-    );
+  return {
+    entrypointUrl,
+    docsUrl,
+    entrypoint,
+    response: d.response,
+    docs
+  };
 }
 
-function removeTrailingSlash(url) {
-  if (/\/$/.test(url)) {
+function removeTrailingSlash(url: string): string {
+  if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
 
   return url;
 }
 
-/**
- *
- * @param {object} docs
- * @param {object} property
- * @return {string|null}
- */
-function findRelatedClass(docs, property) {
+function findRelatedClass(
+  docs: any,
+  property: Record<string, any>
+): Record<string, any> {
   // Use the entrypoint property's owl:equivalentClass if available
   if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
     for (const range of property[
@@ -182,13 +164,16 @@ function findRelatedClass(docs, property) {
 }
 
 /**
- * Parses a Hydra documentation and converts it to an intermediate representation.
- *
- * @param {string} entrypointUrl
- * @param {object} options
- * @return {Promise.<Api>}
+ * Parses Hydra documentation and converts it to an intermediate representation.
  */
-export default function parseHydraDocumentation(entrypointUrl, options = {}) {
+export default function parseHydraDocumentation(
+  entrypointUrl: string,
+  options: RequestInit = {}
+): Promise<{
+  api: Api;
+  response: Response;
+  status: number;
+}> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
 
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
@@ -421,9 +406,8 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
         );
 
         resource.parameters = [];
-        resource.getParameters = () => {
-          return getParameters(resource, options);
-        };
+        resource.getParameters = (): Promise<Parameter[]> =>
+          getParameters(resource, options);
 
         resources.push(resource);
       }
@@ -432,15 +416,16 @@ export default function parseHydraDocumentation(entrypointUrl, options = {}) {
       for (const field of fields) {
         if (null !== field.reference) {
           field.reference =
-            resources.find(resource => resource.id === field.reference) || null;
+            resources.find(resource => resource.id === field.reference) ||
+            (null as any);
         }
       }
 
-      return Promise.resolve({
+      return {
         api: new Api(entrypointUrl, { title, resources }),
         response,
         status: response.status
-      });
+      };
     },
     data =>
       Promise.reject({

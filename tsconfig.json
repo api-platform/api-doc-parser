@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./lib",
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "./src",
+    "importHelpers": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "typeRoots": ["node_modules/@types", "@types"]
+  }
+}

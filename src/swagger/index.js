@@ -1,1 +1,0 @@
-export parseSwaggerDocumentation from "./parseSwaggerDocumentation";

@@ -1,8 +1,11 @@
-import fetchJsonLd from "./fetchJsonLd";
 import get from "lodash.get";
+import fetchJsonLd from "./fetchJsonLd";
 
-export default async (resourceUrl, options = {}) => {
-  return await fetchJsonLd(
+export default (
+  resourceUrl: string,
+  options: RequestInit = {}
+): Promise<any> => {
+  return fetchJsonLd(
     resourceUrl,
     Object.assign({ itemsPerPage: 0 }, options)
   ).then(

@@ -1,24 +1,35 @@
+"use strict";
+
 module.exports = {
   env: {
-    'browser': true,
-    'commonjs': true,
-    'es6': true,
-    'jest': true,
-    'node': true,
+    browser: true,
+    commonjs: true,
+    es6: true,
+    jest: true,
+    node: true
   },
-  parser: 'babel-eslint',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 7,
-    sourceType: 'module'
+    sourceType: "module",
+    project: ["./tsconfig.json"]
   },
-  plugins: ['import', 'flowtype', 'prettier'],
+  plugins: ["@typescript-eslint"],
 
   extends: [
-      "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
 
   rules: {
-      "prettier/prettier": "error"
-  },
-
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      { allowSingleExtends: true }
+    ],
+    "@typescript-eslint/no-use-before-define": ["error", { functions: false }]
+  }
 };
