@@ -380,7 +380,7 @@ export default function parseHydraDocumentation(
 
         const url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`);
         if (!url) {
-          throw new Error(`Unable to find the URL for "${property["@id"]}".`);
+          throw new Error(`Unable to find the URL for "${property["@id"]}", make sure your api resource has at least one GET item operation declared.`);
         }
 
         const resource = new Resource(
