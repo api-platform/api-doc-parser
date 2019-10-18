@@ -49,7 +49,7 @@ parseOpenApi3Documentation('https://demo.api-platform.com/docs.json?spec_version
 ## Support for other formats (GraphQL, JSONAPI...)
 
 API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
-If you develop a parser for another format, please [open a Pull Request](https://github.com/dunglas/api-doc-parser/pulls)
+If you develop a parser for another format, please [open a Pull Request](https://github.com/api-platform/api-doc-parser/pulls)
 to include it in the library.
 
 ## Run tests
