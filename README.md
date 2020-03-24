@@ -13,11 +13,11 @@ It plays well with the [API Platform](https://api-platform.com) framework.
 
 With [Yarn](https://yarnpkg.com/):
 
-    yarn add api-doc-parser
+    yarn add @api-platform/api-doc-parser
 
 Using [NPM](https://www.npmjs.com/):
 
-    npm install api-doc-parser
+    npm install @api-platform/api-doc-parser
 
 If you plan to use the library with Node, you also need a polyfill for the `fetch` function:
 
@@ -27,21 +27,21 @@ If you plan to use the library with Node, you also need a polyfill for the `fetc
 
 **Hydra**
 ```javascript
-import parseHydraDocumentation from 'api-doc-parser/lib/hydra/parseHydraDocumentation';
+import parseHydraDocumentation from '@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation';
 
 parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
 **OpenApi v2 (formerly known as Swagger)**
 ```javascript
-import parseSwaggerDocumentation from 'api-doc-parser/lib/swagger/parseSwaggerDocumentation';
+import parseSwaggerDocumentation from '@api-platform/api-doc-parser/lib/swagger/parseSwaggerDocumentation';
 
 parseSwaggerDocumentation('https://demo.api-platform.com/docs.json').then(({api}) => console.log(api));
 ```
 
 **OpenApi v3**
 ```javascript
-import parseOpenApi3Documentation from 'api-doc-parser/lib/openapi3/parseOpenApi3Documentation';
+import parseOpenApi3Documentation from '@api-platform/api-doc-parser/lib/openapi3/parseOpenApi3Documentation';
 
 parseOpenApi3Documentation('https://demo.api-platform.com/docs.json?spec_version=3').then(({api}) => console.log(api));
 ```
