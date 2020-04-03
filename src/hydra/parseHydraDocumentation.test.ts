@@ -84,7 +84,7 @@ const docs = `{
         "hydra:title": "isbn",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The ISBN of the book"
       },
       {
@@ -99,7 +99,7 @@ const docs = `{
         "hydra:title": "name",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The name of the item"
       },
       {
@@ -114,7 +114,7 @@ const docs = `{
         "hydra:title": "description",
         "hydra:required": false,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "A description of the item"
       },
       {
@@ -129,7 +129,7 @@ const docs = `{
         "hydra:title": "author",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
       },
       {
@@ -144,7 +144,7 @@ const docs = `{
         "hydra:title": "dateCreated",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
       }
     ],
@@ -195,7 +195,7 @@ const docs = `{
         "hydra:title": "reviewBody",
         "hydra:required": false,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The actual body of the review"
       },
       {
@@ -210,7 +210,7 @@ const docs = `{
         "hydra:title": "rating",
         "hydra:required": false,
         "hydra:readable": true,
-        "hydra:writable": true
+        "hydra:writeable": true
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -225,7 +225,7 @@ const docs = `{
         "hydra:title": "itemReviewed",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "The item that is being reviewed/rated"
       }
     ],
@@ -273,7 +273,7 @@ const docs = `{
         "hydra:title": "label",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true
+        "hydra:writeable": true
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -287,7 +287,7 @@ const docs = `{
         "hydra:title": "description",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true
+        "hydra:writeable": true
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -300,7 +300,7 @@ const docs = `{
         "hydra:title": "sanitizedDescription",
         "hydra:required": false,
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       }
     ],
     "hydra:supportedOperation": [
@@ -339,7 +339,7 @@ const docs = `{
         "hydra:title": "deprecatedField",
         "hydra:required": true,
         "hydra:readable": true,
-        "hydra:writable": true,
+        "hydra:writeable": true,
         "hydra:description": "",
         "owl:deprecated": true
       }
@@ -384,7 +384,7 @@ const docs = `{
         },
         "hydra:title": "The collection of Book resources",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -414,7 +414,7 @@ const docs = `{
         },
         "hydra:title": "The collection of Review resources",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -444,7 +444,7 @@ const docs = `{
         },
         "hydra:title": "The collection of custom resources",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -484,7 +484,7 @@ const docs = `{
         },
         "hydra:title": "The collection of DeprecatedResource resources",
         "hydra:readable": true,
-        "hydra:writable": false,
+        "hydra:writeable": false,
         "owl:deprecated": true
     }
     ],
@@ -512,7 +512,7 @@ const docs = `{
         "hydra:title": "propertyPath",
         "hydra:description": "The property path of the violation",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       },
       {
         "@type": "hydra:SupportedProperty",
@@ -526,7 +526,7 @@ const docs = `{
         "hydra:title": "message",
         "hydra:description": "The message associated with the violation",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       }
     ]
   },
@@ -548,7 +548,7 @@ const docs = `{
         "hydra:title": "violation",
         "hydra:description": "The violations",
         "hydra:readable": true,
-        "hydra:writable": false
+        "hydra:writeable": false
       }
     ]
   }
@@ -681,7 +681,7 @@ const book = {
       deprecated: false
     }
   ],
-  writableFields: [
+  writeableFields: [
     {
       name: "isbn",
       id: "http://schema.org/isbn",
@@ -832,7 +832,7 @@ const review = {
       deprecated: false
     }
   ],
-  writableFields: [
+  writeableFields: [
     {
       name: "reviewBody",
       id: "http://schema.org/reviewBody",
@@ -976,7 +976,7 @@ const customResource = {
       deprecated: false
     }
   ],
-  writableFields: [
+  writeableFields: [
     {
       name: "label",
       id: "http://localhost/docs.jsonld#CustomResource/label",
@@ -1063,7 +1063,7 @@ const deprecatedResource = {
       deprecated: true
     }
   ],
-  writableFields: [
+  writeableFields: [
     {
       name: "deprecatedField",
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",

@@ -10,7 +10,7 @@ export interface ResourceOptions
     deprecated?: boolean;
     fields?: Field[];
     readableFields?: Field[];
-    writableFields?: Field[];
+    writeableFields?: Field[];
     parameters?: Parameter[];
     getParameters?: Function;
     operations?: Operation[];
