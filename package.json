@@ -4,8 +4,7 @@
   "description": "Transform a Hydra API documentation in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building admininistration interfaces.",
   "files": [
     "*.md",
-    "docs/*.md",
-    "lib",
+    "@types",
     "src"
   ],
   "main": "lib/index",
