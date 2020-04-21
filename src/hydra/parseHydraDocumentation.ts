@@ -209,7 +209,7 @@ export default function parseHydraDocumentation(
       ]) {
         const readableFields = [],
           resourceFields = [],
-          writeableFields = [],
+          writableFields = [],
           resourceOperations = [];
 
         const property = get(
@@ -288,7 +288,7 @@ export default function parseHydraDocumentation(
               '["http://www.w3.org/ns/hydra/core#writeable"][0]["@value"]'
             )
           ) {
-            writeableFields.push(field);
+            writableFields.push(field);
           }
         }
 
@@ -397,7 +397,7 @@ export default function parseHydraDocumentation(
             ),
             fields: resourceFields,
             readableFields,
-            writeableFields,
+            writableFields,
             operations: resourceOperations,
             deprecated: get(
               relatedClass,

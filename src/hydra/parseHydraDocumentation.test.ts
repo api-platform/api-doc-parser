@@ -681,7 +681,7 @@ const book = {
       deprecated: false
     }
   ],
-  writeableFields: [
+  writableFields: [
     {
       name: "isbn",
       id: "http://schema.org/isbn",
@@ -832,7 +832,7 @@ const review = {
       deprecated: false
     }
   ],
-  writeableFields: [
+  writableFields: [
     {
       name: "reviewBody",
       id: "http://schema.org/reviewBody",
@@ -976,7 +976,7 @@ const customResource = {
       deprecated: false
     }
   ],
-  writeableFields: [
+  writableFields: [
     {
       name: "label",
       id: "http://localhost/docs.jsonld#CustomResource/label",
@@ -1063,7 +1063,7 @@ const deprecatedResource = {
       deprecated: true
     }
   ],
-  writeableFields: [
+  writableFields: [
     {
       name: "deprecatedField",
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
