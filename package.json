@@ -5,6 +5,7 @@
   "files": [
     "*.md",
     "@types",
+    "lib",
     "src"
   ],
   "main": "lib/index",
