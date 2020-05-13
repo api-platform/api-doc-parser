@@ -146,6 +146,36 @@ const docs = `{
         "hydra:readable": true,
         "hydra:writeable": true,
         "hydra:description": "The date on which the CreativeWork was created or the item was added to a DataFeed"
+      },
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+          "@id": "http://schema.org/reviews",
+          "@type": "hydra:Link",
+          "rdfs:label": "reviews",
+          "domain": "http://schema.org/Book",
+          "range": "http://schema.org/Review"
+        },
+        "hydra:title": "reviews",
+        "hydra:required": false,
+        "hydra:readable": true,
+        "hydra:writable": true,
+        "hydra:description": "The book's reviews"
+      },
+      {
+        "@type": "hydra:SupportedProperty",
+        "hydra:property": {
+          "@id": "http://schema.org/reviews",
+          "@type": "rdf:Property",
+          "rdfs:label": "embeddedReviews",
+          "domain": "http://schema.org/Book",
+          "range": "http://schema.org/Review"
+        },
+        "hydra:title": "embeddedReviews",
+        "hydra:required": false,
+        "hydra:readable": true,
+        "hydra:writable": true,
+        "hydra:description": "The book's reviews"
       }
     ],
     "hydra:supportedOperation": [
@@ -579,6 +609,7 @@ const book = {
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
@@ -589,6 +620,7 @@ const book = {
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The name of the item",
       maxCardinality: null,
@@ -599,6 +631,7 @@ const book = {
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "A description of the item",
       maxCardinality: null,
@@ -609,6 +642,7 @@ const book = {
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
@@ -620,9 +654,32 @@ const book = {
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      maxCardinality: null,
+      deprecated: false
+    },
+    {
+      name: "reviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: "Object http://schema.org/Review",
+      embedded: null,
+      required: false,
+      description: "The book's reviews",
+      maxCardinality: null,
+      deprecated: false
+    },
+    {
+      name: "embeddedReviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: null,
+      embedded: "Object http://schema.org/Review",
+      required: false,
+      description: "The book's reviews",
       maxCardinality: null,
       deprecated: false
     }
@@ -633,6 +690,7 @@ const book = {
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
@@ -643,6 +701,7 @@ const book = {
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The name of the item",
       maxCardinality: null,
@@ -653,6 +712,7 @@ const book = {
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "A description of the item",
       maxCardinality: null,
@@ -663,6 +723,7 @@ const book = {
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
@@ -674,9 +735,32 @@ const book = {
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      maxCardinality: null,
+      deprecated: false
+    },
+    {
+      name: "reviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: "Object http://schema.org/Review",
+      embedded: null,
+      required: false,
+      description: "The book's reviews",
+      maxCardinality: null,
+      deprecated: false
+    },
+    {
+      name: "embeddedReviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: null,
+      embedded: "Object http://schema.org/Review",
+      required: false,
+      description: "The book's reviews",
       maxCardinality: null,
       deprecated: false
     }
@@ -687,6 +771,7 @@ const book = {
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
@@ -697,6 +782,7 @@ const book = {
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "The name of the item",
       maxCardinality: null,
@@ -707,6 +793,7 @@ const book = {
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "A description of the item",
       maxCardinality: null,
@@ -717,6 +804,7 @@ const book = {
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
@@ -728,6 +816,7 @@ const book = {
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
       reference: null,
+      embedded: null,
       required: true,
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
@@ -774,6 +863,7 @@ const review = {
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
@@ -784,6 +874,7 @@ const review = {
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
       reference: null,
+      embedded: null,
       required: false,
       description: "",
       maxCardinality: null,
@@ -793,7 +884,8 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
-      reference: book,
+      reference: "Object http://schema.org/Book",
+      embedded: null,
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
@@ -806,6 +898,7 @@ const review = {
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
@@ -816,6 +909,7 @@ const review = {
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
       reference: null,
+      embedded: null,
       required: false,
       description: "",
       maxCardinality: null,
@@ -825,7 +919,8 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
-      reference: book,
+      reference: "Object http://schema.org/Book",
+      embedded: null,
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
@@ -838,6 +933,7 @@ const review = {
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
@@ -848,6 +944,7 @@ const review = {
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
       reference: null,
+      embedded: null,
       required: false,
       description: "",
       maxCardinality: null,
@@ -857,7 +954,8 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
-      reference: book,
+      reference: "Object http://schema.org/Book",
+      embedded: null,
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
@@ -918,6 +1016,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -928,6 +1027,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -938,6 +1038,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
       range: null,
       reference: null,
+      embedded: null,
       required: false,
       description: "",
       maxCardinality: null,
@@ -950,6 +1051,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -960,6 +1062,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -970,6 +1073,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
       range: null,
       reference: null,
+      embedded: null,
       required: false,
       description: "",
       maxCardinality: null,
@@ -982,6 +1086,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -992,6 +1097,7 @@ const customResource = {
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -1045,6 +1151,7 @@ const deprecatedResource = {
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -1057,6 +1164,7 @@ const deprecatedResource = {
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -1069,6 +1177,7 @@ const deprecatedResource = {
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
       reference: null,
+      embedded: null,
       required: true,
       description: "",
       maxCardinality: null,
@@ -1113,13 +1222,25 @@ const init: MockParams = {
   }
 };
 
+const apiJsonReplacer = (key: string, value: any): any => {
+  if (
+    ["reference", "embedded"].includes(key) &&
+    typeof value === "object" &&
+    value !== null
+  ) {
+    return `Object ${value.id}`;
+  }
+
+  return value;
+};
+
 test("parse a Hydra documentation", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
   await parseHydraDocumentation("http://localhost", options).then(data => {
-    expect(JSON.stringify(data.api, null, 2)).toBe(
+    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();
@@ -1138,7 +1259,7 @@ test("parse a Hydra documentation (http://localhost/)", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   await parseHydraDocumentation("http://localhost/").then(data => {
-    expect(JSON.stringify(data.api, null, 2)).toBe(
+    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();

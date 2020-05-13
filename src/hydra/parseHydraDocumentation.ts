@@ -244,9 +244,14 @@ export default function parseHydraDocumentation(
               range: range,
               reference:
                 "http://www.w3.org/ns/hydra/core#Link" ===
-                get(property, '["@type"][0]')
-                  ? range
-                  : null, // Will be updated in a subsequent pass
+                get(supportedProperty, '["@type"][0]')
+                  ? range // Will be updated in a subsequent pass
+                  : null,
+              embedded:
+                "http://www.w3.org/ns/hydra/core#Link" !==
+                get(supportedProperty, '["@type"][0]')
+                  ? range // Will be updated in a subsequent pass
+                  : null,
               required: get(
                 supportedProperties,
                 '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]',
@@ -414,11 +419,16 @@ export default function parseHydraDocumentation(
         resources.push(resource);
       }
 
-      // Resolve references
+      // Resolve references and embedded
       for (const field of fields) {
         if (null !== field.reference) {
           field.reference =
             resources.find(resource => resource.id === field.reference) ||
+            (null as any);
+        }
+        if (null !== field.embedded) {
+          field.embedded =
+            resources.find(resource => resource.id === field.embedded) ||
             (null as any);
         }
       }

@@ -1,10 +1,12 @@
 import { assignSealed } from "./utils/assignSealed";
+import { Resource } from "./Resource";
 
 export interface FieldOptions
   extends Nullable<{
     id?: string;
     range?: string;
-    reference?: string;
+    reference?: Resource;
+    embedded?: Resource;
     required?: boolean;
     description?: string;
     maxCardinality?: number;
