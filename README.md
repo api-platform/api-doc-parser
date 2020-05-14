@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/api-platform/api-doc-parser.svg?branch=master)](https://travis-ci.org/api-platform/api-doc-parser)
 [![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
 
-`api-doc-parser` is a JavaScript (ES6) library to parse [Hydra](http://hydra-cg.com), [Swagger](https://swagger.io/specification/v2/) and [OpenAPI](https://github.com/OAI/OpenAPI-Specification#the-openapi-specification) documentations and transform them
+`api-doc-parser` is a standalone TypeScript library to parse [Hydra](http://hydra-cg.com), [Swagger](https://swagger.io/specification/v2/) and [OpenAPI](https://github.com/OAI/OpenAPI-Specification#the-openapi-specification) documentations and transform them
 in an intermediate representation. This data structure can then be used for various tasks such as creating smart API clients,
 scaffolding code or building administration interfaces.
 
@@ -32,14 +32,14 @@ import parseHydraDocumentation from '@api-platform/api-doc-parser/lib/hydra/pars
 parseHydraDocumentation('https://demo.api-platform.com').then(({api}) => console.log(api));
 ```
 
-**OpenApi v2 (formerly known as Swagger)**
+**OpenAPI v2 (formerly known as Swagger)**
 ```javascript
 import parseSwaggerDocumentation from '@api-platform/api-doc-parser/lib/swagger/parseSwaggerDocumentation';
 
 parseSwaggerDocumentation('https://demo.api-platform.com/docs.json').then(({api}) => console.log(api));
 ```
 
-**OpenApi v3**
+**OpenAPI v3**
 ```javascript
 import parseOpenApi3Documentation from '@api-platform/api-doc-parser/lib/openapi3/parseOpenApi3Documentation';
 
