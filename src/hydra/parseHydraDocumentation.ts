@@ -291,6 +291,10 @@ export default function parseHydraDocumentation(
             get(
               supportedProperties,
               '["http://www.w3.org/ns/hydra/core#writeable"][0]["@value"]'
+            ) ||
+            get(
+              supportedProperties,
+              '["http://www.w3.org/ns/hydra/core#writable"][0]["@value"]'
             )
           ) {
             writableFields.push(field);
