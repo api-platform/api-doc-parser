@@ -822,6 +822,28 @@ const book = {
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
       maxCardinality: null,
       deprecated: false
+    },
+    {
+      name: "reviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: "Object http://schema.org/Review",
+      embedded: null,
+      required: false,
+      description: "The book's reviews",
+      maxCardinality: null,
+      deprecated: false
+    },
+    {
+      name: "embeddedReviews",
+      id: "http://schema.org/reviews",
+      range: "http://schema.org/Review",
+      reference: null,
+      embedded: "Object http://schema.org/Review",
+      required: false,
+      description: "The book's reviews",
+      maxCardinality: null,
+      deprecated: false
     }
   ],
   operations: [
