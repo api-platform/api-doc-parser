@@ -5,7 +5,7 @@ export interface FieldOptions
   extends Nullable<{
     id?: string;
     range?: string;
-    reference?: Resource;
+    reference?: string | Resource;
     embedded?: Resource;
     required?: boolean;
     description?: string;

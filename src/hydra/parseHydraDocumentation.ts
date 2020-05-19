@@ -427,13 +427,11 @@ export default function parseHydraDocumentation(
       for (const field of fields) {
         if (null !== field.reference) {
           field.reference =
-            resources.find(resource => resource.id === field.reference) ||
-            (null as any);
+            resources.find(resource => resource.id === field.reference) || null;
         }
         if (null !== field.embedded) {
           field.embedded =
-            resources.find(resource => resource.id === field.embedded) ||
-            (null as any);
+            resources.find(resource => resource.id === field.embedded) || null;
         }
       }
 
