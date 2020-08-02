@@ -1,5 +1,4 @@
 import get from "lodash.get";
-import uniq from "lodash.uniq";
 import { OpenAPIV2 } from "openapi-types";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
@@ -15,8 +14,8 @@ export default function(
   response: OpenAPIV2.Document,
   entrypointUrl: string
 ): Resource[] {
-  const paths = uniq(
-    Object.keys(response.paths).map(item => item.replace(`/{id}`, ``))
+  const paths = Object.keys(response.paths).filter(
+    item => !item.includes(`/{id}`)
   );
 
   const resources = paths.map(item => {
