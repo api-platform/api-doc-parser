@@ -3,6 +3,7 @@ import uniq from "lodash.uniq";
 import { OpenAPIV3 } from "openapi-types";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
+import { getResources } from "../utils/getResources";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -15,9 +16,7 @@ export default function(
   response: OpenAPIV3.Document,
   entrypointUrl: string
 ): Resource[] {
-  const paths = uniq(
-    Object.keys(response.paths).map(item => item.replace(`/{id}`, ``))
-  );
+  const paths = getResources(response.paths);
 
   const resources = paths.map(item => {
     const name = item.replace(`/`, ``);
