@@ -36,7 +36,6 @@
     "graphql": "^15.0.0",
     "jsonld": "^1.5.0",
     "lodash.get": "^4.4.2",
-    "lodash.uniq": "^4.5.0",
     "tslib": "^1.10.0"
   },
   "scripts": {

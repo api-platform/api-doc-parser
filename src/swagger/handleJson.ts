@@ -1,5 +1,4 @@
 import get from "lodash.get";
-import uniq from "lodash.uniq";
 import { OpenAPIV2 } from "openapi-types";
 import { Field } from "../Field";
 import { Resource } from "../Resource";

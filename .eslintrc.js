@@ -30,6 +30,7 @@ module.exports = {
       "error",
       { allowSingleExtends: true }
     ],
-    "@typescript-eslint/no-use-before-define": ["error", { functions: false }]
+    "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
+    '@typescript-eslint/no-explicit-any': [0]
   }
 };
