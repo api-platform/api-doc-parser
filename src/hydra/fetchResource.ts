@@ -7,7 +7,7 @@ export default (
 ): Promise<any> => {
   return fetchJsonLd(
     resourceUrl,
-    { itemsPerPage: 0 , ...options}
+    options
   ).then(
     d => ({
       parameters: get(d, "body.hydra:search.hydra:mapping")
