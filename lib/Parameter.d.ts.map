@@ -1,0 +1,1 @@
+{"version":3,"file":"Parameter.d.ts","sourceRoot":"","sources":["../src/Parameter.ts"],"names":[],"mappings":"AAAA,qBAAa,SAAS;IAEX,QAAQ,EAAE,MAAM;IAChB,KAAK,EAAE,MAAM,GAAG,IAAI;IACpB,QAAQ,EAAE,OAAO;IACjB,WAAW,EAAE,MAAM;gBAHnB,QAAQ,EAAE,MAAM,EAChB,KAAK,EAAE,MAAM,GAAG,IAAI,EACpB,QAAQ,EAAE,OAAO,EACjB,WAAW,EAAE,MAAM;CAE7B"}

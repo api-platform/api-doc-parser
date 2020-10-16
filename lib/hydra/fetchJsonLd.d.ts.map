@@ -1,0 +1,1 @@
+{"version":3,"file":"fetchJsonLd.d.ts","sourceRoot":"","sources":["../../src/hydra/fetchJsonLd.ts"],"names":[],"mappings":"AAEA;;GAEG;AACH,wBAA8B,WAAW,CACvC,GAAG,EAAE,MAAM,EACX,OAAO,GAAE,WAAgB,GACxB,OAAO,CAAC;IACT,QAAQ,EAAE,QAAQ,CAAC;IACnB,IAAI,CAAC,EAAE,GAAG,CAAC;IACX,QAAQ,CAAC,EAAE,GAAG,CAAC;CAChB,CAAC,CAaD"}
