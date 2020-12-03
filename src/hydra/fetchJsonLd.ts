@@ -1,3 +1,5 @@
+import { RequestInitExtended } from "./types";
+
 const jsonLdMimeType = "application/ld+json";
 
 /**
@@ -5,7 +7,7 @@ const jsonLdMimeType = "application/ld+json";
  */
 export default async function fetchJsonLd(
   url: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<{
   response: Response;
   body?: any;
@@ -25,22 +27,29 @@ export default async function fetchJsonLd(
   return response.json().then(body => ({ response, body, document: body }));
 }
 
-function setHeaders(options: RequestInit): RequestInit {
-  if (!(options.headers instanceof Headers)) {
-    options.headers = new Headers(options.headers);
+function setHeaders(options: RequestInitExtended): RequestInit {
+  if (!options.headers) {
+    return { ...options, headers: {} };
   }
 
-  if (null === options.headers.get("Accept")) {
-    options.headers.set("Accept", jsonLdMimeType);
+  let headers: HeadersInit =
+    typeof options.headers === "function" ? options.headers() : options.headers;
+
+  headers = new Headers(headers);
+
+  if (null === headers.get("Accept")) {
+    headers.set("Accept", jsonLdMimeType);
   }
+
+  const result = { ...options, headers };
 
   if (
-    "undefined" !== options.body &&
-    !(typeof FormData !== "undefined" && options.body instanceof FormData) &&
-    null === options.headers.get("Content-Type")
+    "undefined" !== result.body &&
+    !(typeof FormData !== "undefined" && result.body instanceof FormData) &&
+    null === result.headers.get("Content-Type")
   ) {
-    options.headers.set("Content-Type", jsonLdMimeType);
+    result.headers.set("Content-Type", jsonLdMimeType);
   }
 
-  return options;
+  return result;
 }

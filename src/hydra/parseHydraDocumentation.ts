@@ -7,6 +7,7 @@ import { Operation } from "../Operation";
 import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
+import { RequestInitExtended } from "./types";
 
 /**
  * Extracts the short name of a resource.
@@ -66,7 +67,7 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
  */
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<{
   entrypointUrl: string;
   docsUrl: string;
@@ -168,7 +169,7 @@ function findRelatedClass(
  */
 export default function parseHydraDocumentation(
   entrypointUrl: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<{
   api: Api;
   response: Response;
