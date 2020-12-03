@@ -3,7 +3,7 @@ import fetchJsonLd from "./fetchJsonLd";
 
 export default (
   resourceUrl: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<any> => {
   return fetchJsonLd(
     resourceUrl,

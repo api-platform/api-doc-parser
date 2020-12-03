@@ -1277,6 +1277,32 @@ test("parse a Hydra documentation", async () => {
   });
 });
 
+test("parse a Hydra documentation using a dynamic headers", async () => {
+  fetchMock.mockResponses([entrypoint, init], [docs, init]);
+
+  const getHeaders = (): Headers =>
+    new Headers({ CustomHeader: "customValue" });
+
+  await parseHydraDocumentation("http://localhost", {
+    headers: getHeaders
+  }).then(data => {
+    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
+      JSON.stringify(expectedApi, null, 2)
+    );
+    expect(data.response).toBeDefined();
+    expect(data.status).toBe(200);
+
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(2, "http://localhost/docs.jsonld", {
+      headers: new Headers({
+        CustomHeader: "customValue",
+        Accept: "application/ld+json",
+        "Content-Type": "application/ld+json"
+      })
+    });
+  });
+});
+
 test("parse a Hydra documentation (http://localhost/)", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 

@@ -66,7 +66,7 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
  */
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<{
   entrypointUrl: string;
   docsUrl: string;
@@ -168,7 +168,7 @@ function findRelatedClass(
  */
 export default function parseHydraDocumentation(
   entrypointUrl: string,
-  options: RequestInit = {}
+  options: RequestInitExtended = {}
 ): Promise<{
   api: Api;
   response: Response;
