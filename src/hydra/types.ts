@@ -1,3 +1,3 @@
-interface RequestInitExtended extends Omit<RequestInit, "headers"> {
-  headers?: HeadersInit | Function;
+export interface RequestInitExtended extends Omit<RequestInit, "headers"> {
+  headers?: HeadersInit | (() => HeadersInit);
 }

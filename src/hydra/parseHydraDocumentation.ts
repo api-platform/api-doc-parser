@@ -7,6 +7,7 @@ import { Operation } from "../Operation";
 import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
+import { RequestInitExtended } from "./types";
 
 /**
  * Extracts the short name of a resource.

@@ -1,3 +1,5 @@
+import { RequestInitExtended } from "./types";
+
 const jsonLdMimeType = "application/ld+json";
 
 /**
@@ -26,19 +28,20 @@ export default async function fetchJsonLd(
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {
-  const result = { ...options };
-
-  if (typeof result.headers === "function") {
-    result.headers = result.headers();
+  if (!options.headers) {
+    return { ...options, headers: {} };
   }
 
-  if (!(result.headers instanceof Headers)) {
-    result.headers = new Headers(result.headers as HeadersInit);
+  let headers: HeadersInit =
+    typeof options.headers === "function" ? options.headers() : options.headers;
+
+  headers = new Headers(headers);
+
+  if (null === headers.get("Accept")) {
+    headers.set("Accept", jsonLdMimeType);
   }
 
-  if (null === result.headers.get("Accept")) {
-    result.headers.set("Accept", jsonLdMimeType);
-  }
+  const result = { ...options, headers };
 
   if (
     "undefined" !== result.body &&
@@ -48,5 +51,5 @@ function setHeaders(options: RequestInitExtended): RequestInit {
     result.headers.set("Content-Type", jsonLdMimeType);
   }
 
-  return result as RequestInit;
+  return result;
 }

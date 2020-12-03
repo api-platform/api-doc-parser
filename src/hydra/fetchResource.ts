@@ -1,5 +1,6 @@
 import get from "lodash.get";
 import fetchJsonLd from "./fetchJsonLd";
+import { RequestInitExtended } from "./types";
 
 export default (
   resourceUrl: string,

@@ -1269,15 +1269,17 @@ test("parse a Hydra documentation", async () => {
     expect(data.status).toBe(200);
 
     expect(fetch).toHaveBeenCalledTimes(2);
-    expect(fetch).toHaveBeenNthCalledWith(
-      2,
-      "http://localhost/docs.jsonld",
-      options
-    );
+    expect(fetch).toHaveBeenNthCalledWith(2, "http://localhost/docs.jsonld", {
+      headers: new Headers({
+        Accept: "application/ld+json",
+        "Content-Type": "application/ld+json",
+        CustomHeader: "customValue"
+      })
+    });
   });
 });
 
-test("parse a Hydra documentation using a dynamic headers", async () => {
+test("parse a Hydra documentation using dynamic headers", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const getHeaders = (): Headers =>
