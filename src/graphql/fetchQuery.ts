@@ -1,3 +1,5 @@
+import { ExecutionResult } from "graphql";
+
 const setOptions = (query: string, options: RequestInit): RequestInit => {
   if (!options.method) {
     options.method = "POST";
@@ -24,10 +26,10 @@ export default async (
   options: RequestInit = {}
 ): Promise<{
   response: Response;
-  body: any;
+  body: ExecutionResult;
 }> => {
   const response = await fetch(url, setOptions(query, options));
-  const body = await response.json();
+  const body = (await response.json()) as ExecutionResult;
 
   if (body?.errors) {
     return Promise.reject({ response, body });

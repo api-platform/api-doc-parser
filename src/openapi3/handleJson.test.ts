@@ -6,7 +6,7 @@ const openApi3Definition: OpenAPIV3.Document = {
   openapi: "3.0.2",
   info: {
     title: "",
-    version: "0.0.0"
+    version: "0.0.0",
   },
   paths: {
     "/books": {
@@ -22,28 +22,28 @@ const openApi3Definition: OpenAPIV3.Document = {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Book"
-                  }
-                }
+                    $ref: "#/components/schemas/Book",
+                  },
+                },
               },
               "application/json": {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Book"
-                  }
-                }
+                    $ref: "#/components/schemas/Book",
+                  },
+                },
               },
               "text/html": {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Book"
-                  }
-                }
-              }
-            }
-          }
+                    $ref: "#/components/schemas/Book",
+                  },
+                },
+              },
+            },
+          },
         },
         parameters: [
           {
@@ -52,10 +52,10 @@ const openApi3Definition: OpenAPIV3.Document = {
             required: false,
             description: "The collection page number",
             schema: {
-              type: "integer"
-            }
-          }
-        ]
+              type: "integer",
+            },
+          },
+        ],
       },
       post: {
         tags: ["Book"],
@@ -67,59 +67,59 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
-              }
+                  $ref: "#/components/schemas/Book",
+                },
+              },
             },
             links: {
               GetBookItem: {
                 parameters: {
-                  id: "$response.body#/id"
+                  id: "$response.body#/id",
                 },
                 operationId: "getBookItem",
                 description:
-                  "The `id` value returned in the response can be used as the `id` parameter in `GET /books/{id}`."
-              }
-            }
+                  "The `id` value returned in the response can be used as the `id` parameter in `GET /books/{id}`.",
+              },
+            },
           },
           "400": {
-            description: "Invalid input"
+            description: "Invalid input",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         requestBody: {
           content: {
             "application/ld+json": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
+                $ref: "#/components/schemas/Book",
+              },
             },
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
+                $ref: "#/components/schemas/Book",
+              },
             },
             "text/html": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
-            }
+                $ref: "#/components/schemas/Book",
+              },
+            },
           },
-          description: "The new Book resource"
-        }
-      }
+          description: "The new Book resource",
+        },
+      },
     },
     "/books/{id}": {
       get: {
@@ -132,9 +132,9 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
+              type: "string",
+            },
+          },
         ],
         responses: {
           "200": {
@@ -142,25 +142,25 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
-              }
-            }
+                  $ref: "#/components/schemas/Book",
+                },
+              },
+            },
           },
           "404": {
-            description: "Resource not found"
-          }
-        }
+            description: "Resource not found",
+          },
+        },
       },
       delete: {
         tags: ["Book"],
@@ -168,11 +168,11 @@ const openApi3Definition: OpenAPIV3.Document = {
         summary: "Removes the Book resource.",
         responses: {
           "204": {
-            description: "Book resource deleted"
+            description: "Book resource deleted",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         parameters: [
           {
@@ -180,10 +180,10 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
-        ]
+              type: "string",
+            },
+          },
+        ],
       },
       put: {
         tags: ["Book"],
@@ -195,9 +195,9 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
+              type: "string",
+            },
+          },
         ],
         responses: {
           "200": {
@@ -205,49 +205,49 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
+                  $ref: "#/components/schemas/Book",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Book"
-                }
-              }
-            }
+                  $ref: "#/components/schemas/Book",
+                },
+              },
+            },
           },
           "400": {
-            description: "Invalid input"
+            description: "Invalid input",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         requestBody: {
           content: {
             "application/ld+json": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
+                $ref: "#/components/schemas/Book",
+              },
             },
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
+                $ref: "#/components/schemas/Book",
+              },
             },
             "text/html": {
               schema: {
-                $ref: "#/components/schemas/Book"
-              }
-            }
+                $ref: "#/components/schemas/Book",
+              },
+            },
           },
-          description: "The updated Book resource"
-        }
-      }
+          description: "The updated Book resource",
+        },
+      },
     },
     "/reviews": {
       get: {
@@ -262,28 +262,28 @@ const openApi3Definition: OpenAPIV3.Document = {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Review"
-                  }
-                }
+                    $ref: "#/components/schemas/Review",
+                  },
+                },
               },
               "application/json": {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Review"
-                  }
-                }
+                    $ref: "#/components/schemas/Review",
+                  },
+                },
               },
               "text/html": {
                 schema: {
                   type: "array",
                   items: {
-                    $ref: "#/components/schemas/Review"
-                  }
-                }
-              }
-            }
-          }
+                    $ref: "#/components/schemas/Review",
+                  },
+                },
+              },
+            },
+          },
         },
         parameters: [
           {
@@ -292,10 +292,10 @@ const openApi3Definition: OpenAPIV3.Document = {
             required: false,
             description: "The collection page number",
             schema: {
-              type: "integer"
-            }
-          }
-        ]
+              type: "integer",
+            },
+          },
+        ],
       },
       post: {
         tags: ["Review"],
@@ -307,59 +307,59 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
-              }
+                  $ref: "#/components/schemas/Review",
+                },
+              },
             },
             links: {
               GetReviewItem: {
                 parameters: {
-                  id: "$response.body#/id"
+                  id: "$response.body#/id",
                 },
                 operationId: "getReviewItem",
                 description:
-                  "The `id` value returned in the response can be used as the `id` parameter in `GET /reviews/{id}`."
-              }
-            }
+                  "The `id` value returned in the response can be used as the `id` parameter in `GET /reviews/{id}`.",
+              },
+            },
           },
           "400": {
-            description: "Invalid input"
+            description: "Invalid input",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         requestBody: {
           content: {
             "application/ld+json": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
+                $ref: "#/components/schemas/Review",
+              },
             },
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
+                $ref: "#/components/schemas/Review",
+              },
             },
             "text/html": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
-            }
+                $ref: "#/components/schemas/Review",
+              },
+            },
           },
-          description: "The new Review resource"
-        }
-      }
+          description: "The new Review resource",
+        },
+      },
     },
     "/reviews/{id}": {
       get: {
@@ -372,9 +372,9 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
+              type: "string",
+            },
+          },
         ],
         responses: {
           "200": {
@@ -382,25 +382,25 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
-              }
-            }
+                  $ref: "#/components/schemas/Review",
+                },
+              },
+            },
           },
           "404": {
-            description: "Resource not found"
-          }
-        }
+            description: "Resource not found",
+          },
+        },
       },
       delete: {
         tags: ["Review"],
@@ -408,11 +408,11 @@ const openApi3Definition: OpenAPIV3.Document = {
         summary: "Removes the Review resource.",
         responses: {
           "204": {
-            description: "Review resource deleted"
+            description: "Review resource deleted",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         parameters: [
           {
@@ -420,10 +420,10 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
-        ]
+              type: "string",
+            },
+          },
+        ],
       },
       put: {
         tags: ["Review"],
@@ -435,9 +435,9 @@ const openApi3Definition: OpenAPIV3.Document = {
             in: "path",
             required: true,
             schema: {
-              type: "string"
-            }
-          }
+              type: "string",
+            },
+          },
         ],
         responses: {
           "200": {
@@ -445,50 +445,50 @@ const openApi3Definition: OpenAPIV3.Document = {
             content: {
               "application/ld+json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
+                  $ref: "#/components/schemas/Review",
+                },
               },
               "text/html": {
                 schema: {
-                  $ref: "#/components/schemas/Review"
-                }
-              }
-            }
+                  $ref: "#/components/schemas/Review",
+                },
+              },
+            },
           },
           "400": {
-            description: "Invalid input"
+            description: "Invalid input",
           },
           "404": {
-            description: "Resource not found"
-          }
+            description: "Resource not found",
+          },
         },
         requestBody: {
           content: {
             "application/ld+json": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
+                $ref: "#/components/schemas/Review",
+              },
             },
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
+                $ref: "#/components/schemas/Review",
+              },
             },
             "text/html": {
               schema: {
-                $ref: "#/components/schemas/Review"
-              }
-            }
+                $ref: "#/components/schemas/Review",
+              },
+            },
           },
-          description: "The updated Review resource"
-        }
-      }
-    }
+          description: "The updated Review resource",
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -498,32 +498,32 @@ const openApi3Definition: OpenAPIV3.Document = {
         properties: {
           id: {
             readOnly: true,
-            type: "integer"
+            type: "integer",
           },
           isbn: {
-            type: "string"
+            type: "string",
           },
           description: {
-            type: "string"
+            type: "string",
           },
           author: {
-            type: "string"
+            type: "string",
           },
           title: {
-            type: "string"
+            type: "string",
           },
           publicationDate: {
             type: "string",
-            format: "date-time"
+            format: "date-time",
           },
           reviews: {
             type: "array",
             items: {
-              type: "string"
-            }
-          }
+              type: "string",
+            },
+          },
         },
-        required: ["description", "author", "title", "publicationDate"]
+        required: ["description", "author", "title", "publicationDate"],
       },
       Review: {
         type: "object",
@@ -531,28 +531,28 @@ const openApi3Definition: OpenAPIV3.Document = {
         properties: {
           id: {
             readOnly: true,
-            type: "integer"
+            type: "integer",
           },
           rating: {
-            type: "integer"
+            type: "integer",
           },
           body: {
-            type: "string"
+            type: "string",
           },
           book: {
-            type: "string"
+            type: "string",
           },
           author: {
-            type: "string"
+            type: "string",
           },
           publicationDate: {
             type: "string",
-            format: "date-time"
-          }
-        }
-      }
-    }
-  }
+            format: "date-time",
+          },
+        },
+      },
+    },
+  },
 };
 const parsed = [
   {
@@ -567,7 +567,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "isbn",
@@ -575,7 +575,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The ISBN of the book"
+        description: "The ISBN of the book",
       },
       {
         name: "description",
@@ -583,7 +583,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "A description of the item"
+        description: "A description of the item",
       },
       {
         name: "author",
@@ -592,7 +592,7 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
       {
         name: "title",
@@ -600,7 +600,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "The title of the book"
+        description: "The title of the book",
       },
       {
         name: "publicationDate",
@@ -609,8 +609,8 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The date on which the CreativeWork was created or the item was added to a DataFeed"
-      }
+          "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      },
     ],
     readableFields: [
       {
@@ -619,7 +619,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "isbn",
@@ -627,7 +627,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The ISBN of the book"
+        description: "The ISBN of the book",
       },
       {
         name: "description",
@@ -635,7 +635,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "A description of the item"
+        description: "A description of the item",
       },
       {
         name: "author",
@@ -644,7 +644,7 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
       {
         name: "title",
@@ -652,7 +652,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "The title of the book"
+        description: "The title of the book",
       },
       {
         name: "publicationDate",
@@ -661,8 +661,8 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The date on which the CreativeWork was created or the item was added to a DataFeed"
-      }
+          "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      },
     ],
     writableFields: [
       {
@@ -671,7 +671,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "isbn",
@@ -679,7 +679,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The ISBN of the book"
+        description: "The ISBN of the book",
       },
       {
         name: "description",
@@ -687,7 +687,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "A description of the item"
+        description: "A description of the item",
       },
       {
         name: "author",
@@ -696,7 +696,7 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+          "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
       {
         name: "title",
@@ -704,7 +704,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
-        description: "The title of the book"
+        description: "The title of the book",
       },
       {
         name: "publicationDate",
@@ -713,9 +713,9 @@ const parsed = [
         reference: null,
         required: true,
         description:
-          "The date on which the CreativeWork was created or the item was added to a DataFeed"
-      }
-    ]
+          "The date on which the CreativeWork was created or the item was added to a DataFeed",
+      },
+    ],
   },
   {
     name: "reviews",
@@ -729,7 +729,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "rating",
@@ -737,7 +737,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "body",
@@ -745,7 +745,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The actual body of the review"
+        description: "The actual body of the review",
       },
       {
         name: "book",
@@ -763,7 +763,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -771,7 +771,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -779,7 +779,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -788,7 +788,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -796,7 +796,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -805,8 +805,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           readableFields: [
             {
@@ -815,7 +815,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -823,7 +823,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -831,7 +831,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -840,7 +840,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -848,7 +848,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -857,8 +857,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           writableFields: [
             {
@@ -867,7 +867,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -875,7 +875,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -883,7 +883,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -892,7 +892,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -900,7 +900,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -909,12 +909,12 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
-          ]
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
+          ],
         },
         required: true,
-        description: "The item that is being reviewed/rated"
+        description: "The item that is being reviewed/rated",
       },
       {
         name: "author",
@@ -922,7 +922,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
+        description: "Author the author of the review",
       },
       {
         name: "publicationDate",
@@ -930,8 +930,8 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
-      }
+        description: "Author the author of the review",
+      },
     ],
     readableFields: [
       {
@@ -940,7 +940,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "rating",
@@ -948,7 +948,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "body",
@@ -956,7 +956,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The actual body of the review"
+        description: "The actual body of the review",
       },
       {
         name: "book",
@@ -974,7 +974,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -982,7 +982,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -990,7 +990,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -999,7 +999,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1007,7 +1007,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1016,8 +1016,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           readableFields: [
             {
@@ -1026,7 +1026,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -1034,7 +1034,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -1042,7 +1042,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -1051,7 +1051,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1059,7 +1059,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1068,8 +1068,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           writableFields: [
             {
@@ -1078,7 +1078,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -1086,7 +1086,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -1094,7 +1094,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -1103,7 +1103,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1111,7 +1111,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1120,12 +1120,12 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
-          ]
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
+          ],
         },
         required: true,
-        description: "The item that is being reviewed/rated"
+        description: "The item that is being reviewed/rated",
       },
       {
         name: "author",
@@ -1133,7 +1133,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
+        description: "Author the author of the review",
       },
       {
         name: "publicationDate",
@@ -1141,8 +1141,8 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
-      }
+        description: "Author the author of the review",
+      },
     ],
     writableFields: [
       {
@@ -1151,7 +1151,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "rating",
@@ -1159,7 +1159,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: ""
+        description: "",
       },
       {
         name: "body",
@@ -1167,7 +1167,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "The actual body of the review"
+        description: "The actual body of the review",
       },
       {
         name: "book",
@@ -1185,7 +1185,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -1193,7 +1193,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -1201,7 +1201,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -1210,7 +1210,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1218,7 +1218,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1227,8 +1227,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           readableFields: [
             {
@@ -1237,7 +1237,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -1245,7 +1245,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -1253,7 +1253,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -1262,7 +1262,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1270,7 +1270,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1279,8 +1279,8 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
           ],
           writableFields: [
             {
@@ -1289,7 +1289,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: ""
+              description: "",
             },
             {
               name: "isbn",
@@ -1297,7 +1297,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
-              description: "The ISBN of the book"
+              description: "The ISBN of the book",
             },
             {
               name: "description",
@@ -1305,7 +1305,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "A description of the item"
+              description: "A description of the item",
             },
             {
               name: "author",
@@ -1314,7 +1314,7 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably"
+                "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
             {
               name: "title",
@@ -1322,7 +1322,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
-              description: "The title of the book"
+              description: "The title of the book",
             },
             {
               name: "publicationDate",
@@ -1331,12 +1331,12 @@ const parsed = [
               reference: null,
               required: true,
               description:
-                "The date on which the CreativeWork was created or the item was added to a DataFeed"
-            }
-          ]
+                "The date on which the CreativeWork was created or the item was added to a DataFeed",
+            },
+          ],
         },
         required: true,
-        description: "The item that is being reviewed/rated"
+        description: "The item that is being reviewed/rated",
       },
       {
         name: "author",
@@ -1344,7 +1344,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
+        description: "Author the author of the review",
       },
       {
         name: "publicationDate",
@@ -1352,10 +1352,10 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
-        description: "Author the author of the review"
-      }
-    ]
-  }
+        description: "Author the author of the review",
+      },
+    ],
+  },
 ];
 
 describe(`Parse OpenApi v3 Documentation from Json`, () => {

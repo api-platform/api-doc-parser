@@ -1,5 +1,6 @@
 import { FetchMock, MockParams } from "jest-fetch-mock";
 import parseHydraDocumentation from "./parseHydraDocumentation";
+import { Api } from "../Api";
 
 const fetchMock = fetch as FetchMock;
 
@@ -613,7 +614,7 @@ const book = {
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "name",
@@ -624,7 +625,7 @@ const book = {
       required: true,
       description: "The name of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -635,7 +636,7 @@ const book = {
       required: false,
       description: "A description of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "author",
@@ -647,7 +648,7 @@ const book = {
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "dateCreated",
@@ -659,7 +660,7 @@ const book = {
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "reviews",
@@ -670,7 +671,7 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "embeddedReviews",
@@ -681,8 +682,8 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   readableFields: [
     {
@@ -694,7 +695,7 @@ const book = {
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "name",
@@ -705,7 +706,7 @@ const book = {
       required: true,
       description: "The name of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -716,7 +717,7 @@ const book = {
       required: false,
       description: "A description of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "author",
@@ -728,7 +729,7 @@ const book = {
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "dateCreated",
@@ -740,7 +741,7 @@ const book = {
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "reviews",
@@ -751,7 +752,7 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "embeddedReviews",
@@ -762,8 +763,8 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   writableFields: [
     {
@@ -775,7 +776,7 @@ const book = {
       required: true,
       description: "The ISBN of the book",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "name",
@@ -786,7 +787,7 @@ const book = {
       required: true,
       description: "The name of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -797,7 +798,7 @@ const book = {
       required: false,
       description: "A description of the item",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "author",
@@ -809,7 +810,7 @@ const book = {
       description:
         "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "dateCreated",
@@ -821,7 +822,7 @@ const book = {
       description:
         "The date on which the CreativeWork was created or the item was added to a DataFeed",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "reviews",
@@ -832,7 +833,7 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "embeddedReviews",
@@ -843,8 +844,8 @@ const book = {
       required: false,
       description: "The book's reviews",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   operations: [
     {
@@ -852,7 +853,7 @@ const book = {
       method: "GET",
       returns: "http://schema.org/Book",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Replaces the Book resource.",
@@ -860,18 +861,18 @@ const book = {
       expects: "http://schema.org/Book",
       returns: "http://schema.org/Book",
       types: ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Deletes the Book resource.",
       method: "DELETE",
       returns: "http://www.w3.org/2002/07/owl#Nothing",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   deprecated: false,
-  parameters: []
+  parameters: [],
 };
 
 const review = {
@@ -889,7 +890,7 @@ const review = {
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "rating",
@@ -900,7 +901,7 @@ const review = {
       required: false,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "itemReviewed",
@@ -911,8 +912,8 @@ const review = {
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   readableFields: [
     {
@@ -924,7 +925,7 @@ const review = {
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "rating",
@@ -935,7 +936,7 @@ const review = {
       required: false,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "itemReviewed",
@@ -946,8 +947,8 @@ const review = {
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   writableFields: [
     {
@@ -959,7 +960,7 @@ const review = {
       required: false,
       description: "The actual body of the review",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "rating",
@@ -970,7 +971,7 @@ const review = {
       required: false,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "itemReviewed",
@@ -981,8 +982,8 @@ const review = {
       required: true,
       description: "The item that is being reviewed/rated",
       maxCardinality: 1,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   operations: [
     {
@@ -990,7 +991,7 @@ const review = {
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Creates a Review resource.",
@@ -998,14 +999,14 @@ const review = {
       expects: "http://schema.org/Review",
       returns: "http://schema.org/Review",
       types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Retrieves Review resource.",
       method: "GET",
       returns: "http://schema.org/Review",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Replaces the Review resource.",
@@ -1013,18 +1014,18 @@ const review = {
       expects: "http://schema.org/Review",
       returns: "http://schema.org/Review",
       types: ["http://www.w3.org/ns/hydra/core#ReplaceResourceOperation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Deletes the Review resource.",
       method: "DELETE",
       returns: "http://www.w3.org/2002/07/owl#Nothing",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   deprecated: false,
-  parameters: []
+  parameters: [],
 };
 
 const customResource = {
@@ -1042,7 +1043,7 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -1053,7 +1054,7 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "sanitizedDescription",
@@ -1064,8 +1065,8 @@ const customResource = {
       required: false,
       description: "",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   readableFields: [
     {
@@ -1077,7 +1078,7 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -1088,7 +1089,7 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "sanitizedDescription",
@@ -1099,8 +1100,8 @@ const customResource = {
       required: false,
       description: "",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   writableFields: [
     {
@@ -1112,7 +1113,7 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "description",
@@ -1123,8 +1124,8 @@ const customResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   operations: [
     {
@@ -1132,7 +1133,7 @@ const customResource = {
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Creates a custom resource.",
@@ -1140,14 +1141,14 @@ const customResource = {
       expects: "http://localhost/docs.jsonld#CustomResource",
       returns: "http://localhost/docs.jsonld#CustomResource",
       types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Retrieves custom resources.",
       method: "GET",
       returns: "http://localhost/docs.jsonld#CustomResource",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
-      deprecated: false
+      deprecated: false,
     },
     {
       name: "Creates a custom resource.",
@@ -1155,11 +1156,11 @@ const customResource = {
       expects: "http://localhost/docs.jsonld#CustomResource",
       returns: "http://localhost/docs.jsonld#CustomResource",
       types: ["http://www.w3.org/ns/hydra/core#CreateResourceOperation"],
-      deprecated: false
-    }
+      deprecated: false,
+    },
   ],
   deprecated: false,
-  parameters: []
+  parameters: [],
 };
 
 const deprecatedResource = {
@@ -1177,8 +1178,8 @@ const deprecatedResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: true
-    }
+      deprecated: true,
+    },
   ],
   readableFields: [
     {
@@ -1190,8 +1191,8 @@ const deprecatedResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: true
-    }
+      deprecated: true,
+    },
   ],
   writableFields: [
     {
@@ -1203,8 +1204,8 @@ const deprecatedResource = {
       required: true,
       description: "",
       maxCardinality: null,
-      deprecated: true
-    }
+      deprecated: true,
+    },
   ],
   operations: [
     {
@@ -1212,18 +1213,18 @@ const deprecatedResource = {
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#Collection",
       types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
-      deprecated: true
+      deprecated: true,
     },
     {
       name: "Retrieves DeprecatedResource resource.",
       method: "GET",
       returns: "http://localhost/docs.jsonld#DeprecatedResource",
       types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
-      deprecated: true
-    }
+      deprecated: true,
+    },
   ],
   deprecated: true,
-  parameters: []
+  parameters: [],
 };
 
 const resources = [book, review, customResource, deprecatedResource];
@@ -1231,7 +1232,7 @@ const resources = [book, review, customResource, deprecatedResource];
 const expectedApi = {
   entrypoint: "http://localhost",
   title: "API Platform's demo",
-  resources: resources
+  resources: resources,
 };
 
 const init: MockParams = {
@@ -1240,11 +1241,11 @@ const init: MockParams = {
   headers: {
     Link:
       '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
-    "Content-Type": "application/ld+json"
-  }
+    "Content-Type": "application/ld+json",
+  },
 };
 
-const apiJsonReplacer = (key: string, value: any): any => {
+const apiJsonReplacer = (key: string, value: null | { id: string }): any => {
   if (
     ["reference", "embedded"].includes(key) &&
     typeof value === "object" &&
@@ -1261,7 +1262,7 @@ test("parse a Hydra documentation", async () => {
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
-  await parseHydraDocumentation("http://localhost", options).then(data => {
+  await parseHydraDocumentation("http://localhost", options).then((data) => {
     expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
@@ -1273,8 +1274,8 @@ test("parse a Hydra documentation", async () => {
       headers: new Headers({
         Accept: "application/ld+json",
         "Content-Type": "application/ld+json",
-        CustomHeader: "customValue"
-      })
+        CustomHeader: "customValue",
+      }),
     });
   });
 });
@@ -1286,8 +1287,8 @@ test("parse a Hydra documentation using dynamic headers", async () => {
     new Headers({ CustomHeader: "customValue" });
 
   await parseHydraDocumentation("http://localhost", {
-    headers: getHeaders
-  }).then(data => {
+    headers: getHeaders,
+  }).then((data) => {
     expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
@@ -1299,8 +1300,8 @@ test("parse a Hydra documentation using dynamic headers", async () => {
       headers: new Headers({
         CustomHeader: "customValue",
         Accept: "application/ld+json",
-        "Content-Type": "application/ld+json"
-      })
+        "Content-Type": "application/ld+json",
+      }),
     });
   });
 });
@@ -1308,7 +1309,7 @@ test("parse a Hydra documentation using dynamic headers", async () => {
 test("parse a Hydra documentation (http://localhost/)", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
-  await parseHydraDocumentation("http://localhost/").then(data => {
+  await parseHydraDocumentation("http://localhost/").then((data) => {
     expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
@@ -1320,27 +1321,29 @@ test("parse a Hydra documentation (http://localhost/)", async () => {
 test("parse a Hydra documentation without authorization", () => {
   const init = {
     status: 401,
-    statusText: "Unauthorized"
+    statusText: "Unauthorized",
   };
 
   const expectedApi = {
     entrypoint: "http://localhost",
-    resources: []
+    resources: [],
   };
 
   const expectedResponse = {
     code: 401,
-    message: "JWT Token not found"
+    message: "JWT Token not found",
   };
 
   fetchMock.mockResponses([JSON.stringify(expectedResponse), init]);
 
-  return parseHydraDocumentation("http://localhost").catch(async data => {
-    expect(data.api).toEqual(expectedApi);
-    expect(data.response).toBeDefined();
-    await expect(data.response.json()).resolves.toEqual(expectedResponse);
-    expect(data.status).toBe(401);
-  });
+  return parseHydraDocumentation("http://localhost").catch(
+    async (data: { api: Api; response: Response; status: number }) => {
+      expect(data.api).toEqual(expectedApi);
+      expect(data.response).toBeDefined();
+      await expect(data.response.json()).resolves.toEqual(expectedResponse);
+      expect(data.status).toBe(401);
+    }
+  );
 });
 
 test('Parse entrypoint without "@type" key', async () => {
@@ -1374,7 +1377,7 @@ test('Parse entrypoint without "@type" key', async () => {
   try {
     await parseHydraDocumentation("http://localhost/");
   } catch (error) {
-    expectedError.message = error.message;
+    expectedError.message = (error as Error).message;
   }
 
   expect(expectedError.message).toBe('The API entrypoint has no "@type" key.');
@@ -1423,7 +1426,7 @@ test('Parse entrypoint class without "supportedClass" key', async () => {
   try {
     await parseHydraDocumentation("http://localhost/");
   } catch (error) {
-    expectedError.message = error.message;
+    expectedError.message = (error as Error).message;
   }
 
   expect(expectedError.message).toBe(
@@ -1487,7 +1490,7 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
   try {
     await parseHydraDocumentation("http://localhost/");
   } catch (error) {
-    expectedError.message = error.message;
+    expectedError.message = (error as Error).message;
   }
 
   expect(expectedError.message).toBe(
@@ -1505,7 +1508,7 @@ test("Invalid docs JSON", async () => {
   try {
     await parseHydraDocumentation("http://localhost/");
   } catch (error) {
-    expectedError = error;
+    expectedError = error as Error;
   }
 
   expect(expectedError).toHaveProperty("api");
@@ -1523,7 +1526,7 @@ test("Invalid entrypoint JSON", async () => {
   try {
     await parseHydraDocumentation("http://localhost/");
   } catch (error) {
-    expectedError = error;
+    expectedError = error as Error;
   }
 
   expect(expectedError).toHaveProperty("api");
@@ -1538,16 +1541,21 @@ test("Resource parameters can be retrieved", async () => {
     [resourceCollectionWithParameters, init]
   );
 
-  await parseHydraDocumentation("http://localhost").then(async (data: any) => {
-    await data.api.resources[0].getParameters().then((parameters: any) => {
-      expect(parameters).toEqual([
-        {
-          description: "",
-          range: "http://www.w3.org/2001/XMLSchema#string",
-          required: false,
-          variable: "isbn"
-        }
-      ]);
-    });
-  });
+  await parseHydraDocumentation("http://localhost").then(
+    async (data: { api: Api }) => {
+      const resource = data.api.resources?.[0];
+      resource &&
+        resource.getParameters &&
+        (await resource.getParameters().then((parameters: any) => {
+          expect(parameters).toEqual([
+            {
+              description: "",
+              range: "http://www.w3.org/2001/XMLSchema#string",
+              required: false,
+              variable: "isbn",
+            },
+          ]);
+        }));
+    }
+  );
 });

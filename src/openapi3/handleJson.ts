@@ -11,13 +11,13 @@ export const removeTrailingSlash = (url: string): string => {
   return url;
 };
 
-export default function(
+export default function (
   response: OpenAPIV3.Document,
   entrypointUrl: string
 ): Resource[] {
   const paths = getResources(response.paths);
 
-  const resources = paths.map(item => {
+  const resources = paths.map((item) => {
     const name = item.replace(`/`, ``);
     const url = removeTrailingSlash(entrypointUrl) + item;
     const firstMethod = Object.keys(
@@ -49,28 +49,29 @@ export default function(
     }
 
     const fieldNames = Object.keys(properties);
-    const requiredFields: string[] = get(
+    const requiredFields = get(
       response,
       ["components", "schemas", title, "required"],
       []
-    );
+    ) as string[];
 
-    const fields = fieldNames.map(fieldName => {
-      return new Field(fieldName, {
-        id: null,
-        range: null,
-        reference: null,
-        required: !!requiredFields.find(value => value === fieldName),
-        description: get(properties[fieldName], `description`, ``)
-      });
-    });
+    const fields = fieldNames.map(
+      (fieldName) =>
+        new Field(fieldName, {
+          id: null,
+          range: null,
+          reference: null,
+          required: !!requiredFields.find((value) => value === fieldName),
+          description: get(properties[fieldName], `description`, ``) as string,
+        })
+    );
 
     return new Resource(name, url, {
       id: null,
       title,
       fields,
       readableFields: fields,
-      writableFields: fields
+      writableFields: fields,
     });
   });
 

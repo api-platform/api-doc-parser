@@ -6,7 +6,7 @@ test("should get resources", () => {
     "/test/{id}": {},
     "/test/{id}/subpath": {},
     "/foo": {},
-    "/test/bar": {}
+    "/test/bar": {},
   };
 
   const resources = getResources(paths);

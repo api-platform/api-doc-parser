@@ -12,7 +12,7 @@ export interface ResourceOptions
     readableFields?: Field[];
     writableFields?: Field[];
     parameters?: Parameter[];
-    getParameters?: Function;
+    getParameters?: () => Promise<Parameter[]>;
     operations?: Operation[];
   }> {}
 

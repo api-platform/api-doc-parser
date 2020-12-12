@@ -1,3 +1,4 @@
+import { Document } from "jsonld/jsonld-spec";
 import { RequestInitExtended } from "./types";
 
 const jsonLdMimeType = "application/ld+json";
@@ -10,8 +11,8 @@ export default async function fetchJsonLd(
   options: RequestInitExtended = {}
 ): Promise<{
   response: Response;
-  body?: any;
-  document?: any;
+  body?: Document;
+  document?: Document;
 }> {
   const response = await fetch(url, setHeaders(options));
   const { headers, status } = response;
@@ -24,7 +25,9 @@ export default async function fetchJsonLd(
     return Promise.reject({ response });
   }
 
-  return response.json().then(body => ({ response, body, document: body }));
+  return response
+    .json()
+    .then((body: Document) => ({ response, body, document: body }));
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {

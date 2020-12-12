@@ -2,7 +2,7 @@ import {
   getIntrospectionQuery,
   IntrospectionObjectType,
   IntrospectionOutputTypeRef,
-  IntrospectionQuery
+  IntrospectionQuery,
 } from "graphql/utilities";
 import fetchQuery from "./fetchQuery";
 import { Api } from "../Api";
@@ -47,15 +47,15 @@ export default async (
   const {
     response,
     body: {
-      data: { __schema: schema }
-    }
-  }: {
+      data: { __schema: schema },
+    },
+  } = (await fetchQuery(entrypointUrl, introspectionQuery, options)) as {
     response: Response;
     body: { data: IntrospectionQuery };
-  } = await fetchQuery(entrypointUrl, introspectionQuery, options);
+  };
 
   const typeResources = schema.types.filter(
-    type =>
+    (type) =>
       type.kind === "OBJECT" &&
       type.name !== schema.queryType.name &&
       type.name !== schema.mutationType?.name &&
@@ -69,18 +69,18 @@ export default async (
   ) as IntrospectionObjectType[];
 
   const resources: Resource[] = [];
-  typeResources.forEach(typeResource => {
+  typeResources.forEach((typeResource) => {
     const fields: Field[] = [];
     const readableFields: Field[] = [];
     const writableFields: Field[] = [];
 
-    typeResource.fields.forEach(resourceFieldType => {
+    typeResource.fields.forEach((resourceFieldType) => {
       const field = new Field(resourceFieldType.name, {
         range: getRangeFromGraphQlType(resourceFieldType.type),
         reference: getReferenceFromGraphQlType(resourceFieldType.type),
         required: resourceFieldType.type.kind === "NON_NULL",
         description: resourceFieldType.description,
-        deprecated: resourceFieldType.isDeprecated
+        deprecated: resourceFieldType.isDeprecated,
       });
 
       fields.push(field);
@@ -92,25 +92,26 @@ export default async (
       new Resource(typeResource.name, "", {
         fields,
         readableFields,
-        writableFields
+        writableFields,
       })
     );
   });
 
-  resources.forEach(resource => {
-    resource.fields?.forEach(field => {
+  resources.forEach((resource) => {
+    resource.fields?.forEach((field) => {
       if (null !== field.reference) {
         field.reference =
-          resources.find(resource => resource.name === field.reference) || null;
+          resources.find((resource) => resource.name === field.reference) ||
+          null;
       } else if (null !== field.range) {
         field.reference =
-          resources.find(resource => resource.name === field.range) || null;
+          resources.find((resource) => resource.name === field.range) || null;
       }
     });
   });
 
   return {
     api: new Api(entrypointUrl, { resources }),
-    response
+    response,
   };
 };

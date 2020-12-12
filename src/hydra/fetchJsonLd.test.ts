@@ -15,13 +15,13 @@ test("fetch a JSON-LD document", () => {
     {
       status: 200,
       statusText: "OK",
-      headers: { "Content-Type": "application/ld+json" }
+      headers: { "Content-Type": "application/ld+json" },
     }
   );
 
-  return fetchJsonLd("/foo.jsonld").then(data => {
+  return fetchJsonLd("/foo.jsonld").then((data) => {
     expect(data.response.ok).toBe(true);
-    expect(data.body.name).toBe("John Lennon");
+    expect((data.body as { name: string }).name).toBe("John Lennon");
   });
 });
 
@@ -29,13 +29,15 @@ test("fetch a non JSON-LD document", () => {
   fetchMock.mockResponseOnce(`<body>Hello</body>`, {
     status: 200,
     statusText: "OK",
-    headers: { "Content-Type": "text/html" }
+    headers: { "Content-Type": "text/html" },
   });
 
-  return fetchJsonLd("/foo.jsonld").catch(data => {
-    expect(data.response.ok).toBe(true);
-    expect(typeof data.body).toBe("undefined");
-  });
+  return fetchJsonLd("/foo.jsonld").catch(
+    (data: { response: Response; body: undefined }) => {
+      expect(data.response.ok).toBe(true);
+      expect(typeof data.body).toBe("undefined");
+    }
+  );
 });
 
 test("fetch an error", () => {
@@ -50,26 +52,28 @@ test("fetch an error", () => {
     {
       status: 400,
       statusText: "Bad Request",
-      headers: { "Content-Type": "application/ld+json" }
+      headers: { "Content-Type": "application/ld+json" },
     }
   );
 
-  return fetchJsonLd("/foo.jsonld").catch(({ response }) => {
-    response.json().then((body: any) => {
-      expect(response.ok).toBe(false);
-      expect(body.born).toBe("1940-10-09");
-    });
-  });
+  return fetchJsonLd("/foo.jsonld").catch(
+    ({ response }: { response: Response }) => {
+      void response.json().then((body: { born: string }) => {
+        expect(response.ok).toBe(false);
+        expect(body.born).toBe("1940-10-09");
+      });
+    }
+  );
 });
 
 test("fetch an empty document", () => {
   fetchMock.mockResponseOnce("", {
     status: 204,
     statusText: "No Content",
-    headers: { "Content-Type": "text/html" }
+    headers: { "Content-Type": "text/html" },
   });
 
-  return fetchJsonLd("/foo.jsonld").then(data => {
+  return fetchJsonLd("/foo.jsonld").then((data) => {
     expect(data.response.ok).toBe(true);
     expect(data.body).toBe(undefined);
   });
