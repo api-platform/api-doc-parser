@@ -19,7 +19,8 @@ export const removeTrailingSlash = (url: string): string => {
   on the former.
 
   In OpenAPI3, the `/noun` path will typically have a `get` action, that 
-  probably accepts parameters and would respond with a array of objects.
+  probably accepts parameters and would respond with a array of objects, 
+  described in the `items` field.
 */
 
 export default async function (
@@ -65,8 +66,8 @@ export default async function (
 
     const fieldNames = Object.keys(properties);
     const requiredFields = get(
-      document,
-      ["components", "schemas", "title", "required"],
+      schema,
+      "items.required",
       []
     ) as string[];
 
