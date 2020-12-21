@@ -2,9 +2,8 @@ import get from "lodash.get";
 import { OpenAPIV3 } from "openapi-types";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
-import { Parameter } from "../Parameter";
 import { getResources } from "../utils/getResources";
-import jsonRefs, { ResolvedRefsResults } from 'json-refs';
+import jsonRefs, { ResolvedRefsResults } from "json-refs";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -40,17 +39,17 @@ export default async function (
   const serverUrl = new URL(serverUrlOrRelative, entrypointUrl).href;
 
   const resources: Resource[] = [];
-  
+
   paths.forEach((item) => {
     const name = item.replace(`/`, ``);
     const url = removeTrailingSlash(serverUrl) + item;
 
     const method = document.paths[item].get as OpenAPIV3.OperationObject;
-    
+
     if (!method) return;
 
     const schema = get(
-      method, 
+      method,
       "responses.200.content.application/json.schema"
     ) as OpenAPIV3.ArraySchemaObject;
 
@@ -65,11 +64,7 @@ export default async function (
     }
 
     const fieldNames = Object.keys(properties);
-    const requiredFields = get(
-      schema,
-      "items.required",
-      []
-    ) as string[];
+    const requiredFields = get(schema, "items.required", []) as string[];
 
     const fields = fieldNames.map(
       (fieldName) =>
@@ -83,15 +78,17 @@ export default async function (
         })
     );
 
-    resources.push(new Resource(name, url, {
-      id: null,
-      title: "title",
-      fields,
-      readableFields: fields,
-      writableFields: fields,
-      parameters: [],
-      getParameters: () => Promise.resolve([])
-    }));
+    resources.push(
+      new Resource(name, url, {
+        id: null,
+        title: "title",
+        fields,
+        readableFields: fields,
+        writableFields: fields,
+        parameters: [],
+        getParameters: () => Promise.resolve([]),
+      })
+    );
   });
 
   return resources;

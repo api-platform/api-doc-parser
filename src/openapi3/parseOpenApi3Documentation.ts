@@ -17,12 +17,11 @@ export default function parseOpenApi3Documentation(
     .then(
       ([res, response]: [res: Response, response: OpenAPIV3.Document]) => {
         const title = response.info.title;
-        return handleJson(response, entrypointUrl)
-        .then(resources => ({
+        return handleJson(response, entrypointUrl).then((resources) => ({
           api: new Api(entrypointUrl, { title, resources }),
           response,
           status: res.status,
-        }))
+        }));
       },
       ([res, response]: [res: Response, response: OpenAPIV3.Document]) =>
         Promise.reject({

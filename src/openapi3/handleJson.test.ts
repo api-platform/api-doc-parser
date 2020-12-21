@@ -1451,7 +1451,7 @@ describe(`Parse OpenApi v3 Documentation from Json`, () => {
       openApi3Definition,
       "https://demo.api-platform.com"
     );
-  
+
     expect(toBeParsed[0].name).toBe(parsed[0].name);
     expect(toBeParsed[0].url).toBe(parsed[0].url);
     expect(toBeParsed[0].id).toBe(parsed[0].id);
