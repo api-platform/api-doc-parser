@@ -567,6 +567,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -575,6 +576,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The ISBN of the book",
       },
       {
@@ -583,6 +585,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "A description of the item",
       },
       {
@@ -591,6 +594,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
@@ -600,6 +604,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "The title of the book",
       },
       {
@@ -608,6 +613,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The date on which the CreativeWork was created or the item was added to a DataFeed",
       },
@@ -619,6 +625,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -627,6 +634,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The ISBN of the book",
       },
       {
@@ -635,6 +643,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "A description of the item",
       },
       {
@@ -643,6 +652,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
@@ -652,6 +662,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "The title of the book",
       },
       {
@@ -660,6 +671,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The date on which the CreativeWork was created or the item was added to a DataFeed",
       },
@@ -671,6 +683,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -679,6 +692,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The ISBN of the book",
       },
       {
@@ -687,6 +701,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "A description of the item",
       },
       {
@@ -695,6 +710,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
@@ -704,6 +720,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description: "The title of the book",
       },
       {
@@ -712,6 +729,7 @@ const parsed = [
         range: null,
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The date on which the CreativeWork was created or the item was added to a DataFeed",
       },
@@ -729,6 +747,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -737,6 +756,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -745,6 +765,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The actual body of the review",
       },
       {
@@ -763,6 +784,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -771,6 +793,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -779,6 +802,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -787,6 +811,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -796,6 +821,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -804,6 +830,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -815,6 +842,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -823,6 +851,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -831,6 +860,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -839,6 +869,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -848,6 +879,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -856,6 +888,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -867,6 +900,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -875,6 +909,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -883,6 +918,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -891,6 +927,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -900,6 +937,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -908,6 +946,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -922,6 +961,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
       {
@@ -930,6 +970,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
     ],
@@ -940,6 +981,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -948,6 +990,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -956,6 +999,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The actual body of the review",
       },
       {
@@ -974,6 +1018,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -982,6 +1027,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -990,6 +1036,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -998,6 +1045,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1007,6 +1055,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1015,6 +1064,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1026,6 +1076,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -1034,6 +1085,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -1042,6 +1094,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -1050,6 +1103,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1059,6 +1113,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1067,6 +1122,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1078,6 +1134,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -1086,6 +1143,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -1094,6 +1152,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -1102,6 +1161,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1111,6 +1171,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1119,6 +1180,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1133,6 +1195,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
       {
@@ -1141,6 +1204,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
     ],
@@ -1151,6 +1215,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -1159,6 +1224,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
@@ -1167,6 +1233,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "The actual body of the review",
       },
       {
@@ -1185,6 +1252,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -1193,6 +1261,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -1201,6 +1270,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -1209,6 +1279,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1218,6 +1289,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1226,6 +1298,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1237,6 +1310,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -1245,6 +1319,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -1253,6 +1328,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -1261,6 +1337,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1270,6 +1347,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1278,6 +1356,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1289,6 +1368,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "",
             },
             {
@@ -1297,6 +1377,7 @@ const parsed = [
               range: null,
               reference: null,
               required: false,
+              embedded: null,
               description: "The ISBN of the book",
             },
             {
@@ -1305,6 +1386,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "A description of the item",
             },
             {
@@ -1313,6 +1395,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
             },
@@ -1322,6 +1405,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description: "The title of the book",
             },
             {
@@ -1330,6 +1414,7 @@ const parsed = [
               range: null,
               reference: null,
               required: true,
+              embedded: null,
               description:
                 "The date on which the CreativeWork was created or the item was added to a DataFeed",
             },
@@ -1344,6 +1429,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
       {
@@ -1352,6 +1438,7 @@ const parsed = [
         range: null,
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
     ],
@@ -1359,12 +1446,12 @@ const parsed = [
 ];
 
 describe(`Parse OpenApi v3 Documentation from Json`, () => {
-  const toBeParsed = handleJson(
-    openApi3Definition,
-    "https://demo.api-platform.com"
-  );
-
-  test(`Properties to be equal`, () => {
+  test(`Properties to be equal`, async () => {
+    const toBeParsed = await handleJson(
+      openApi3Definition,
+      "https://demo.api-platform.com"
+    );
+  
     expect(toBeParsed[0].name).toBe(parsed[0].name);
     expect(toBeParsed[0].url).toBe(parsed[0].url);
     expect(toBeParsed[0].id).toBe(parsed[0].id);
