@@ -82,7 +82,7 @@ export default async function (
     resources.push(
       new Resource(name, url, {
         id: null,
-        title: title,
+        title,
         fields,
         readableFields: fields,
         writableFields: fields,
