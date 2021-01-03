@@ -1456,7 +1456,7 @@ describe(`Parse OpenApi v3 Documentation from Json`, () => {
     expect(toBeParsed[0].url).toBe(parsed[0].url);
     expect(toBeParsed[0].id).toBe(parsed[0].id);
 
-    expect((toBeParsed[0].fields as Field[])[0]).toEqual(parsed[0].fields[0]);
+    expect(toBeParsed[0].fields?.[0]).toEqual(parsed[0].fields[0]);
 
     expect(toBeParsed[1].name).toBe(parsed[1].name);
     expect(toBeParsed[1].url).toBe(parsed[1].url);
