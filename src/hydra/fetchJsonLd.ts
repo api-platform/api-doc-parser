@@ -21,6 +21,7 @@ export default async function fetchJsonLd(
   if ([202, 204].includes(status)) {
     return Promise.resolve({ response });
   }
+
   if (500 <= status || !contentType || !contentType.includes(jsonLdMimeType)) {
     return Promise.reject({ response });
   }
