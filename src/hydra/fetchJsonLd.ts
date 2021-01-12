@@ -18,6 +18,9 @@ export default async function fetchJsonLd(
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
+  if (202 === status) {
+    return Promise.resolve({ response });
+  }
   if (204 === status) {
     return Promise.resolve({ response });
   }
