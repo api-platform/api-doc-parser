@@ -406,7 +406,7 @@ export default function parseHydraDocumentation(
           | undefined;
         if (!url) {
           throw new Error(
-            `Unable to find the URL for "${property["@id"]}", make sure your api resource has at least one GET item operation declared.`
+            `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`
           );
         }
 
