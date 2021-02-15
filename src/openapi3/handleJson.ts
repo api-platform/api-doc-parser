@@ -3,6 +3,7 @@ import { OpenAPIV3 } from "openapi-types";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
 import { getResources } from "../utils/getResources";
+import jsonRefs from "json-refs";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -11,49 +12,60 @@ export const removeTrailingSlash = (url: string): string => {
   return url;
 };
 
-export default function (
+/* Assumptions:
+  RESTful APIs typically have two paths per resources:  a `/noun` path and a 
+  `/noun/{id}` path. `getResources` strips out the latter, allowing us to focus
+  on the former.
+
+  In OpenAPI 3, the `/noun` path will typically have a `get` action, that 
+  probably accepts parameters and would respond with an array of objects, 
+  described in the `items` field.
+*/
+
+export default async function (
   response: OpenAPIV3.Document,
   entrypointUrl: string
-): Resource[] {
-  const paths = getResources(response.paths);
+): Promise<Resource[]> {
+  const results = await jsonRefs.resolveRefs(response);
+  const document = results.resolved as OpenAPIV3.Document;
 
-  const resources = paths.map((item) => {
+  const paths = getResources(document.paths);
+
+  let serverUrlOrRelative = "/";
+  if (document.servers) {
+    serverUrlOrRelative = document.servers[0].url;
+  }
+
+  const serverUrl = new URL(serverUrlOrRelative, entrypointUrl).href;
+
+  const resources: Resource[] = [];
+
+  paths.forEach((item) => {
     const name = item.replace(`/`, ``);
-    const url = removeTrailingSlash(entrypointUrl) + item;
-    const firstMethod = Object.keys(
-      response.paths[item]
-    )[0] as keyof OpenAPIV3.PathItemObject;
-    const responsePathItem = response.paths[item][
-      firstMethod
-    ] as OpenAPIV3.OperationObject;
+    const url = removeTrailingSlash(serverUrl) + item;
 
-    if (!responsePathItem.tags) {
-      throw new Error(); // @TODO
-    }
+    const method = document.paths[item].get as OpenAPIV3.OperationObject;
+    if (!method) return;
 
-    const title = responsePathItem.tags[0];
+    const title = get(method, ["tags", "0"], name) as string;
 
-    if (!response.components) {
-      throw new Error(); // @TODO
-    }
+    const schema = get(
+      method,
+      "responses.200.content.application/json.schema"
+    ) as OpenAPIV3.ArraySchemaObject;
 
-    if (!response.components.schemas) {
-      throw new Error(); // @TODO
-    }
+    if (!schema) return;
 
-    const schema = response.components.schemas[title] as OpenAPIV3.SchemaObject;
-    const properties = schema.properties;
+    const items = schema.items as OpenAPIV3.ArraySchemaObject;
+
+    const properties = items.properties;
 
     if (!properties) {
       throw new Error(); // @TODO
     }
 
     const fieldNames = Object.keys(properties);
-    const requiredFields = get(
-      response,
-      ["components", "schemas", title, "required"],
-      []
-    ) as string[];
+    const requiredFields = get(schema, "items.required", []) as string[];
 
     const fields = fieldNames.map(
       (fieldName) =>
@@ -61,18 +73,23 @@ export default function (
           id: null,
           range: null,
           reference: null,
+          embedded: null,
           required: !!requiredFields.find((value) => value === fieldName),
           description: get(properties[fieldName], `description`, ``) as string,
         })
     );
 
-    return new Resource(name, url, {
-      id: null,
-      title,
-      fields,
-      readableFields: fields,
-      writableFields: fields,
-    });
+    resources.push(
+      new Resource(name, url, {
+        id: null,
+        title,
+        fields,
+        readableFields: fields,
+        writableFields: fields,
+        parameters: [],
+        getParameters: () => Promise.resolve([]),
+      })
+    );
   });
 
   return resources;
