@@ -20,10 +20,15 @@ export default function (
   const resources = paths.map((item) => {
     const name = item.replace(`/`, ``);
     const url = removeTrailingSlash(entrypointUrl) + item;
+    const currentItem = response.paths[item];
+    if (!currentItem) {
+      throw new Error();
+    }
+
     const firstMethod = Object.keys(
-      response.paths[item]
+      currentItem
     )[0] as keyof OpenAPIV3.PathItemObject;
-    const responsePathItem = response.paths[item][
+    const responsePathItem = currentItem[
       firstMethod
     ] as OpenAPIV3.OperationObject;
 
