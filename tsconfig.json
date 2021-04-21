@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./lib",
+    "outDir": "./lib/cjs",
     "declaration": true,
     "declarationMap": true,
     "rootDir": "./src",
@@ -14,6 +14,7 @@
     "typeRoots": ["node_modules/@types", "@types"]
   },
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "lib/*"
   ]
 }
