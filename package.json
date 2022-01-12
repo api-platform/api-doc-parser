@@ -4,7 +4,6 @@
   "description": "Transform an API documentation (Hydra, OpenAPI, GraphQL) in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building administration interfaces.",
   "files": [
     "*.md",
-    "@types",
     "lib",
     "src"
   ],
@@ -18,7 +17,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.0",
     "@types/jsonld": "^1.5.0",
-    "@types/lodash": "^4.14.141",
+    "@types/lodash.get": "^4.4.0",
     "@types/node": "^15.3.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
