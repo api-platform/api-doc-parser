@@ -1,5 +1,6 @@
 import { assignSealed } from "./utils/assignSealed";
 import { Resource } from "./Resource";
+import { Nullable } from "./types";
 
 export interface FieldOptions
   extends Nullable<{
