@@ -1,7 +1,16 @@
-import { Document } from "jsonld/jsonld-spec";
+import { Document, JsonLd, RemoteDocument } from "jsonld/jsonld-spec";
 import { RequestInitExtended } from "./types";
 
 const jsonLdMimeType = "application/ld+json";
+
+export type RejectedResponseDocument = {
+  response: Response;
+};
+
+interface ResponseDocument extends RemoteDocument {
+  response: Response;
+  body: Document;
+}
 
 /**
  * Sends a JSON-LD request to the API.
@@ -9,25 +18,27 @@ const jsonLdMimeType = "application/ld+json";
 export default async function fetchJsonLd(
   url: string,
   options: RequestInitExtended = {}
-): Promise<{
-  response: Response;
-  body?: Document;
-  document?: Document;
-}> {
+): Promise<ResponseDocument> {
   const response = await fetch(url, setHeaders(options));
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
-  if (204 === status) {
-    return Promise.resolve({ response });
-  }
-  if (500 <= status || !contentType || !contentType.includes(jsonLdMimeType)) {
-    return Promise.reject({ response });
+  if (
+    204 === status ||
+    500 <= status ||
+    !contentType ||
+    !contentType.includes(jsonLdMimeType)
+  ) {
+    const reason: RejectedResponseDocument = { response };
+    return Promise.reject(reason);
   }
 
-  return response
-    .json()
-    .then((body: Document) => ({ response, body, document: body }));
+  return response.json().then((body: JsonLd) => ({
+    response,
+    body,
+    document: body,
+    documentUrl: url,
+  }));
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {
