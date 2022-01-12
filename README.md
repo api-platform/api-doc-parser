@@ -1,6 +1,6 @@
 # API Doc Parser
 
-[![Build Status](https://travis-ci.org/api-platform/api-doc-parser.svg?branch=master)](https://travis-ci.org/api-platform/api-doc-parser)
+[![GitHub Actions](https://github.com/api-platform/api-doc-parser/workflows/CI/badge.svg?branch=main)](https://github.com/api-platform/api-doc-parser/actions?query=workflow%3ACI+branch%3Amain)
 [![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
 
 `api-doc-parser` is a standalone TypeScript library to parse [Hydra](http://hydra-cg.com), [Swagger](https://swagger.io/specification/v2/), [OpenAPI](https://github.com/OAI/OpenAPI-Specification#the-openapi-specification) and [GraphQL](https://graphql.org/) documentations
