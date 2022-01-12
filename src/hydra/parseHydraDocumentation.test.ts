@@ -1239,8 +1239,7 @@ const init: MockParams = {
   status: 200,
   statusText: "OK",
   headers: {
-    Link:
-      '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
+    Link: '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
     "Content-Type": "application/ld+json",
   },
 };

@@ -23,7 +23,7 @@ export default function (
     const firstMethod = Object.keys(
       response.paths[item]
     )[0] as keyof OpenAPIV2.PathItemObject;
-    const responsePathItem = (response.paths[item] as OpenAPIV2.PathItemObject)[
+    const responsePathItem = response.paths[item][
       firstMethod
     ] as OpenAPIV2.OperationObject;
 

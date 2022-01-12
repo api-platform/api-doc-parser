@@ -53,9 +53,10 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
     throw new Error('The response has no "Link" HTTP header.');
   }
 
-  const matches = /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
-    linkHeader
-  );
+  const matches =
+    /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
+      linkHeader
+    );
   if (matches === null) {
     throw new Error(
       'The "Link" HTTP header is not of the type "http://www.w3.org/ns/hydra/core#apiDocumentation".'
@@ -79,26 +80,13 @@ async function fetchEntrypointAndDocs(
   docs: Doc[];
 }> {
   const d = await fetchJsonLd(entrypointUrl, options);
-  if (!d.body) {
-    throw new Error(
-      `Entrypoint ${entrypointUrl} is not a valid JSON-LD document.`
-    );
-  }
   const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
 
-  // @TODO this is suspect according to the jsonld type defs
-  const documentLoader = (input: string): Promise<any /* RemoteDocument */> =>
-    fetchJsonLd(input, options);
+  const documentLoader = (input: string) => fetchJsonLd(input, options);
 
   const docsJsonLd = (await fetchJsonLd(docsUrl, options)).body;
 
-  if (!docsJsonLd) {
-    throw new Error(
-      `Docs endpoint ${docsUrl} is not a valid JSON-LD document.`
-    );
-  }
-
-  const [docs, entrypoint] = ((await Promise.all([
+  const [docs, entrypoint] = (await Promise.all([
     jsonld.expand(docsJsonLd, {
       base: docsUrl,
       documentLoader,
@@ -107,7 +95,7 @@ async function fetchEntrypointAndDocs(
       base: entrypointUrl,
       documentLoader,
     }),
-  ])) as unknown) as [Doc[], Entrypoint[]];
+  ])) as unknown as [Doc[], Entrypoint[]];
 
   return {
     entrypointUrl,
@@ -264,7 +252,7 @@ export default function parseHydraDocumentation(
               embedded:
                 "http://www.w3.org/ns/hydra/core#Link" !==
                 get(supportedProperty, '["@type"][0]')
-                  ? ((range as unknown) as Resource) // Will be updated in a subsequent pass
+                  ? (range as unknown as Resource) // Will be updated in a subsequent pass
                   : null,
               required: get(
                 supportedProperties,
