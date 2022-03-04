@@ -1,6 +1,7 @@
 import { FetchMock, MockParams } from "jest-fetch-mock";
 import parseHydraDocumentation from "./parseHydraDocumentation";
 import { Api } from "../Api";
+import parsedJsonReplacer from "../utils/parsedJsonReplacer";
 
 const fetchMock = fetch as FetchMock;
 
@@ -609,6 +610,7 @@ const book = {
       name: "isbn",
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -620,6 +622,7 @@ const book = {
       name: "name",
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -631,6 +634,7 @@ const book = {
       name: "description",
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -642,6 +646,7 @@ const book = {
       name: "author",
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -654,6 +659,7 @@ const book = {
       name: "dateCreated",
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      type: "dateTime",
       reference: null,
       embedded: null,
       required: true,
@@ -666,6 +672,7 @@ const book = {
       name: "reviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: "Object http://schema.org/Review",
       embedded: null,
       required: false,
@@ -677,6 +684,7 @@ const book = {
       name: "embeddedReviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: null,
       embedded: "Object http://schema.org/Review",
       required: false,
@@ -690,6 +698,7 @@ const book = {
       name: "isbn",
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -701,6 +710,7 @@ const book = {
       name: "name",
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -712,6 +722,7 @@ const book = {
       name: "description",
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -723,6 +734,7 @@ const book = {
       name: "author",
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -735,6 +747,7 @@ const book = {
       name: "dateCreated",
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      type: "dateTime",
       reference: null,
       embedded: null,
       required: true,
@@ -747,6 +760,7 @@ const book = {
       name: "reviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: "Object http://schema.org/Review",
       embedded: null,
       required: false,
@@ -758,6 +772,7 @@ const book = {
       name: "embeddedReviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: null,
       embedded: "Object http://schema.org/Review",
       required: false,
@@ -771,6 +786,7 @@ const book = {
       name: "isbn",
       id: "http://schema.org/isbn",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -782,6 +798,7 @@ const book = {
       name: "name",
       id: "http://schema.org/name",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -793,6 +810,7 @@ const book = {
       name: "description",
       id: "http://schema.org/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -804,6 +822,7 @@ const book = {
       name: "author",
       id: "http://schema.org/author",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -816,6 +835,7 @@ const book = {
       name: "dateCreated",
       id: "http://schema.org/dateCreated",
       range: "http://www.w3.org/2001/XMLSchema#dateTime",
+      type: "dateTime",
       reference: null,
       embedded: null,
       required: true,
@@ -828,6 +848,7 @@ const book = {
       name: "reviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: "Object http://schema.org/Review",
       embedded: null,
       required: false,
@@ -839,6 +860,7 @@ const book = {
       name: "embeddedReviews",
       id: "http://schema.org/reviews",
       range: "http://schema.org/Review",
+      type: "string",
       reference: null,
       embedded: "Object http://schema.org/Review",
       required: false,
@@ -885,6 +907,7 @@ const review = {
       name: "reviewBody",
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -896,6 +919,7 @@ const review = {
       name: "rating",
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
+      type: "integer",
       reference: null,
       embedded: null,
       required: false,
@@ -907,6 +931,7 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
+      type: "string",
       reference: "Object http://schema.org/Book",
       embedded: null,
       required: true,
@@ -920,6 +945,7 @@ const review = {
       name: "reviewBody",
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -931,6 +957,7 @@ const review = {
       name: "rating",
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
+      type: "integer",
       reference: null,
       embedded: null,
       required: false,
@@ -942,6 +969,7 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
+      type: "string",
       reference: "Object http://schema.org/Book",
       embedded: null,
       required: true,
@@ -955,6 +983,7 @@ const review = {
       name: "reviewBody",
       id: "http://schema.org/reviewBody",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -966,6 +995,7 @@ const review = {
       name: "rating",
       id: "http://localhost/docs.jsonld#Review/rating",
       range: "http://www.w3.org/2001/XMLSchema#integer",
+      type: "integer",
       reference: null,
       embedded: null,
       required: false,
@@ -977,6 +1007,7 @@ const review = {
       name: "itemReviewed",
       id: "http://schema.org/itemReviewed",
       range: "http://schema.org/Book",
+      type: "string",
       reference: "Object http://schema.org/Book",
       embedded: null,
       required: true,
@@ -1038,6 +1069,7 @@ const customResource = {
       name: "label",
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1049,6 +1081,7 @@ const customResource = {
       name: "description",
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1060,6 +1093,7 @@ const customResource = {
       name: "sanitizedDescription",
       id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
       range: null,
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -1073,6 +1107,7 @@ const customResource = {
       name: "label",
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1084,6 +1119,7 @@ const customResource = {
       name: "description",
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1095,6 +1131,7 @@ const customResource = {
       name: "sanitizedDescription",
       id: "http://localhost/docs.jsonld#CustomResource/sanitizedDescription",
       range: null,
+      type: "string",
       reference: null,
       embedded: null,
       required: false,
@@ -1108,6 +1145,7 @@ const customResource = {
       name: "label",
       id: "http://localhost/docs.jsonld#CustomResource/label",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1119,6 +1157,7 @@ const customResource = {
       name: "description",
       id: "http://localhost/docs.jsonld#CustomResource/description",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1173,6 +1212,7 @@ const deprecatedResource = {
       name: "deprecatedField",
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1186,6 +1226,7 @@ const deprecatedResource = {
       name: "deprecatedField",
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1199,6 +1240,7 @@ const deprecatedResource = {
       name: "deprecatedField",
       id: "http://localhost/docs.jsonld#DeprecatedResource/deprecatedField",
       range: "http://www.w3.org/2001/XMLSchema#string",
+      type: "string",
       reference: null,
       embedded: null,
       required: true,
@@ -1244,25 +1286,13 @@ const init: MockParams = {
   },
 };
 
-const apiJsonReplacer = (key: string, value: null | { id: string }): any => {
-  if (
-    ["reference", "embedded"].includes(key) &&
-    typeof value === "object" &&
-    value !== null
-  ) {
-    return `Object ${value.id}`;
-  }
-
-  return value;
-};
-
 test("parse a Hydra documentation", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
   await parseHydraDocumentation("http://localhost", options).then((data) => {
-    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
+    expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();
@@ -1288,7 +1318,7 @@ test("parse a Hydra documentation using dynamic headers", async () => {
   await parseHydraDocumentation("http://localhost", {
     headers: getHeaders,
   }).then((data) => {
-    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
+    expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();
@@ -1309,7 +1339,7 @@ test("parse a Hydra documentation (http://localhost/)", async () => {
   fetchMock.mockResponses([entrypoint, init], [docs, init]);
 
   await parseHydraDocumentation("http://localhost/").then((data) => {
-    expect(JSON.stringify(data.api, apiJsonReplacer, 2)).toBe(
+    expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
       JSON.stringify(expectedApi, null, 2)
     );
     expect(data.response).toBeDefined();

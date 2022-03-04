@@ -375,32 +375,40 @@ const parsed = [
         name: "id",
         id: null,
         range: null,
+        type: "integer",
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
         name: "isbn",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: false,
+        embedded: null,
         description: "The ISBN of the book",
       },
       {
         name: "description",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: true,
+        embedded: null,
         description: "A description of the item",
       },
       {
         name: "author",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
@@ -408,16 +416,20 @@ const parsed = [
         name: "title",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: true,
+        embedded: null,
         description: "The title of the book",
       },
       {
         name: "publicationDate",
         id: null,
         range: null,
+        type: "dateTime",
         reference: null,
         required: true,
+        embedded: null,
         description:
           "The date on which the CreativeWork was created or the item was added to a DataFeed",
       },
@@ -537,24 +549,30 @@ const parsed = [
         name: "id",
         id: null,
         range: null,
+        type: "integer",
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
         name: "rating",
         id: null,
         range: null,
+        type: "integer",
         reference: null,
         required: false,
+        embedded: null,
         description: "",
       },
       {
         name: "body",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: false,
+        embedded: null,
         description: "The actual body of the review",
       },
       {
@@ -730,16 +748,20 @@ const parsed = [
         name: "author",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
       {
         name: "publicationDate",
         id: null,
         range: null,
+        type: "string",
         reference: null,
         required: false,
+        embedded: null,
         description: "Author the author of the review",
       },
     ],
@@ -1178,6 +1200,14 @@ describe(`Parse Swagger Documentation from Json`, () => {
     expect(toBeParsed[0].name).toBe(parsed[0].name);
     expect(toBeParsed[0].url).toBe(parsed[0].url);
     expect(toBeParsed[0].id).toBe(parsed[0].id);
+
+    const toBeParsedFields = toBeParsed[0].fields as Field[];
+    expect(toBeParsedFields[0]).toEqual(parsed[0].fields[0]);
+    expect(toBeParsedFields[1]).toEqual(parsed[0].fields[1]);
+    expect(toBeParsedFields[2]).toEqual(parsed[0].fields[2]);
+    expect(toBeParsedFields[3]).toEqual(parsed[0].fields[3]);
+    expect(toBeParsedFields[4]).toEqual(parsed[0].fields[4]);
+    expect(toBeParsedFields[5]).toEqual(parsed[0].fields[5]);
 
     expect(toBeParsed[1].name).toBe(parsed[1].name);
     expect(toBeParsed[1].url).toBe(parsed[1].url);

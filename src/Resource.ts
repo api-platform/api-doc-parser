@@ -8,6 +8,7 @@ export interface ResourceOptions
   extends Nullable<{
     id?: string;
     title?: string;
+    description?: string;
     deprecated?: boolean;
     fields?: Field[];
     readableFields?: Field[];

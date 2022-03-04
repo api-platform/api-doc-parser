@@ -54,6 +54,24 @@ import { parseGraphQl } from '@api-platform/api-doc-parser';
 parseGraphQl('https://demo.api-platform.com/graphql').then(({api}) => console.log(api));
 ```
 
+## OpenAPI Support
+
+In order to support OpenAPI, the library makes some assumptions about how the documentation relates to a corresponding ressource:
+- The path to get (`GET`) or edit (`PUT`) one resource looks like `/books/{id}` (regular expression used: `^[^{}]+/{[^{}]+}/?$`).
+Note that `books` may be a singular noun (`book`).
+If there is no path like this, the library skips the resource.
+- The corresponding path schema is retrieved for `get` either in the [`response` / `200` / `content` / `application/json`] path section or in the `components` section of the documentation.
+If retrieved from the `components` section, the component name needs to look like `Book` (singular noun).
+For `put`, the schema is only retrieved in the [`requestBody` / `content` / `application/json`] path section.
+If no schema is found, the resource is skipped.
+- If there are two schemas (one for `get` and one for `put`), resource fields are merged.
+- The library looks for a creation (`POST`) and list (`GET`) path. They need to look like `/books` (plural noun).
+- The deletion (`DELETE`) path needs to be inside the get / edit path.
+- In order to reference the resources between themselves (relations), the library guesses the references from property names.
+For instance if a book schema has a `reviews` property, the library tries to find a `Review` resource.
+If there is, a relation between `Book` and `Review` resources is made for the `reviews` field.
+- Parameters are only retrieved in the list path.
+
 ## Support for other formats (JSON:API...)
 
 API Doc Parser is designed to parse any API documentation format and convert it in the same intermediate representation.
