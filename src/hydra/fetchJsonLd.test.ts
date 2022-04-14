@@ -1,5 +1,5 @@
 import { FetchMock } from "jest-fetch-mock";
-import fetchJsonLd, { RejectedResponseDocument } from "./fetchJsonLd";
+import fetchJsonLd, { ResponseDocument } from "./fetchJsonLd";
 
 const fetchMock = fetch as FetchMock;
 
@@ -21,7 +21,9 @@ test("fetch a JSON-LD document", () => {
 
   return fetchJsonLd("/foo.jsonld").then((data) => {
     expect(data.response.ok).toBe(true);
-    expect((data.body as { name: string }).name).toBe("John Lennon");
+    expect(((data as ResponseDocument).body as { name: string }).name).toBe(
+      "John Lennon"
+    );
   });
 });
 
@@ -73,7 +75,8 @@ test("fetch an empty document", () => {
     headers: { "Content-Type": "text/html" },
   });
 
-  return fetchJsonLd("/foo.jsonld").catch((data: RejectedResponseDocument) => {
+  return fetchJsonLd("/foo.jsonld").then((data) => {
     expect(data.response.ok).toBe(true);
+    expect((data as ResponseDocument).body).toBe(undefined);
   });
 });

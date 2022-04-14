@@ -7,7 +7,11 @@ export type RejectedResponseDocument = {
   response: Response;
 };
 
-interface ResponseDocument extends RemoteDocument {
+export type EmptyResponseDocument = {
+  response: Response;
+};
+
+export interface ResponseDocument extends RemoteDocument {
   response: Response;
   body: Document;
 }
@@ -18,17 +22,16 @@ interface ResponseDocument extends RemoteDocument {
 export default async function fetchJsonLd(
   url: string,
   options: RequestInitExtended = {}
-): Promise<ResponseDocument> {
+): Promise<ResponseDocument | EmptyResponseDocument> {
   const response = await fetch(url, setHeaders(options));
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
-  if (
-    204 === status ||
-    500 <= status ||
-    !contentType ||
-    !contentType.includes(jsonLdMimeType)
-  ) {
+  if (204 === status) {
+    return Promise.resolve({ response });
+  }
+
+  if (500 <= status || !contentType || !contentType.includes(jsonLdMimeType)) {
     const reason: RejectedResponseDocument = { response };
     return Promise.reject(reason);
   }
