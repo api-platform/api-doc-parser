@@ -1,5 +1,4 @@
 import { OpenAPIV3 } from "openapi-types";
-import fetch from "cross-fetch";
 import { Api } from "../Api";
 import handleJson, { removeTrailingSlash } from "./handleJson";
 
