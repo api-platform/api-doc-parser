@@ -1,4 +1,5 @@
 import { OpenAPIV3 } from "openapi-types";
+import fetch from "cross-fetch";
 import { Api } from "../Api";
 import handleJson, { removeTrailingSlash } from "./handleJson";
 
@@ -17,13 +18,11 @@ export default function parseOpenApi3Documentation(
     .then(
       ([res, response]: [res: Response, response: OpenAPIV3.Document]) => {
         const title = response.info.title;
-        const resources = handleJson(response, entrypointUrl);
-
-        return Promise.resolve({
+        return handleJson(response, entrypointUrl).then((resources) => ({
           api: new Api(entrypointUrl, { title, resources }),
           response,
           status: res.status,
-        });
+        }));
       },
       ([res, response]: [res: Response, response: OpenAPIV3.Document]) =>
         Promise.reject({

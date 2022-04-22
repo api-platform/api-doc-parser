@@ -1,8 +1,16 @@
-import get from "lodash.get";
 import { OpenAPIV3 } from "openapi-types";
+import jsonRefs from "json-refs";
+import get from "lodash.get";
+import { classify, pluralize } from "inflection";
 import { Field } from "../Field";
+import { Operation } from "../Operation";
+import { Parameter } from "../Parameter";
 import { Resource } from "../Resource";
-import { getResources } from "../utils/getResources";
+import getResourcePaths from "../utils/getResources";
+import getType from "./getType";
+
+const isRef = <T>(maybeRef: T | OpenAPIV3.ReferenceObject): maybeRef is T =>
+  !("$ref" in maybeRef);
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -11,72 +19,247 @@ export const removeTrailingSlash = (url: string): string => {
   return url;
 };
 
-export default function (
+const mergeResources = (resourceA: Resource, resourceB: Resource) => {
+  resourceB.fields?.forEach((fieldB) => {
+    if (!resourceA.fields?.some((fieldA) => fieldA.name === fieldB.name)) {
+      resourceA.fields?.push(fieldB);
+    }
+  });
+  resourceB.readableFields?.forEach((fieldB) => {
+    if (
+      !resourceA.readableFields?.some((fieldA) => fieldA.name === fieldB.name)
+    ) {
+      resourceA.readableFields?.push(fieldB);
+    }
+  });
+  resourceB.writableFields?.forEach((fieldB) => {
+    if (
+      !resourceA.writableFields?.some((fieldA) => fieldA.name === fieldB.name)
+    ) {
+      resourceA.writableFields?.push(fieldB);
+    }
+  });
+
+  return resourceA;
+};
+
+const buildResourceFromSchema = (
+  schema: OpenAPIV3.SchemaObject,
+  name: string,
+  title: string,
+  url: string
+) => {
+  const description = schema.description;
+  const properties = schema.properties || {};
+
+  const fieldNames = Object.keys(properties);
+  const requiredFields = schema.required || [];
+
+  const readableFields: Field[] = [];
+  const writableFields: Field[] = [];
+
+  const fields = fieldNames.map((fieldName) => {
+    const property = properties[fieldName] as OpenAPIV3.SchemaObject;
+
+    const field = new Field(fieldName, {
+      id: null,
+      range: null,
+      type: getType(property.type || "string", property.format),
+      reference: null,
+      embedded: null,
+      nullable: property.nullable || false,
+      required: !!requiredFields.find((value) => value === fieldName),
+      description: property.description || "",
+    });
+
+    if (!property.writeOnly) {
+      readableFields.push(field);
+    }
+    if (!property.readOnly) {
+      writableFields.push(field);
+    }
+
+    return field;
+  });
+
+  return new Resource(name, url, {
+    id: null,
+    title,
+    description,
+    fields,
+    readableFields,
+    writableFields,
+    parameters: [],
+    getParameters: () => Promise.resolve([]),
+  });
+};
+
+const buildOperationFromPathItem = (
+  httpMethod: OpenAPIV3.HttpMethods,
+  operationName: string,
+  pathItem: OpenAPIV3.OperationObject
+): Operation => {
+  return new Operation(pathItem.summary || operationName, {
+    method: httpMethod.toUpperCase(),
+    deprecated: !!pathItem.deprecated,
+  });
+};
+
+/*
+  Assumptions:
+  RESTful APIs typically have two paths per resources: a `/noun` path and a
+  `/noun/{id}` path. `getResources` strips out the former, allowing us to focus
+  on the latter.
+
+  In OpenAPI 3, the `/noun/{id}` path will typically have a `get` action, that
+  probably accepts parameters and would respond with an object.
+*/
+
+export default async function (
   response: OpenAPIV3.Document,
   entrypointUrl: string
-): Resource[] {
-  const paths = getResources(response.paths);
+): Promise<Resource[]> {
+  const results = await jsonRefs.resolveRefs(response);
+  const document = results.resolved as OpenAPIV3.Document;
 
-  const resources = paths.map((item) => {
-    const name = item.replace(`/`, ``);
-    const url = removeTrailingSlash(entrypointUrl) + item;
-    const currentItem = response.paths[item];
-    if (!currentItem) {
+  const paths = getResourcePaths(document.paths);
+
+  let serverUrlOrRelative = "/";
+  if (document.servers) {
+    serverUrlOrRelative = document.servers[0].url;
+  }
+
+  const serverUrl = new URL(serverUrlOrRelative, entrypointUrl).href;
+
+  const resources: Resource[] = [];
+
+  paths.forEach((path) => {
+    const splittedPath = removeTrailingSlash(path).split("/");
+    const name = pluralize(splittedPath[splittedPath.length - 2]);
+    const url = `${removeTrailingSlash(serverUrl)}/${name}`;
+    const pathItem = document.paths[path];
+    if (!pathItem) {
       throw new Error();
     }
 
-    const firstMethod = Object.keys(
-      currentItem
-    )[0] as keyof OpenAPIV3.PathItemObject;
-    const responsePathItem = currentItem[
-      firstMethod
-    ] as OpenAPIV3.OperationObject;
+    const title = classify(splittedPath[splittedPath.length - 2]);
 
-    if (!responsePathItem.tags) {
-      throw new Error(); // @TODO
+    const showOperation = pathItem.get;
+    const editOperation = pathItem.put;
+    if (!showOperation && !editOperation) return;
+
+    const showSchema = showOperation
+      ? (get(
+          showOperation,
+          "responses.200.content.application/json.schema",
+          get(document, `components.schemas[${title}]`)
+        ) as OpenAPIV3.SchemaObject)
+      : null;
+    const editSchema = editOperation
+      ? (get(
+          editOperation,
+          "requestBody.content.application/json.schema"
+        ) as OpenAPIV3.SchemaObject)
+      : null;
+
+    if (!showSchema && !editSchema) return;
+
+    const showResource = showSchema
+      ? buildResourceFromSchema(showSchema, name, title, url)
+      : null;
+    const editResource = editSchema
+      ? buildResourceFromSchema(editSchema, name, title, url)
+      : null;
+    let resource = showResource ?? editResource;
+    if (!resource) return;
+    if (showResource && editResource) {
+      resource = mergeResources(showResource, editResource);
     }
 
-    const title = responsePathItem.tags[0];
+    const deleteOperation = pathItem.delete;
+    const pathCollection = document.paths[`/${name}`];
+    const listOperation = pathCollection && pathCollection.get;
+    const createOperation = pathCollection && pathCollection.post;
+    resource.operations = [
+      ...(showOperation
+        ? [
+            buildOperationFromPathItem(
+              OpenAPIV3.HttpMethods.GET,
+              "show",
+              showOperation
+            ),
+          ]
+        : []),
+      ...(editOperation
+        ? [
+            buildOperationFromPathItem(
+              OpenAPIV3.HttpMethods.PUT,
+              "edit",
+              editOperation
+            ),
+          ]
+        : []),
+      ...(deleteOperation
+        ? [
+            buildOperationFromPathItem(
+              OpenAPIV3.HttpMethods.DELETE,
+              "delete",
+              deleteOperation
+            ),
+          ]
+        : []),
+      ...(listOperation
+        ? [
+            buildOperationFromPathItem(
+              OpenAPIV3.HttpMethods.GET,
+              "list",
+              listOperation
+            ),
+          ]
+        : []),
+      ...(createOperation
+        ? [
+            buildOperationFromPathItem(
+              OpenAPIV3.HttpMethods.POST,
+              "create",
+              createOperation
+            ),
+          ]
+        : []),
+    ];
 
-    if (!response.components) {
-      throw new Error(); // @TODO
+    if (listOperation && listOperation.parameters) {
+      resource.parameters = listOperation.parameters
+        .filter(isRef)
+        .map(
+          (parameter) =>
+            new Parameter(
+              parameter.name,
+              parameter.schema && isRef(parameter.schema)
+                ? parameter.schema.type
+                  ? getType(parameter.schema.type)
+                  : null
+                : null,
+              parameter.required || false,
+              parameter.description || "",
+              parameter.deprecated
+            )
+        );
     }
 
-    if (!response.components.schemas) {
-      throw new Error(); // @TODO
-    }
+    resources.push(resource);
+  });
 
-    const schema = response.components.schemas[title] as OpenAPIV3.SchemaObject;
-    const properties = schema.properties;
-
-    if (!properties) {
-      throw new Error(); // @TODO
-    }
-
-    const fieldNames = Object.keys(properties);
-    const requiredFields = get(
-      response,
-      ["components", "schemas", title, "required"],
-      []
-    ) as string[];
-
-    const fields = fieldNames.map(
-      (fieldName) =>
-        new Field(fieldName, {
-          id: null,
-          range: null,
-          reference: null,
-          required: !!requiredFields.find((value) => value === fieldName),
-          description: get(properties[fieldName], `description`, ``) as string,
-        })
-    );
-
-    return new Resource(name, url, {
-      id: null,
-      title,
-      fields,
-      readableFields: fields,
-      writableFields: fields,
+  // Guess references from property names
+  resources.forEach((resource) => {
+    resource.fields?.forEach((field) => {
+      const reference = resources.find(
+        (res) => res.title === classify(field.name)
+      );
+      if (reference) {
+        field.reference = reference;
+        field.maxCardinality = field.type === "array" ? null : 1;
+      }
     });
   });
 

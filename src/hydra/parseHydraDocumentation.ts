@@ -7,6 +7,7 @@ import { Operation } from "../Operation";
 import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
+import getType from "./getType";
 import {
   Class,
   Doc,
@@ -249,6 +250,7 @@ export default function parseHydraDocumentation(
             supportedProperties,
             '["http://www.w3.org/ns/hydra/core#property"][0]'
           ) as RdfProperty;
+          const id = supportedProperty["@id"];
           const range = get(
             supportedProperty,
             '["http://www.w3.org/2000/01/rdf-schema#range"][0]["@id"]',
@@ -260,8 +262,9 @@ export default function parseHydraDocumentation(
               "@value"
             ],
             {
-              id: supportedProperty["@id"],
-              range: range,
+              id,
+              range,
+              type: getType(id, range),
               reference:
                 "http://www.w3.org/ns/hydra/core#Link" ===
                 get(supportedProperty, '["@type"][0]')

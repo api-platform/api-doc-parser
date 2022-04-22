@@ -1,6 +1,6 @@
-import { getResources } from "./getResources";
+import getResourcePaths from "./getResources";
 
-test("should get resources", () => {
+test("should get resource paths", () => {
   const paths = {
     "/test": {},
     "/test/{id}": {},
@@ -9,6 +9,6 @@ test("should get resources", () => {
     "/test/bar": {},
   };
 
-  const resources = getResources(paths);
-  expect(resources).toEqual(["/test", "/foo"]);
+  const resources = getResourcePaths(paths);
+  expect(resources).toEqual(["/test/{id}"]);
 });

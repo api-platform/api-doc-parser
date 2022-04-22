@@ -1,12 +1,14 @@
-export const getResources = (paths: { [key: string]: any }): string[] => {
-  const resources: string[] = [];
+import { OpenAPIV2, OpenAPIV3 } from "openapi-types";
 
-  Object.keys(paths).forEach((item) => {
-    if (item.includes("/{id}")) return;
-    if (resources.find((path) => path.startsWith("/" + item.split("/")[1])))
-      return;
-    resources.push(item);
-  });
+const getResources = (
+  paths: OpenAPIV2.PathsObject | OpenAPIV3.PathsObject
+): string[] =>
+  Array.from(
+    new Set(
+      Object.keys(paths).filter((path) => {
+        return new RegExp("^[^{}]+/{[^{}]+}/?$").test(path);
+      })
+    )
+  );
 
-  return resources;
-};
+export default getResources;
