@@ -95,7 +95,7 @@ const buildResourceFromSchema = (
 };
 
 const buildOperationFromPathItem = (
-  httpMethod: OpenAPIV3.HttpMethods,
+  httpMethod: `${OpenAPIV3.HttpMethods}`,
   operationName: string,
   pathItem: OpenAPIV3.OperationObject
 ): Operation => {
@@ -182,49 +182,19 @@ export default async function (
     const createOperation = pathCollection && pathCollection.post;
     resource.operations = [
       ...(showOperation
-        ? [
-            buildOperationFromPathItem(
-              OpenAPIV3.HttpMethods.GET,
-              "show",
-              showOperation
-            ),
-          ]
+        ? [buildOperationFromPathItem("get", "show", showOperation)]
         : []),
       ...(editOperation
-        ? [
-            buildOperationFromPathItem(
-              OpenAPIV3.HttpMethods.PUT,
-              "edit",
-              editOperation
-            ),
-          ]
+        ? [buildOperationFromPathItem("put", "edit", editOperation)]
         : []),
       ...(deleteOperation
-        ? [
-            buildOperationFromPathItem(
-              OpenAPIV3.HttpMethods.DELETE,
-              "delete",
-              deleteOperation
-            ),
-          ]
+        ? [buildOperationFromPathItem("delete", "delete", deleteOperation)]
         : []),
       ...(listOperation
-        ? [
-            buildOperationFromPathItem(
-              OpenAPIV3.HttpMethods.GET,
-              "list",
-              listOperation
-            ),
-          ]
+        ? [buildOperationFromPathItem("get", "list", listOperation)]
         : []),
       ...(createOperation
-        ? [
-            buildOperationFromPathItem(
-              OpenAPIV3.HttpMethods.POST,
-              "create",
-              createOperation
-            ),
-          ]
+        ? [buildOperationFromPathItem("post", "create", createOperation)]
         : []),
     ];
 
