@@ -2,7 +2,14 @@ export interface RequestInitExtended extends Omit<RequestInit, "headers"> {
   headers?: HeadersInit | (() => HeadersInit);
 }
 
-export type Operation = {
+export type IriTemplateMapping = {
+  "@type": "IriTemplateMapping";
+  variable: "string";
+  property: string | null;
+  required: boolean;
+};
+
+export type ExpandedOperation = {
   "@type": ["http://www.w3.org/ns/hydra/core#Operation"];
   "http://www.w3.org/2000/01/rdf-schema#label": [
     {
@@ -36,7 +43,7 @@ export type Operation = {
   ];
 };
 
-export type RdfProperty = {
+export type ExpandedRdfProperty = {
   "@id": string;
   "@type": [
     | "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
@@ -79,7 +86,7 @@ export type RdfProperty = {
           ];
         }
       ];
-  "http://www.w3.org/ns/hydra/core#supportedOperation"?: Operation[];
+  "http://www.w3.org/ns/hydra/core#supportedOperation"?: ExpandedOperation[];
   "http://www.w3.org/2002/07/owl#maxCardinality": [
     {
       "@value": number;
@@ -87,7 +94,7 @@ export type RdfProperty = {
   ];
 };
 
-export type SupportedProperty = {
+export type ExpandedSupportedProperty = {
   "@type": ["http://www.w3.org/ns/hydra/core#SupportedProperty"];
   "http://www.w3.org/ns/hydra/core#title": [
     {
@@ -114,7 +121,7 @@ export type SupportedProperty = {
       "@value": boolean;
     }
   ];
-  "http://www.w3.org/ns/hydra/core#property": [RdfProperty];
+  "http://www.w3.org/ns/hydra/core#property": [ExpandedRdfProperty];
   "http://www.w3.org/2002/07/owl#deprecated"?: [
     {
       "@value": boolean;
@@ -122,7 +129,7 @@ export type SupportedProperty = {
   ];
 };
 
-export type Class = {
+export type ExpandedClass = {
   "@id": string;
   "@type": ["http://www.w3.org/ns/hydra/core#Class"];
   "http://www.w3.org/2000/01/rdf-schema#label"?: [
@@ -145,8 +152,8 @@ export type Class = {
       "@value": string;
     }
   ];
-  "http://www.w3.org/ns/hydra/core#supportedProperty": SupportedProperty[];
-  "http://www.w3.org/ns/hydra/core#supportedOperation"?: Operation[];
+  "http://www.w3.org/ns/hydra/core#supportedProperty": ExpandedSupportedProperty[];
+  "http://www.w3.org/ns/hydra/core#supportedOperation"?: ExpandedOperation[];
   "http://www.w3.org/2002/07/owl#deprecated"?: [
     {
       "@value": boolean;
@@ -154,7 +161,7 @@ export type Class = {
   ];
 };
 
-export type Doc = {
+export type ExpandedDoc = {
   "@id": string;
   "@type": ["http://www.w3.org/ns/hydra/core#ApiDocumentation"];
   "http://www.w3.org/ns/hydra/core#title": [
@@ -172,7 +179,7 @@ export type Doc = {
       "@value": string;
     }
   ];
-  "http://www.w3.org/ns/hydra/core#supportedClass": Class[];
+  "http://www.w3.org/ns/hydra/core#supportedClass": ExpandedClass[];
 };
 
 export type Entrypoint = {

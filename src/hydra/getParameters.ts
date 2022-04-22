@@ -9,7 +9,7 @@ export default (
 ): Promise<Parameter[]> =>
   fetchResource(resource.url, options).then(({ parameters = [] }) => {
     const resourceParameters: Parameter[] = [];
-    parameters.forEach(({ property = null, required, variable }: any) => {
+    parameters.forEach(({ property = null, required, variable }) => {
       if (null === property) {
         return;
       }

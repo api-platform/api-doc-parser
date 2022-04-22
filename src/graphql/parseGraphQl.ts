@@ -46,13 +46,18 @@ export default async (
 
   const {
     response,
-    body: {
-      data: { __schema: schema },
-    },
-  } = (await fetchQuery(entrypointUrl, introspectionQuery, options)) as {
-    response: Response;
-    body: { data: IntrospectionQuery };
-  };
+    body: { data },
+  } = await fetchQuery<IntrospectionQuery>(
+    entrypointUrl,
+    introspectionQuery,
+    options
+  );
+  if (!data?.__schema) {
+    throw new Error(
+      "Schema has not been retrieved from the introspection query."
+    );
+  }
+  const schema = data?.__schema;
 
   const typeResources = schema.types.filter(
     (type) =>

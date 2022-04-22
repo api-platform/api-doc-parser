@@ -20,16 +20,16 @@ const setOptions = (query: string, options: RequestInit): RequestInit => {
   return options;
 };
 
-export default async (
+export default async <TData = { [key: string]: unknown }>(
   url: string,
   query: string,
   options: RequestInit = {}
 ): Promise<{
   response: Response;
-  body: ExecutionResult;
+  body: ExecutionResult<TData>;
 }> => {
   const response = await fetch(url, setOptions(query, options));
-  const body = (await response.json()) as ExecutionResult;
+  const body = (await response.json()) as ExecutionResult<TData>;
 
   if (body?.errors) {
     return Promise.reject({ response, body });

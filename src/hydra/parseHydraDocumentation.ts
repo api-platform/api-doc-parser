@@ -9,10 +9,10 @@ import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
 import getType from "./getType";
 import {
-  Class,
-  Doc,
+  ExpandedClass,
+  ExpandedDoc,
   Entrypoint,
-  RdfProperty,
+  ExpandedRdfProperty,
   RequestInitExtended,
 } from "./types";
 
@@ -26,11 +26,14 @@ function guessNameFromUrl(url: string, entrypointUrl: string): string {
 /**
  * Finds the description of the class with the given id.
  */
-function findSupportedClass(docs: Doc[], classToFind: string): Class {
+function findSupportedClass(
+  docs: ExpandedDoc[],
+  classToFind: string
+): ExpandedClass {
   const supportedClasses = get(
     docs,
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
-  ) as Class[] | undefined;
+  ) as ExpandedClass[] | undefined;
   if (!Array.isArray(supportedClasses)) {
     throw new Error(
       'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
@@ -78,7 +81,7 @@ async function fetchEntrypointAndDocs(
   docsUrl: string;
   response: Response;
   entrypoint: Entrypoint[];
-  docs: Doc[];
+  docs: ExpandedDoc[];
 }> {
   const d = await fetchJsonLd(entrypointUrl, options);
   if (!("body" in d)) {
@@ -114,7 +117,7 @@ async function fetchEntrypointAndDocs(
       base: entrypointUrl,
       documentLoader,
     }),
-  ])) as unknown as [Doc[], Entrypoint[]];
+  ])) as unknown as [ExpandedDoc[], Entrypoint[]];
 
   return {
     entrypointUrl,
@@ -133,7 +136,10 @@ function removeTrailingSlash(url: string): string {
   return url;
 }
 
-function findRelatedClass(docs: Doc[], property: RdfProperty): Class {
+function findRelatedClass(
+  docs: ExpandedDoc[],
+  property: ExpandedRdfProperty
+): ExpandedClass {
   // Use the entrypoint property's owl:equivalentClass if available
   if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
     for (const range of property[
@@ -236,7 +242,7 @@ export default function parseHydraDocumentation(
         const property = get(
           properties,
           '["http://www.w3.org/ns/hydra/core#property"][0]'
-        ) as RdfProperty | undefined;
+        ) as ExpandedRdfProperty | undefined;
         if (!property) {
           continue;
         }
@@ -249,7 +255,7 @@ export default function parseHydraDocumentation(
           const supportedProperty = get(
             supportedProperties,
             '["http://www.w3.org/ns/hydra/core#property"][0]'
-          ) as RdfProperty;
+          ) as ExpandedRdfProperty;
           const id = supportedProperty["@id"];
           const range = get(
             supportedProperty,

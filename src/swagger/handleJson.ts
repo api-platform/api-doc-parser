@@ -58,7 +58,7 @@ export default function (
         range: null,
         type: getType(
           get(property, "type", "") as string,
-          get(property, "format", "")
+          get(property, "format", "") as string
         ),
         reference: null,
         embedded: null,
