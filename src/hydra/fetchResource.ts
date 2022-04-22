@@ -1,16 +1,18 @@
 import get from "lodash.get";
 import fetchJsonLd from "./fetchJsonLd";
-import { RequestInitExtended } from "./types";
-import { Parameter } from "../Parameter";
+import type { IriTemplateMapping, RequestInitExtended } from "./types";
 
 export default (
   resourceUrl: string,
   options: RequestInitExtended = {}
-): Promise<{ parameters: Parameter[] }> => {
+): Promise<{ parameters: IriTemplateMapping[] }> => {
   return fetchJsonLd(
     resourceUrl,
     Object.assign({ itemsPerPage: 0 }, options)
   ).then((d) => ({
-    parameters: get(d, "body.hydra:search.hydra:mapping") as Parameter[],
+    parameters: get(
+      d,
+      "body.hydra:search.hydra:mapping"
+    ) as IriTemplateMapping[],
   }));
 };
