@@ -67,9 +67,10 @@ If no schema is found, the resource is skipped.
 - If there are two schemas (one for `get` and one for `put`), resource fields are merged.
 - The library looks for a creation (`POST`) and list (`GET`) path. They need to look like `/books` (plural noun).
 - The deletion (`DELETE`) path needs to be inside the get / edit path.
-- In order to reference the resources between themselves (relations), the library guesses the references from property names.
+- In order to reference the resources between themselves (embeddeds or relations), the library guesses embeddeds or references from property names.
 For instance if a book schema has a `reviews` property, the library tries to find a `Review` resource.
-If there is, a relation between `Book` and `Review` resources is made for the `reviews` field.
+If there is, a relation or an embedded between `Book` and `Review` resources is made for the `reviews` field.
+The property name can also be like `review_id`, `reviewId`, `review_ids` or `reviewIds` for references.
 - Parameters are only retrieved in the list path.
 
 ## Support for other formats (JSON:API...)

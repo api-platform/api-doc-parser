@@ -23,6 +23,7 @@ export type FieldType =
   | "hexBinary"
   | "base64Binary"
   | "array"
+  | "object"
   | "email"
   | "url"
   | "uuid"
@@ -34,6 +35,7 @@ export interface FieldOptions
     id?: string;
     range?: string;
     type?: FieldType;
+    arrayType?: FieldType;
     reference?: string | Resource;
     embedded?: Resource;
     required?: boolean;
