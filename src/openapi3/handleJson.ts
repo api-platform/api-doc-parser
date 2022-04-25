@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from "openapi-types";
 import jsonRefs from "json-refs";
 import get from "lodash.get";
-import { classify, pluralize } from "inflection";
+import { camelize, classify, pluralize } from "inflection";
 import { Field } from "../Field";
 import { Operation } from "../Operation";
 import { Parameter } from "../Parameter";
@@ -61,10 +61,18 @@ const buildResourceFromSchema = (
   const fields = fieldNames.map((fieldName) => {
     const property = properties[fieldName] as OpenAPIV3.SchemaObject;
 
+    const type = getType(property.type || "string", property.format);
     const field = new Field(fieldName, {
       id: null,
       range: null,
-      type: getType(property.type || "string", property.format),
+      type,
+      arrayType:
+        type === "array" && "items" in property
+          ? getType(
+              (property.items as OpenAPIV3.SchemaObject).type || "string",
+              (property.items as OpenAPIV3.SchemaObject).format
+            )
+          : null,
       reference: null,
       embedded: null,
       nullable: property.nullable || false,
@@ -220,15 +228,22 @@ export default async function (
     resources.push(resource);
   });
 
-  // Guess references from property names
+  // Guess embeddeds and references from property names
   resources.forEach((resource) => {
     resource.fields?.forEach((field) => {
-      const reference = resources.find(
-        (res) => res.title === classify(field.name)
+      const name = camelize(field.name).replace(/Ids?$/, "");
+
+      const guessedResource = resources.find(
+        (res) => res.title === classify(name)
       );
-      if (reference) {
-        field.reference = reference;
-        field.maxCardinality = field.type === "array" ? null : 1;
+      if (!guessedResource) {
+        return;
+      }
+      field.maxCardinality = field.type === "array" ? null : 1;
+      if (field.type === "object" || field.arrayType === "object") {
+        field.embedded = guessedResource;
+      } else {
+        field.reference = guessedResource;
       }
     });
   });
