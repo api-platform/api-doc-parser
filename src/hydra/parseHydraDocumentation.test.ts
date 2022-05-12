@@ -872,6 +872,7 @@ const book = {
   operations: [
     {
       name: "Retrieves Book resource.",
+      type: "show",
       method: "GET",
       returns: "http://schema.org/Book",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -879,6 +880,7 @@ const book = {
     },
     {
       name: "Replaces the Book resource.",
+      type: "edit",
       method: "PUT",
       expects: "http://schema.org/Book",
       returns: "http://schema.org/Book",
@@ -887,6 +889,7 @@ const book = {
     },
     {
       name: "Deletes the Book resource.",
+      type: "delete",
       method: "DELETE",
       returns: "http://www.w3.org/2002/07/owl#Nothing",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1019,6 +1022,7 @@ const review = {
   operations: [
     {
       name: "Retrieves the collection of Review resources.",
+      type: "list",
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1026,6 +1030,7 @@ const review = {
     },
     {
       name: "Creates a Review resource.",
+      type: "create",
       method: "POST",
       expects: "http://schema.org/Review",
       returns: "http://schema.org/Review",
@@ -1034,6 +1039,7 @@ const review = {
     },
     {
       name: "Retrieves Review resource.",
+      type: "show",
       method: "GET",
       returns: "http://schema.org/Review",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1041,6 +1047,7 @@ const review = {
     },
     {
       name: "Replaces the Review resource.",
+      type: "edit",
       method: "PUT",
       expects: "http://schema.org/Review",
       returns: "http://schema.org/Review",
@@ -1049,6 +1056,7 @@ const review = {
     },
     {
       name: "Deletes the Review resource.",
+      type: "delete",
       method: "DELETE",
       returns: "http://www.w3.org/2002/07/owl#Nothing",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1169,6 +1177,7 @@ const customResource = {
   operations: [
     {
       name: "Retrieves the collection of custom resources.",
+      type: "list",
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#PagedCollection",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1176,6 +1185,7 @@ const customResource = {
     },
     {
       name: "Creates a custom resource.",
+      type: "create",
       method: "POST",
       expects: "http://localhost/docs.jsonld#CustomResource",
       returns: "http://localhost/docs.jsonld#CustomResource",
@@ -1184,6 +1194,7 @@ const customResource = {
     },
     {
       name: "Retrieves custom resources.",
+      type: "show",
       method: "GET",
       returns: "http://localhost/docs.jsonld#CustomResource",
       types: ["http://www.w3.org/ns/hydra/core#Operation"],
@@ -1191,6 +1202,7 @@ const customResource = {
     },
     {
       name: "Creates a custom resource.",
+      type: "create",
       method: "POST",
       expects: "http://localhost/docs.jsonld#CustomResource",
       returns: "http://localhost/docs.jsonld#CustomResource",
@@ -1252,6 +1264,7 @@ const deprecatedResource = {
   operations: [
     {
       name: "Retrieves the collection of DeprecatedResource resources.",
+      type: "list",
       method: "GET",
       returns: "http://www.w3.org/ns/hydra/core#Collection",
       types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
@@ -1259,6 +1272,7 @@ const deprecatedResource = {
     },
     {
       name: "Retrieves DeprecatedResource resource.",
+      type: "show",
       method: "GET",
       returns: "http://localhost/docs.jsonld#DeprecatedResource",
       types: ["http://www.w3.org/ns/hydra/core#Operation", "schema:FindAction"],
