@@ -3,7 +3,7 @@ import get from "lodash.get";
 import { Api } from "../Api";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
-import { Operation } from "../Operation";
+import { Operation, OperationType } from "../Operation";
 import { Parameter } from "../Parameter";
 import fetchJsonLd from "./fetchJsonLd";
 import getParameters from "./getParameters";
@@ -345,15 +345,21 @@ export default function parseHydraDocumentation(
               entrypointOperation["http://www.w3.org/ns/hydra/core#returns"][0][
                 "@id"
               ];
+            const method =
+              entrypointOperation["http://www.w3.org/ns/hydra/core#method"][0][
+                "@value"
+              ];
+            let type: OperationType = "list";
+            if (method === "POST") {
+              type = "create";
+            }
             const operation = new Operation(
               entrypointOperation[
                 "http://www.w3.org/2000/01/rdf-schema#label"
               ][0]["@value"],
+              type,
               {
-                method:
-                  entrypointOperation[
-                    "http://www.w3.org/ns/hydra/core#method"
-                  ][0]["@value"],
+                method,
                 expects:
                   entrypointOperation[
                     "http://www.w3.org/ns/hydra/core#expects"
@@ -388,15 +394,27 @@ export default function parseHydraDocumentation(
             supportedOperation["http://www.w3.org/ns/hydra/core#returns"][0][
               "@id"
             ];
+          const method =
+            supportedOperation["http://www.w3.org/ns/hydra/core#method"][0][
+              "@value"
+            ];
+          let type: OperationType = "show";
+          if (method === "POST") {
+            type = "create";
+          }
+          if (method === "PUT") {
+            type = "edit";
+          }
+          if (method === "DELETE") {
+            type = "delete";
+          }
           const operation = new Operation(
             supportedOperation["http://www.w3.org/2000/01/rdf-schema#label"][0][
               "@value"
             ],
+            type,
             {
-              method:
-                supportedOperation["http://www.w3.org/ns/hydra/core#method"][0][
-                  "@value"
-                ],
+              method,
               expects:
                 supportedOperation["http://www.w3.org/ns/hydra/core#expects"] &&
                 supportedOperation[

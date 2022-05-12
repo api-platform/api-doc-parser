@@ -3,7 +3,7 @@ import jsonRefs from "json-refs";
 import get from "lodash.get";
 import { camelize, classify, pluralize } from "inflection";
 import { Field } from "../Field";
-import { Operation } from "../Operation";
+import { Operation, OperationType } from "../Operation";
 import { Parameter } from "../Parameter";
 import { Resource } from "../Resource";
 import getResourcePaths from "../utils/getResources";
@@ -104,10 +104,10 @@ const buildResourceFromSchema = (
 
 const buildOperationFromPathItem = (
   httpMethod: `${OpenAPIV3.HttpMethods}`,
-  operationName: string,
+  operationType: OperationType,
   pathItem: OpenAPIV3.OperationObject
 ): Operation => {
-  return new Operation(pathItem.summary || operationName, {
+  return new Operation(pathItem.summary || operationType, operationType, {
     method: httpMethod.toUpperCase(),
     deprecated: !!pathItem.deprecated,
   });

@@ -906,26 +906,31 @@ const parsed = [
     operations: [
       {
         name: "Retrieves a Book resource.",
+        type: "show",
         method: "GET",
         deprecated: false,
       },
       {
         name: "Replaces the Book resource.",
+        type: "edit",
         method: "PUT",
         deprecated: false,
       },
       {
         name: "Removes the Book resource.",
+        type: "delete",
         method: "DELETE",
         deprecated: false,
       },
       {
         name: "Retrieves the collection of Book resources.",
+        type: "list",
         method: "GET",
         deprecated: false,
       },
       {
         name: "Creates a Book resource.",
+        type: "create",
         method: "POST",
         deprecated: false,
       },
@@ -1167,26 +1172,31 @@ const parsed = [
     operations: [
       {
         name: "Retrieves a Review resource.",
+        type: "show",
         method: "GET",
         deprecated: false,
       },
       {
         name: "Replaces the Review resource.",
+        type: "edit",
         method: "PUT",
         deprecated: false,
       },
       {
         name: "Removes the Review resource.",
+        type: "delete",
         method: "DELETE",
         deprecated: false,
       },
       {
         name: "Retrieves the collection of Review resources.",
+        type: "list",
         method: "GET",
         deprecated: false,
       },
       {
         name: "Creates a Review resource.",
+        type: "create",
         method: "POST",
         deprecated: false,
       },
