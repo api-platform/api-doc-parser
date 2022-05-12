@@ -153,7 +153,7 @@ export default async function (
     const title = classify(splittedPath[splittedPath.length - 2]);
 
     const showOperation = pathItem.get;
-    const editOperation = pathItem.put;
+    const editOperation = pathItem.put || pathItem.patch;
     if (!showOperation && !editOperation) return;
 
     const showSchema = showOperation
@@ -184,6 +184,8 @@ export default async function (
       resource = mergeResources(showResource, editResource);
     }
 
+    const putOperation = pathItem.put;
+    const patchOperation = pathItem.patch;
     const deleteOperation = pathItem.delete;
     const pathCollection = document.paths[`/${name}`];
     const listOperation = pathCollection && pathCollection.get;
@@ -192,8 +194,11 @@ export default async function (
       ...(showOperation
         ? [buildOperationFromPathItem("get", "show", showOperation)]
         : []),
-      ...(editOperation
-        ? [buildOperationFromPathItem("put", "edit", editOperation)]
+      ...(putOperation
+        ? [buildOperationFromPathItem("put", "edit", putOperation)]
+        : []),
+      ...(patchOperation
+        ? [buildOperationFromPathItem("patch", "edit", patchOperation)]
         : []),
       ...(deleteOperation
         ? [buildOperationFromPathItem("delete", "delete", deleteOperation)]

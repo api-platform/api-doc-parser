@@ -402,7 +402,7 @@ export default function parseHydraDocumentation(
           if (method === "POST") {
             type = "create";
           }
-          if (method === "PUT") {
+          if (method === "PUT" || method === "PATCH") {
             type = "edit";
           }
           if (method === "DELETE") {
