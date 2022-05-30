@@ -1,5 +1,5 @@
 import { OpenAPIV3 } from "openapi-types";
-import jsonRefs from "json-refs";
+import { parse as dereference } from "jsonref";
 import get from "lodash.get";
 import { camelize, classify, pluralize } from "inflection";
 import { Field } from "../Field";
@@ -127,8 +127,9 @@ export default async function (
   response: OpenAPIV3.Document,
   entrypointUrl: string
 ): Promise<Resource[]> {
-  const results = await jsonRefs.resolveRefs(response);
-  const document = results.resolved as OpenAPIV3.Document;
+  const document = (await dereference(response, {
+    scope: entrypointUrl,
+  })) as OpenAPIV3.Document;
 
   const paths = getResourcePaths(document.paths);
 
