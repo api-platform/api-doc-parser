@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from "openapi-types";
 import { parse as dereference } from "jsonref";
 import get from "lodash.get";
-import { camelize, classify, pluralize } from "inflection";
+import inflection from "inflection";
 import { Field } from "../Field";
 import { Operation, OperationType } from "../Operation";
 import { Parameter } from "../Parameter";
@@ -144,14 +144,14 @@ export default async function (
 
   paths.forEach((path) => {
     const splittedPath = removeTrailingSlash(path).split("/");
-    const name = pluralize(splittedPath[splittedPath.length - 2]);
+    const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
     const pathItem = document.paths[path];
     if (!pathItem) {
       throw new Error();
     }
 
-    const title = classify(splittedPath[splittedPath.length - 2]);
+    const title = inflection.classify(splittedPath[splittedPath.length - 2]);
 
     const showOperation = pathItem.get;
     const editOperation = pathItem.put || pathItem.patch;
@@ -237,10 +237,10 @@ export default async function (
   // Guess embeddeds and references from property names
   resources.forEach((resource) => {
     resource.fields?.forEach((field) => {
-      const name = camelize(field.name).replace(/Ids?$/, "");
+      const name = inflection.camelize(field.name).replace(/Ids?$/, "");
 
       const guessedResource = resources.find(
-        (res) => res.title === classify(name)
+        (res) => res.title === inflection.classify(name)
       );
       if (!guessedResource) {
         return;
