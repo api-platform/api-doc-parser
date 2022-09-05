@@ -7,8 +7,15 @@
     "lib",
     "src"
   ],
-  "main": "lib/cjs/index",
-  "module": "lib/esm/index",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
   "repository": "api-platform/api-doc-parser",
   "homepage": "https://github.com/api-platform/api-doc-parser",
   "bugs": "https://github.com/api-platform/api-doc-parser/issues",
