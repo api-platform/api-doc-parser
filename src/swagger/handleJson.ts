@@ -1,6 +1,6 @@
 import { OpenAPIV2 } from "openapi-types";
 import get from "lodash.get";
-import { classify, pluralize } from "inflection";
+import inflection from "inflection";
 import { Field } from "../Field";
 import { Resource } from "../Resource";
 import getResourcePaths from "../utils/getResources";
@@ -21,10 +21,10 @@ export default function (
 
   return paths.map((path) => {
     const splittedPath = removeTrailingSlash(path).split("/");
-    const name = pluralize(splittedPath[splittedPath.length - 2]);
+    const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
     const url = `${removeTrailingSlash(entrypointUrl)}/${name}`;
 
-    const title = classify(splittedPath[splittedPath.length - 2]);
+    const title = inflection.classify(splittedPath[splittedPath.length - 2]);
 
     if (!response.definitions) {
       throw new Error(); // @TODO

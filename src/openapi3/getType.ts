@@ -1,4 +1,4 @@
-import { camelize } from "inflection";
+import inflection from "inflection";
 import { FieldType } from "../Field";
 
 const getType = (openApiType: string, format?: string): FieldType => {
@@ -8,7 +8,7 @@ const getType = (openApiType: string, format?: string): FieldType => {
       case "int64":
         return "integer";
       default:
-        return camelize(format.replace("-", "_"), true);
+        return inflection.camelize(format.replace("-", "_"), true);
     }
   }
 
