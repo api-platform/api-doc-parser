@@ -1,13 +1,13 @@
-import {
-  getIntrospectionQuery,
+import { getIntrospectionQuery } from "graphql/utilities";
+import fetchQuery from "./fetchQuery.js";
+import { Api } from "../Api.js";
+import { Field } from "../Field.js";
+import { Resource } from "../Resource.js";
+import type {
   IntrospectionObjectType,
   IntrospectionOutputTypeRef,
   IntrospectionQuery,
 } from "graphql/utilities";
-import fetchQuery from "./fetchQuery";
-import { Api } from "../Api";
-import { Field } from "../Field";
-import { Resource } from "../Resource";
 
 const getRangeFromGraphQlType = (type: IntrospectionOutputTypeRef): string => {
   if (type.kind === "NON_NULL") {

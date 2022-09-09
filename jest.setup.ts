@@ -1,4 +1,3 @@
-import fetch from "jest-fetch-mock";
+import jestMock from "jest-fetch-mock";
 
-// @ts-ignore
-global.fetch = fetch;
+jestMock.enableMocks();

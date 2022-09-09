@@ -1,4 +1,4 @@
-import getResourcePaths from "./getResources";
+import getResourcePaths from "./getResources.js";
 
 test("should get resource paths", () => {
   const paths = {

@@ -1,5 +1,6 @@
-import { FetchMock } from "jest-fetch-mock";
-import fetchJsonLd, { ResponseDocument } from "./fetchJsonLd";
+import fetchJsonLd from "./fetchJsonLd.js";
+import type { FetchMock } from "jest-fetch-mock";
+import type { ResponseDocument } from "./fetchJsonLd.js";
 
 const fetchMock = fetch as FetchMock;
 

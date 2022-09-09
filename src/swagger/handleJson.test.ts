@@ -1,6 +1,6 @@
-import { OpenAPIV2 } from "openapi-types";
-import { Field } from "../Field";
-import handleJson from "./handleJson";
+import handleJson from "./handleJson.js";
+import type { OpenAPIV2 } from "openapi-types";
+import type { Field } from "../Field.js";
 
 const swaggerApiDefinition: OpenAPIV2.Document = {
   swagger: "2.0",

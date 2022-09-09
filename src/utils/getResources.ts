@@ -1,4 +1,4 @@
-import { OpenAPIV2, OpenAPIV3 } from "openapi-types";
+import type { OpenAPIV2, OpenAPIV3 } from "openapi-types";
 
 const getResources = (
   paths: OpenAPIV2.PathsObject | OpenAPIV3.PathsObject

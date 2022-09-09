@@ -1,12 +1,19 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-    }
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  transform: {
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        useESM: true,
+        tsconfig: './tsconfig.esm.json',
+      },
+    ],
   },
 };
 

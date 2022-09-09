@@ -1,4 +1,4 @@
-import { FieldType } from "../Field";
+import type { FieldType } from "../Field.js";
 
 const getType = (id: string, range: string): FieldType => {
   switch (id) {

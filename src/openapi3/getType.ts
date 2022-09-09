@@ -1,5 +1,5 @@
 import inflection from "inflection";
-import { FieldType } from "../Field";
+import type { FieldType } from "../Field.js";
 
 const getType = (openApiType: string, format?: string): FieldType => {
   if (format) {

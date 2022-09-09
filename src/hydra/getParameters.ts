@@ -1,7 +1,7 @@
-import { Parameter } from "../Parameter";
-import { Resource } from "../Resource";
-import fetchResource from "./fetchResource";
-import { RequestInitExtended } from "./types";
+import { Parameter } from "../Parameter.js";
+import fetchResource from "./fetchResource.js";
+import type { Resource } from "../Resource.js";
+import type { RequestInitExtended } from "./types.js";
 
 export default (
   resource: Resource,

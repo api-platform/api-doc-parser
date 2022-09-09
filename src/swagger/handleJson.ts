@@ -1,10 +1,10 @@
-import { OpenAPIV2 } from "openapi-types";
 import get from "lodash.get";
 import inflection from "inflection";
-import { Field } from "../Field";
-import { Resource } from "../Resource";
-import getResourcePaths from "../utils/getResources";
-import getType from "../openapi3/getType";
+import { Field } from "../Field.js";
+import { Resource } from "../Resource.js";
+import getResourcePaths from "../utils/getResources.js";
+import getType from "../openapi3/getType.js";
+import type { OpenAPIV2 } from "openapi-types";
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
