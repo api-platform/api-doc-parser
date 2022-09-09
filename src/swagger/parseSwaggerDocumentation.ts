@@ -1,6 +1,6 @@
-import { OpenAPIV2 } from "openapi-types";
-import { Api } from "../Api";
-import handleJson, { removeTrailingSlash } from "./handleJson";
+import { Api } from "../Api.js";
+import handleJson, { removeTrailingSlash } from "./handleJson.js";
+import type { OpenAPIV2 } from "openapi-types";
 
 export interface ParsedSwaggerDocumentation {
   api: Api;

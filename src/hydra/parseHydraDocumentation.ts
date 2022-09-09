@@ -1,20 +1,21 @@
 import jsonld from "jsonld";
 import get from "lodash.get";
-import { Api } from "../Api";
-import { Field } from "../Field";
-import { Resource } from "../Resource";
-import { Operation, OperationType } from "../Operation";
-import { Parameter } from "../Parameter";
-import fetchJsonLd from "./fetchJsonLd";
-import getParameters from "./getParameters";
-import getType from "./getType";
-import {
+import { Api } from "../Api.js";
+import { Field } from "../Field.js";
+import { Resource } from "../Resource.js";
+import { Operation } from "../Operation.js";
+import fetchJsonLd from "./fetchJsonLd.js";
+import getParameters from "./getParameters.js";
+import getType from "./getType.js";
+import type { OperationType } from "../Operation.js";
+import type { Parameter } from "../Parameter.js";
+import type {
   ExpandedClass,
   ExpandedDoc,
   Entrypoint,
   ExpandedRdfProperty,
   RequestInitExtended,
-} from "./types";
+} from "./types.js";
 
 /**
  * Extracts the short name of a resource.

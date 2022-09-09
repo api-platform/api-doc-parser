@@ -1,8 +1,8 @@
-import { Field } from "./Field";
-import { Operation } from "./Operation";
-import { Parameter } from "./Parameter";
-import { assignSealed } from "./utils/assignSealed";
-import { Nullable } from "./types";
+import { assignSealed } from "./utils/assignSealed.js";
+import type { Field } from "./Field.js";
+import type { Operation } from "./Operation.js";
+import type { Parameter } from "./Parameter.js";
+import type { Nullable } from "./types.js";
 
 export interface ResourceOptions
   extends Nullable<{

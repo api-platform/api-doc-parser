@@ -1,6 +1,6 @@
-import { OpenAPIV3 } from "openapi-types";
-import handleJson from "./handleJson";
-import parsedJsonReplacer from "../utils/parsedJsonReplacer";
+import handleJson from "./handleJson.js";
+import parsedJsonReplacer from "../utils/parsedJsonReplacer.js";
+import type { OpenAPIV3 } from "openapi-types";
 
 const openApi3Definition: OpenAPIV3.Document = {
   openapi: "3.0.2",

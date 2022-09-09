@@ -1,13 +1,14 @@
-import { OpenAPIV3 } from "openapi-types";
 import { parse as dereference } from "jsonref";
 import get from "lodash.get";
 import inflection from "inflection";
-import { Field } from "../Field";
-import { Operation, OperationType } from "../Operation";
-import { Parameter } from "../Parameter";
-import { Resource } from "../Resource";
-import getResourcePaths from "../utils/getResources";
-import getType from "./getType";
+import { Field } from "../Field.js";
+import { Operation } from "../Operation.js";
+import { Parameter } from "../Parameter.js";
+import { Resource } from "../Resource.js";
+import getResourcePaths from "../utils/getResources.js";
+import getType from "./getType.js";
+import type { OpenAPIV3 } from "openapi-types";
+import type { OperationType } from "../Operation.js";
 
 const isRef = <T>(maybeRef: T | OpenAPIV3.ReferenceObject): maybeRef is T =>
   !("$ref" in maybeRef);

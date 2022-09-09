@@ -1,6 +1,6 @@
 import get from "lodash.get";
-import fetchJsonLd from "./fetchJsonLd";
-import type { IriTemplateMapping, RequestInitExtended } from "./types";
+import fetchJsonLd from "./fetchJsonLd.js";
+import type { IriTemplateMapping, RequestInitExtended } from "./types.js";
 
 export default (
   resourceUrl: string,

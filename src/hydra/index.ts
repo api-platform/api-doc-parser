@@ -1,5 +1,5 @@
-export { default as fetchJsonLd } from "./fetchJsonLd";
+export { default as fetchJsonLd } from "./fetchJsonLd.js";
 export {
   default as parseHydraDocumentation,
   getDocumentationUrlFromHeaders,
-} from "./parseHydraDocumentation";
+} from "./parseHydraDocumentation.js";

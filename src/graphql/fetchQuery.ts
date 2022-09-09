@@ -1,4 +1,4 @@
-import { ExecutionResult } from "graphql";
+import type { ExecutionResult } from "graphql";
 
 const setOptions = (query: string, options: RequestInit): RequestInit => {
   if (!options.method) {

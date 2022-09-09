@@ -1,6 +1,6 @@
-import { assignSealed } from "./utils/assignSealed";
-import { Resource } from "./Resource";
-import { Nullable } from "./types";
+import { assignSealed } from "./utils/assignSealed.js";
+import type { Resource } from "./Resource.js";
+import type { Nullable } from "./types.js";
 
 export type FieldType =
   | "string"

@@ -1,6 +1,6 @@
-import { OpenAPIV3 } from "openapi-types";
-import { Api } from "../Api";
-import handleJson, { removeTrailingSlash } from "./handleJson";
+import { Api } from "../Api.js";
+import handleJson, { removeTrailingSlash } from "./handleJson.js";
+import type { OpenAPIV3 } from "openapi-types";
 
 export interface ParsedOpenApi3Documentation {
   api: Api;

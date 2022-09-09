@@ -1,7 +1,7 @@
-import { FetchMock, MockParams } from "jest-fetch-mock";
-import parseHydraDocumentation from "./parseHydraDocumentation";
-import { Api } from "../Api";
-import parsedJsonReplacer from "../utils/parsedJsonReplacer";
+import parseHydraDocumentation from "./parseHydraDocumentation.js";
+import parsedJsonReplacer from "../utils/parsedJsonReplacer.js";
+import type { FetchMock, MockParams } from "jest-fetch-mock";
+import type { Api } from "../Api.js";
 
 const fetchMock = fetch as FetchMock;
 
