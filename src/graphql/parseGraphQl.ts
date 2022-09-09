@@ -1,4 +1,4 @@
-import { getIntrospectionQuery } from "graphql/utilities";
+import { getIntrospectionQuery } from "graphql/utilities/index.js";
 import fetchQuery from "./fetchQuery.js";
 import { Api } from "../Api.js";
 import { Field } from "../Field.js";
