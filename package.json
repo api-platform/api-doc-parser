@@ -7,14 +7,9 @@
     "lib",
     "src"
   ],
-  "exports": {
-    ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
-    }
-  },
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
+  "type": "module",
+  "exports": "./lib/index.js",
+  "main": "./lib/index.js",
   "repository": "api-platform/api-doc-parser",
   "homepage": "https://github.com/api-platform/api-doc-parser",
   "bugs": "https://github.com/api-platform/api-doc-parser/issues",
@@ -55,7 +50,7 @@
     "lint": "esw --color src --ext .ts",
     "fix": "yarn lint --fix",
     "eslint-check": "eslint-config-prettier src/index.ts",
-    "build": "rm -rf lib/* && tsc && tsc -p tsconfig.esm.json",
+    "build": "rm -rf lib/* && tsc",
     "watch": "tsc --watch"
   },
   "sideEffects": false,
