@@ -10,8 +10,7 @@ const config: Config.InitialOptions = {
     '^.+\\.ts$': [
       'ts-jest',
       {
-        useESM: true,
-        tsconfig: './tsconfig.esm.json',
+        useESM: true
       },
     ],
   },
