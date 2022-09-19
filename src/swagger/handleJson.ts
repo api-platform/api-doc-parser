@@ -60,6 +60,7 @@ export default function (
           get(property, "type", "") as string,
           get(property, "format", "") as string
         ),
+        enum: property.enum ?? null,
         reference: null,
         embedded: null,
         required: !!requiredFields.find((value) => value === fieldName),

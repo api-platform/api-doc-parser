@@ -74,6 +74,8 @@ const buildResourceFromSchema = (
               (property.items as OpenAPIV3.SchemaObject).format
             )
           : null,
+      // Object.values is used because the array is annotated: it contains the __meta symbol used by jsonref.
+      enum: property.enum ? Object.values(property.enum) : null,
       reference: null,
       embedded: null,
       nullable: property.nullable || false,

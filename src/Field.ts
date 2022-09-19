@@ -36,6 +36,7 @@ export interface FieldOptions
     range?: string;
     type?: FieldType;
     arrayType?: FieldType;
+    enum?: string[] | number[];
     reference?: string | Resource;
     embedded?: Resource;
     required?: boolean;
