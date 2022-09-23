@@ -326,6 +326,11 @@ const swaggerApiDefinition: OpenAPIV2.Document = {
           type: "string",
         },
         title: { description: "The title of the book", type: "string" },
+        bookFormat: {
+          type: "string",
+          description: "The publication format of the book.",
+          enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        },
         publicationDate: {
           description:
             "The date on which the CreativeWork was created or the item was added to a DataFeed",
@@ -333,7 +338,13 @@ const swaggerApiDefinition: OpenAPIV2.Document = {
           format: "date-time",
         },
       },
-      required: ["description", "author", "title", "publicationDate"],
+      required: [
+        "description",
+        "author",
+        "title",
+        "bookFormat",
+        "publicationDate",
+      ],
     },
     Review: {
       type: "object",
@@ -379,6 +390,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "",
       },
       {
@@ -389,6 +401,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "The ISBN of the book",
       },
       {
@@ -399,6 +412,7 @@ const parsed = [
         reference: null,
         required: true,
         embedded: null,
+        enum: null,
         description: "A description of the item",
       },
       {
@@ -409,6 +423,7 @@ const parsed = [
         reference: null,
         required: true,
         embedded: null,
+        enum: null,
         description:
           "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably",
       },
@@ -420,7 +435,19 @@ const parsed = [
         reference: null,
         required: true,
         embedded: null,
+        enum: null,
         description: "The title of the book",
+      },
+      {
+        name: "bookFormat",
+        id: null,
+        range: null,
+        type: "string",
+        reference: null,
+        embedded: null,
+        enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        required: true,
+        description: "The publication format of the book.",
       },
       {
         name: "publicationDate",
@@ -430,6 +457,7 @@ const parsed = [
         reference: null,
         required: true,
         embedded: null,
+        enum: null,
         description:
           "The date on which the CreativeWork was created or the item was added to a DataFeed",
       },
@@ -553,6 +581,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "",
       },
       {
@@ -563,6 +592,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "",
       },
       {
@@ -573,6 +603,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "The actual body of the review",
       },
       {
@@ -752,6 +783,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "Author the author of the review",
       },
       {
@@ -762,6 +794,7 @@ const parsed = [
         reference: null,
         required: false,
         embedded: null,
+        enum: null,
         description: "Author the author of the review",
       },
     ],
