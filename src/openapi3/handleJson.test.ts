@@ -516,7 +516,7 @@ const openApi3Definition: OpenAPIV3.Document = {
           bookFormat: {
             type: "string",
             description: "The publication format of the book.",
-            enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+            enum: ["AUDIOBOOK_FORMAT", "E_BOOK", "PAPERBACK", "HARDCOVER"],
           },
           publicationDate: {
             type: "string",
@@ -573,7 +573,7 @@ const openApi3Definition: OpenAPIV3.Document = {
           bookFormat: {
             type: "string",
             description: "The publication format of the book.",
-            enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+            enum: ["AUDIOBOOK_FORMAT", "E_BOOK", "PAPERBACK", "HARDCOVER"],
           },
           publicationDate: {
             type: "string",
@@ -705,7 +705,12 @@ const parsed = [
         range: null,
         type: "string",
         arrayType: null,
-        enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        enum: {
+          "Audiobook format": "AUDIOBOOK_FORMAT",
+          "E book": "E_BOOK",
+          Paperback: "PAPERBACK",
+          Hardcover: "HARDCOVER",
+        },
         reference: null,
         embedded: null,
         nullable: false,
@@ -829,7 +834,12 @@ const parsed = [
         range: null,
         type: "string",
         arrayType: null,
-        enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        enum: {
+          "Audiobook format": "AUDIOBOOK_FORMAT",
+          "E book": "E_BOOK",
+          Paperback: "PAPERBACK",
+          Hardcover: "HARDCOVER",
+        },
         reference: null,
         embedded: null,
         nullable: false,
@@ -927,7 +937,12 @@ const parsed = [
         range: null,
         type: "string",
         arrayType: null,
-        enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        enum: {
+          "Audiobook format": "AUDIOBOOK_FORMAT",
+          "E book": "E_BOOK",
+          Paperback: "PAPERBACK",
+          Hardcover: "HARDCOVER",
+        },
         reference: null,
         embedded: null,
         nullable: false,
