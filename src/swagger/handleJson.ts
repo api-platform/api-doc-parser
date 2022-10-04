@@ -60,7 +60,16 @@ export default function (
           get(property, "type", "") as string,
           get(property, "format", "") as string
         ),
-        enum: property.enum ?? null,
+        enum: property.enum
+          ? Object.fromEntries(
+              property.enum.map((enumValue: string | number) => [
+                typeof enumValue === "string"
+                  ? inflection.humanize(enumValue)
+                  : enumValue,
+                enumValue,
+              ])
+            )
+          : null,
         reference: null,
         embedded: null,
         required: !!requiredFields.find((value) => value === fieldName),

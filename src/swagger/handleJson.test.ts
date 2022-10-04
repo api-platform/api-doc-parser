@@ -329,7 +329,7 @@ const swaggerApiDefinition: OpenAPIV2.Document = {
         bookFormat: {
           type: "string",
           description: "The publication format of the book.",
-          enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+          enum: ["AUDIOBOOK_FORMAT", "E_BOOK", "PAPERBACK", "HARDCOVER"],
         },
         publicationDate: {
           description:
@@ -445,7 +445,12 @@ const parsed = [
         type: "string",
         reference: null,
         embedded: null,
-        enum: ["AudiobookFormat", "EBook", "Paperback", "Hardcover"],
+        enum: {
+          "Audiobook format": "AUDIOBOOK_FORMAT",
+          "E book": "E_BOOK",
+          Paperback: "PAPERBACK",
+          Hardcover: "HARDCOVER",
+        },
         required: true,
         description: "The publication format of the book.",
       },
