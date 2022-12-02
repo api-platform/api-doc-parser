@@ -149,11 +149,11 @@ function findRelatedClass(
       const onProperty = get(
         range,
         '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#onProperty"][0]["@id"]'
-      ) as string;
+      ) as unknown as string;
       const allValuesFrom = get(
         range,
         '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#allValuesFrom"][0]["@id"]'
-      ) as string;
+      ) as unknown as string;
 
       if (
         allValuesFrom &&
@@ -256,13 +256,13 @@ export default function parseHydraDocumentation(
           const supportedProperty = get(
             supportedProperties,
             '["http://www.w3.org/ns/hydra/core#property"][0]'
-          ) as ExpandedRdfProperty;
+          ) as unknown as ExpandedRdfProperty;
           const id = supportedProperty["@id"];
           const range = get(
             supportedProperty,
             '["http://www.w3.org/2000/01/rdf-schema#range"][0]["@id"]',
             null
-          ) as string;
+          ) as unknown as string;
 
           const field = new Field(
             supportedProperty["http://www.w3.org/2000/01/rdf-schema#label"][0][

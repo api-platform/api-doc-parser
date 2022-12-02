@@ -10,8 +10,9 @@ import getType from "./getType.js";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
-const isRef = <T>(maybeRef: T | OpenAPIV3.ReferenceObject): maybeRef is T =>
-  !("$ref" in maybeRef);
+const isRef = <T extends object>(
+  maybeRef: T | OpenAPIV3.ReferenceObject
+): maybeRef is T => !("$ref" in maybeRef);
 
 export const removeTrailingSlash = (url: string): string => {
   if (url.endsWith("/")) {
@@ -180,7 +181,7 @@ export default async function (
       ? (get(
           editOperation,
           "requestBody.content.application/json.schema"
-        ) as OpenAPIV3.SchemaObject)
+        ) as unknown as OpenAPIV3.SchemaObject)
       : null;
 
     if (!showSchema && !editSchema) return;

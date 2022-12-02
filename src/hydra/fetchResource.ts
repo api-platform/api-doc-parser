@@ -13,6 +13,6 @@ export default (
     parameters: get(
       d,
       "body.hydra:search.hydra:mapping"
-    ) as IriTemplateMapping[],
+    ) as unknown as IriTemplateMapping[],
   }));
 };
