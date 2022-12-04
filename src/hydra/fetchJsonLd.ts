@@ -27,7 +27,7 @@ export default async function fetchJsonLd(
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
-  if (204 === status) {
+  if ([202, 204].includes(status)) {
     return Promise.resolve({ response });
   }
 
