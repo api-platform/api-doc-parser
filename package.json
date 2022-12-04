@@ -23,7 +23,7 @@
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.0.0",
+    "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.0.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "graphql": "^16.0.0",
-    "inflection": "^1.13.0",
+    "inflection": "^2.0.0",
     "jsonld": "^8.1.0",
     "jsonref": "^8.0.0",
     "lodash.get": "^4.4.0",
