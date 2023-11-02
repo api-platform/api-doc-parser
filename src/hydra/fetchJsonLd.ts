@@ -2,6 +2,7 @@ import type { Document, JsonLd, RemoteDocument } from "jsonld/jsonld-spec";
 import type { RequestInitExtended } from "./types.js";
 
 const jsonLdMimeType = "application/ld+json";
+const jsonProblemMimeType = "application/problem+json";
 
 export type RejectedResponseDocument = {
   response: Response;
@@ -31,7 +32,7 @@ export default async function fetchJsonLd(
     return Promise.resolve({ response });
   }
 
-  if (500 <= status || !contentType || !contentType.includes(jsonLdMimeType)) {
+  if (500 <= status || !contentType || (!contentType.includes(jsonLdMimeType) && !contentType.includes(jsonProblemMimeType))) {
     const reason: RejectedResponseDocument = { response };
     return Promise.reject(reason);
   }
