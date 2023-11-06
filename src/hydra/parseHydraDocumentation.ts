@@ -59,7 +59,7 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
   }
 
   const matches =
-    /<(.+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
+    /<([^<]+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
       linkHeader
     );
   if (matches === null) {
