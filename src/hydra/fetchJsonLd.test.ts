@@ -43,7 +43,7 @@ test("fetch a non JSON-LD document", () => {
   );
 });
 
-test("fetch an error", () => {
+test("fetch an error with Content-Type application/ld+json", () => {
   fetchMock.mockResponseOnce(
     `{
     "@context": "http://json-ld.org/contexts/person.jsonld",
@@ -56,6 +56,32 @@ test("fetch an error", () => {
       status: 400,
       statusText: "Bad Request",
       headers: { "Content-Type": "application/ld+json" },
+    }
+  );
+
+  return fetchJsonLd("/foo.jsonld").catch(
+    ({ response }: { response: Response }) => {
+      void response.json().then((body: { born: string }) => {
+        expect(response.ok).toBe(false);
+        expect(body.born).toBe("1940-10-09");
+      });
+    }
+  );
+});
+
+test("fetch an error with Content-Type application/error+json", () => {
+  fetchMock.mockResponseOnce(
+    `{
+    "@context": "http://json-ld.org/contexts/person.jsonld",
+    "@id": "http://dbpedia.org/resource/John_Lennon",
+    "name": "John Lennon",
+    "born": "1940-10-09",
+    "spouse": "http://dbpedia.org/resource/Cynthia_Lennon"
+}`,
+    {
+      status: 400,
+      statusText: "Bad Request",
+      headers: { "Content-Type": "application/error+json" },
     }
   );
 
