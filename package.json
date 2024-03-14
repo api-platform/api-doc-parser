@@ -1,6 +1,6 @@
 {
   "name": "@api-platform/api-doc-parser",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "description": "Transform an API documentation (Hydra, OpenAPI, GraphQL) in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building administration interfaces.",
   "files": [
     "*.md",
