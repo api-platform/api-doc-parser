@@ -244,7 +244,21 @@ export default function parseHydraDocumentation(
           properties,
           '["http://www.w3.org/ns/hydra/core#property"][0]'
         ) as ExpandedRdfProperty | undefined;
+
         if (!property) {
+          continue;
+        }
+
+        const url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`) as
+          | string
+          | undefined;
+
+        if (!url) {
+          console.error(
+            new Error(
+              `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`
+            )
+          );
           continue;
         }
 
@@ -433,15 +447,6 @@ export default function parseHydraDocumentation(
 
           resourceOperations.push(operation);
           operations.push(operation);
-        }
-
-        const url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`) as
-          | string
-          | undefined;
-        if (!url) {
-          throw new Error(
-            `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`
-          );
         }
 
         const resource = new Resource(

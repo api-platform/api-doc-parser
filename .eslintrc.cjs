@@ -6,13 +6,13 @@ module.exports = {
     commonjs: true,
     es6: true,
     jest: true,
-    node: true
+    node: true,
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 7,
     sourceType: "module",
-    project: ["./tsconfig.eslint.json"]
+    project: ["./tsconfig.eslint.json"],
   },
   plugins: ["@typescript-eslint"],
 
@@ -23,7 +23,7 @@ module.exports = {
     "plugin:import/recommended",
     "plugin:import/typescript",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
   ],
 
   rules: {
@@ -31,7 +31,7 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-empty-interface": [
       "error",
-      { allowSingleExtends: true }
+      { allowSingleExtends: true },
     ],
     "@typescript-eslint/no-use-before-define": ["error", { functions: false }],
     "@typescript-eslint/no-explicit-any": [0],
@@ -43,7 +43,7 @@ module.exports = {
   settings: {
     "import/resolver": {
       typescript: true,
-      node: true
-    }
-  }
+      node: true,
+    },
+  },
 };
