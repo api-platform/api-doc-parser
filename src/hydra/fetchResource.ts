@@ -10,9 +10,10 @@ export default (
     resourceUrl,
     Object.assign({ itemsPerPage: 0 }, options)
   ).then((d) => ({
+    const hasPrefix = 'hydra:search' in d.body;
     parameters: get(
       d,
-      "body.hydra:search.hydra:mapping"
+      hasPrefix ? "body.hydra:search.hydra:mapping" : "body.search.mapping"
     ) as unknown as IriTemplateMapping[],
   }));
 };
