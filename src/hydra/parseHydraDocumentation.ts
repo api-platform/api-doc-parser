@@ -201,7 +201,6 @@ export default function parseHydraDocumentation(
   status: number;
 }> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
-
   return fetchEntrypointAndDocs(entrypointUrl, options).then(
     ({ entrypoint, docs, response }) => {
       const resources = [],
