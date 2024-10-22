@@ -40,7 +40,7 @@
   "dependencies": {
     "graphql": "^16.0.0",
     "inflection": "^1.13.0",
-    "jsonld": "^8.1.0",
+    "jsonld": "^8.3.2",
     "jsonref": "^8.0.0",
     "lodash.get": "^4.4.0",
     "tslib": "^2.0.0"
