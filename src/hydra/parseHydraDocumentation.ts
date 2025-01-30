@@ -13,6 +13,7 @@ import type {
   ExpandedClass,
   ExpandedDoc,
   Entrypoint,
+  ExpandedOperation,
   ExpandedRdfProperty,
   RequestInitExtended,
 } from "./types.js";
@@ -22,6 +23,19 @@ import type {
  */
 function guessNameFromUrl(url: string, entrypointUrl: string): string {
   return url.substr(entrypointUrl.length + 1);
+}
+
+function getTitleOrLabel(obj: ExpandedOperation): string {
+  const a =
+    obj["http://www.w3.org/2000/01/rdf-schema#label"] ??
+    obj["http://www.w3.org/ns/hydra/core#title"] ??
+    null;
+
+  if (a === null) {
+    throw new Error("No title nor label defined on this operation.");
+  }
+
+  return a[0]["@value"];
 }
 
 /**
@@ -279,9 +293,12 @@ export default function parseHydraDocumentation(
           ) as unknown as string;
 
           const field = new Field(
-            supportedProperty["http://www.w3.org/2000/01/rdf-schema#label"][0][
+            supportedProperties["http://www.w3.org/ns/hydra/core#title"][0][
               "@value"
-            ],
+            ] ??
+              supportedProperty[
+                "http://www.w3.org/2000/01/rdf-schema#label"
+              ][0]["@value"],
             {
               id,
               range,
@@ -369,9 +386,7 @@ export default function parseHydraDocumentation(
               type = "create";
             }
             const operation = new Operation(
-              entrypointOperation[
-                "http://www.w3.org/2000/01/rdf-schema#label"
-              ][0]["@value"],
+              getTitleOrLabel(entrypointOperation),
               type,
               {
                 method,
@@ -424,9 +439,7 @@ export default function parseHydraDocumentation(
             type = "delete";
           }
           const operation = new Operation(
-            supportedOperation["http://www.w3.org/2000/01/rdf-schema#label"][0][
-              "@value"
-            ],
+            getTitleOrLabel(supportedOperation),
             type,
             {
               method,
