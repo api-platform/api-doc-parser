@@ -11,7 +11,6 @@ export default tseslint.config(
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
   {
-    files: ["src/**/*.ts"],
     rules: {
       "@typescript-eslint/no-unsafe-declaration-merging": "off",
       "@typescript-eslint/no-explicit-any": "off",
