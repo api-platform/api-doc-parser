@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["jest.config.ts", "eslint.config.mjs", "./src"],
+  "include": ["jest.config.ts", "jest.setup.ts", "eslint.config.mjs", "./src"],
   "exclude": []
 }
