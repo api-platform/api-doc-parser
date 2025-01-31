@@ -50,7 +50,7 @@
   },
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint",
+    "lint": "eslint src",
     "fix": "yarn lint --fix",
     "eslint-check": "eslint-config-prettier src/index.ts",
     "build": "rm -rf lib/* && tsc",
