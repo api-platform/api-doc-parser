@@ -1584,21 +1584,19 @@ test("Resource parameters can be retrieved", async () => {
     [resourceCollectionWithParameters, init],
   );
 
-  await parseHydraDocumentation("http://localhost").then(
-    async (data: { api: Api }) => {
-      const resource = data.api.resources?.[0];
-      resource &&
-        resource.getParameters &&
-        (await resource.getParameters().then((parameters: any) => {
-          expect(parameters).toEqual([
-            {
-              description: "",
-              range: "http://www.w3.org/2001/XMLSchema#string",
-              required: false,
-              variable: "isbn",
-            },
-          ]);
-        }));
+  const data: { api: Api } = await parseHydraDocumentation("http://localhost");
+  const resource = data.api.resources?.[0];
+  if (!resource?.getParameters) {
+    return;
+  }
+
+  const parameters = await resource.getParameters();
+  expect(parameters).toEqual([
+    {
+      description: "",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      required: false,
+      variable: "isbn",
     },
-  );
+  ]);
 });

@@ -10,4 +10,16 @@ export default tseslint.config(
   tseslint.configs.recommended,
   eslintConfigPrettier,
   eslintPluginPrettierRecommended,
+  {
+    rules: {
+      "@typescript-eslint/no-unsafe-declaration-merging": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": [
+        "error",
+        {
+          allowInterfaces: "with-single-extends",
+        },
+      ],
+    },
+  },
 );
