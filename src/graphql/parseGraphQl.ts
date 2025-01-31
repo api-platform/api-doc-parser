@@ -26,7 +26,7 @@ const getRangeFromGraphQlType = (type: IntrospectionOutputTypeRef): string => {
 };
 
 const getReferenceFromGraphQlType = (
-  type: IntrospectionOutputTypeRef
+  type: IntrospectionOutputTypeRef,
 ): null | string => {
   if (type.kind === "OBJECT" && type.name.endsWith("Connection")) {
     return type.name.slice(0, type.name.lastIndexOf("Connection"));
@@ -37,7 +37,7 @@ const getReferenceFromGraphQlType = (
 
 export default async (
   entrypointUrl: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<{
   api: Api;
   response: Response;
@@ -50,11 +50,11 @@ export default async (
   } = await fetchQuery<IntrospectionQuery>(
     entrypointUrl,
     introspectionQuery,
-    options
+    options,
   );
   if (!data?.__schema) {
     throw new Error(
-      "Schema has not been retrieved from the introspection query."
+      "Schema has not been retrieved from the introspection query.",
     );
   }
   const schema = data?.__schema;
@@ -70,7 +70,7 @@ export default async (
       !type.name.startsWith(type.name[0].toLowerCase()) &&
       !type.name.endsWith("Connection") &&
       !type.name.endsWith("Edge") &&
-      !type.name.endsWith("PageInfo")
+      !type.name.endsWith("PageInfo"),
   ) as IntrospectionObjectType[];
 
   const resources: Resource[] = [];
@@ -98,7 +98,7 @@ export default async (
         fields,
         readableFields,
         writableFields,
-      })
+      }),
     );
   });
 

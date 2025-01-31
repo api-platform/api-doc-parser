@@ -17,7 +17,7 @@ export class Operation {
   constructor(
     public name: string,
     public type: OperationType,
-    options: OperationOptions = {}
+    options: OperationOptions = {},
   ) {
     assignSealed(this, options);
   }

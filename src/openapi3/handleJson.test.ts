@@ -1322,10 +1322,10 @@ const parsed = [
 test(`Parse OpenApi v3 Documentation from Json`, async () => {
   const toBeParsed = await handleJson(
     openApi3Definition,
-    "https://demo.api-platform.com"
+    "https://demo.api-platform.com",
   );
 
   expect(JSON.stringify(toBeParsed, parsedJsonReplacer)).toEqual(
-    JSON.stringify(parsed, parsedJsonReplacer)
+    JSON.stringify(parsed, parsedJsonReplacer),
   );
 });

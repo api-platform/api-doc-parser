@@ -43,15 +43,15 @@ function getTitleOrLabel(obj: ExpandedOperation): string {
  */
 function findSupportedClass(
   docs: ExpandedDoc[],
-  classToFind: string
+  classToFind: string,
 ): ExpandedClass {
   const supportedClasses = get(
     docs,
-    '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]'
+    '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]',
   ) as ExpandedClass[] | undefined;
   if (!Array.isArray(supportedClasses)) {
     throw new Error(
-      'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
+      'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
     );
   }
 
@@ -62,7 +62,7 @@ function findSupportedClass(
   }
 
   throw new Error(
-    `The class "${classToFind}" is not defined in the API documentation.`
+    `The class "${classToFind}" is not defined in the API documentation.`,
   );
 }
 
@@ -74,11 +74,11 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
 
   const matches =
     /<([^<]+)>; rel="http:\/\/www.w3.org\/ns\/hydra\/core#apiDocumentation"/.exec(
-      linkHeader
+      linkHeader,
     );
   if (matches === null) {
     throw new Error(
-      'The "Link" HTTP header is not of the type "http://www.w3.org/ns/hydra/core#apiDocumentation".'
+      'The "Link" HTTP header is not of the type "http://www.w3.org/ns/hydra/core#apiDocumentation".',
     );
   }
 
@@ -90,7 +90,7 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
  */
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
-  options: RequestInitExtended = {}
+  options: RequestInitExtended = {},
 ): Promise<{
   entrypointUrl: string;
   docsUrl: string;
@@ -109,7 +109,7 @@ async function fetchEntrypointAndDocs(
     fetchJsonLd(input, options).then((response) => {
       if (!("body" in response)) {
         throw new Error(
-          "An empty response was received when expanding documentation or entrypoint JSON-LD documents."
+          "An empty response was received when expanding documentation or entrypoint JSON-LD documents.",
         );
       }
       return response;
@@ -118,7 +118,7 @@ async function fetchEntrypointAndDocs(
   const docsResponse = await fetchJsonLd(docsUrl, options);
   if (!("body" in docsResponse)) {
     throw new Error(
-      "An empty response was received for the documentation URL."
+      "An empty response was received for the documentation URL.",
     );
   }
   const docsJsonLd = docsResponse.body;
@@ -153,7 +153,7 @@ function removeTrailingSlash(url: string): string {
 
 function findRelatedClass(
   docs: ExpandedDoc[],
-  property: ExpandedRdfProperty
+  property: ExpandedRdfProperty,
 ): ExpandedClass {
   // Use the entrypoint property's owl:equivalentClass if available
   if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
@@ -162,11 +162,11 @@ function findRelatedClass(
     ]) {
       const onProperty = get(
         range,
-        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#onProperty"][0]["@id"]'
+        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#onProperty"][0]["@id"]',
       ) as unknown as string;
       const allValuesFrom = get(
         range,
-        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#allValuesFrom"][0]["@id"]'
+        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#allValuesFrom"][0]["@id"]',
       ) as unknown as string;
 
       if (
@@ -190,7 +190,7 @@ function findRelatedClass(
 
     const returns = get(
       entrypointSupportedOperation,
-      '["http://www.w3.org/ns/hydra/core#returns"][0]["@id"]'
+      '["http://www.w3.org/ns/hydra/core#returns"][0]["@id"]',
     ) as string | undefined;
     if (
       "string" === typeof returns &&
@@ -208,7 +208,7 @@ function findRelatedClass(
  */
 export default function parseHydraDocumentation(
   entrypointUrl: string,
-  options: RequestInitExtended = {}
+  options: RequestInitExtended = {},
 ): Promise<{
   api: Api;
   response: Response;
@@ -224,7 +224,7 @@ export default function parseHydraDocumentation(
       const title = get(
         docs,
         '[0]["http://www.w3.org/ns/hydra/core#title"][0]["@value"]',
-        "API Platform"
+        "API Platform",
       ) as string;
 
       const entrypointType = get(entrypoint, '[0]["@type"][0]') as
@@ -237,11 +237,11 @@ export default function parseHydraDocumentation(
       const entrypointClass = findSupportedClass(docs, entrypointType);
       if (
         !Array.isArray(
-          entrypointClass["http://www.w3.org/ns/hydra/core#supportedProperty"]
+          entrypointClass["http://www.w3.org/ns/hydra/core#supportedProperty"],
         )
       ) {
         throw new Error(
-          'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.'
+          'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.',
         );
       }
 
@@ -256,7 +256,7 @@ export default function parseHydraDocumentation(
 
         const property = get(
           properties,
-          '["http://www.w3.org/ns/hydra/core#property"][0]'
+          '["http://www.w3.org/ns/hydra/core#property"][0]',
         ) as ExpandedRdfProperty | undefined;
 
         if (!property) {
@@ -270,8 +270,8 @@ export default function parseHydraDocumentation(
         if (!url) {
           console.error(
             new Error(
-              `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`
-            )
+              `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`,
+            ),
           );
           continue;
         }
@@ -283,13 +283,13 @@ export default function parseHydraDocumentation(
         ]) {
           const supportedProperty = get(
             supportedProperties,
-            '["http://www.w3.org/ns/hydra/core#property"][0]'
+            '["http://www.w3.org/ns/hydra/core#property"][0]',
           ) as unknown as ExpandedRdfProperty;
           const id = supportedProperty["@id"];
           const range = get(
             supportedProperty,
             '["http://www.w3.org/2000/01/rdf-schema#range"][0]["@id"]',
-            null
+            null,
           ) as unknown as string;
 
           const field = new Field(
@@ -316,24 +316,24 @@ export default function parseHydraDocumentation(
               required: get(
                 supportedProperties,
                 '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]',
-                false
+                false,
               ) as boolean,
               description: get(
                 supportedProperties,
                 '["http://www.w3.org/ns/hydra/core#description"][0]["@value"]',
-                ""
+                "",
               ) as string,
               maxCardinality: get(
                 supportedProperty,
                 '["http://www.w3.org/2002/07/owl#maxCardinality"][0]["@value"]',
-                null
+                null,
               ) as number | null,
               deprecated: get(
                 supportedProperties,
                 '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-                false
+                false,
               ) as boolean,
-            }
+            },
           );
 
           fields.push(field);
@@ -342,7 +342,7 @@ export default function parseHydraDocumentation(
           if (
             get(
               supportedProperties,
-              '["http://www.w3.org/ns/hydra/core#readable"][0]["@value"]'
+              '["http://www.w3.org/ns/hydra/core#readable"][0]["@value"]',
             )
           ) {
             readableFields.push(field);
@@ -351,11 +351,11 @@ export default function parseHydraDocumentation(
           if (
             get(
               supportedProperties,
-              '["http://www.w3.org/ns/hydra/core#writeable"][0]["@value"]'
+              '["http://www.w3.org/ns/hydra/core#writeable"][0]["@value"]',
             ) ||
             get(
               supportedProperties,
-              '["http://www.w3.org/ns/hydra/core#writable"][0]["@value"]'
+              '["http://www.w3.org/ns/hydra/core#writable"][0]["@value"]',
             )
           ) {
             writableFields.push(field);
@@ -402,9 +402,9 @@ export default function parseHydraDocumentation(
                 deprecated: get(
                   entrypointOperation,
                   '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-                  false
+                  false,
                 ) as boolean,
-              }
+              },
             );
 
             resourceOperations.push(operation);
@@ -453,9 +453,9 @@ export default function parseHydraDocumentation(
               deprecated: get(
                 supportedOperation,
                 '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-                false
+                false,
               ) as boolean,
-            }
+            },
           );
 
           resourceOperations.push(operation);
@@ -470,7 +470,7 @@ export default function parseHydraDocumentation(
             title: get(
               relatedClass,
               '["http://www.w3.org/ns/hydra/core#title"][0]["@value"]',
-              ""
+              "",
             ) as string,
             fields: resourceFields,
             readableFields,
@@ -479,9 +479,9 @@ export default function parseHydraDocumentation(
             deprecated: get(
               relatedClass,
               '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-              false
+              false,
             ) as boolean,
-          }
+          },
         );
 
         resource.parameters = [];
@@ -517,6 +517,6 @@ export default function parseHydraDocumentation(
         error: data,
         response: data.response,
         status: get(data.response, "status"),
-      })
+      }),
   );
 }

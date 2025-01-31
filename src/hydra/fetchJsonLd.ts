@@ -22,7 +22,7 @@ export interface ResponseDocument extends RemoteDocument {
  */
 export default async function fetchJsonLd(
   url: string,
-  options: RequestInitExtended = {}
+  options: RequestInitExtended = {},
 ): Promise<ResponseDocument | EmptyResponseDocument> {
   const response = await fetch(url, setHeaders(options));
   const { headers, status } = response;

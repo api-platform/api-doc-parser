@@ -11,7 +11,7 @@ import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
 const isRef = <T extends object>(
-  maybeRef: T | OpenAPIV3.ReferenceObject
+  maybeRef: T | OpenAPIV3.ReferenceObject,
 ): maybeRef is T => !("$ref" in maybeRef);
 
 export const removeTrailingSlash = (url: string): string => {
@@ -49,7 +49,7 @@ const buildResourceFromSchema = (
   schema: OpenAPIV3.SchemaObject,
   name: string,
   title: string,
-  url: string
+  url: string,
 ) => {
   const description = schema.description;
   const properties = schema.properties || {};
@@ -72,7 +72,7 @@ const buildResourceFromSchema = (
         type === "array" && "items" in property
           ? getType(
               (property.items as OpenAPIV3.SchemaObject).type || "string",
-              (property.items as OpenAPIV3.SchemaObject).format
+              (property.items as OpenAPIV3.SchemaObject).format,
             )
           : null,
       enum: property.enum
@@ -83,7 +83,7 @@ const buildResourceFromSchema = (
                 ? inflection.humanize(enumValue)
                 : enumValue,
               enumValue,
-            ])
+            ]),
           )
         : null,
       reference: null,
@@ -118,7 +118,7 @@ const buildResourceFromSchema = (
 const buildOperationFromPathItem = (
   httpMethod: `${OpenAPIV3.HttpMethods}`,
   operationType: OperationType,
-  pathItem: OpenAPIV3.OperationObject
+  pathItem: OpenAPIV3.OperationObject,
 ): Operation => {
   return new Operation(pathItem.summary || operationType, operationType, {
     method: httpMethod.toUpperCase(),
@@ -138,7 +138,7 @@ const buildOperationFromPathItem = (
 
 export default async function (
   response: OpenAPIV3.Document,
-  entrypointUrl: string
+  entrypointUrl: string,
 ): Promise<Resource[]> {
   const document = (await dereference(response, {
     scope: entrypointUrl,
@@ -174,13 +174,13 @@ export default async function (
       ? (get(
           showOperation,
           "responses.200.content.application/json.schema",
-          get(document, `components.schemas[${title}]`)
+          get(document, `components.schemas[${title}]`),
         ) as OpenAPIV3.SchemaObject)
       : null;
     const editSchema = editOperation
       ? (get(
           editOperation,
-          "requestBody.content.application/json.schema"
+          "requestBody.content.application/json.schema",
         ) as unknown as OpenAPIV3.SchemaObject)
       : null;
 
@@ -239,8 +239,8 @@ export default async function (
                 : null,
               parameter.required || false,
               parameter.description || "",
-              parameter.deprecated
-            )
+              parameter.deprecated,
+            ),
         );
     }
 
@@ -253,7 +253,7 @@ export default async function (
       const name = inflection.camelize(field.name).replace(/Ids?$/, "");
 
       const guessedResource = resources.find(
-        (res) => res.title === inflection.classify(name)
+        (res) => res.title === inflection.classify(name),
       );
       if (!guessedResource) {
         return;

@@ -9,7 +9,7 @@ export interface ParsedSwaggerDocumentation {
 }
 
 export default function parseSwaggerDocumentation(
-  entrypointUrl: string
+  entrypointUrl: string,
 ): Promise<ParsedSwaggerDocumentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
   return fetch(entrypointUrl)
@@ -30,6 +30,6 @@ export default function parseSwaggerDocumentation(
           api: new Api(entrypointUrl, { resources: [] }),
           response,
           status: res.status,
-        })
+        }),
     );
 }

@@ -23,7 +23,7 @@ const setOptions = (query: string, options: RequestInit): RequestInit => {
 export default async <TData = { [key: string]: unknown }>(
   url: string,
   query: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<{
   response: Response;
   body: ExecutionResult<TData>;
