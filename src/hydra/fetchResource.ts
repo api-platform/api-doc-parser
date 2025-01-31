@@ -1,4 +1,3 @@
-import get from "lodash.get";
 import type { EmptyResponseDocument, ResponseDocument } from "./fetchJsonLd.js";
 import fetchJsonLd from "./fetchJsonLd.js";
 import type { IriTemplateMapping, RequestInitExtended } from "./types.js";
@@ -16,10 +15,8 @@ export default (
       hasPrefix = "hydra:search" in (d as ResponseDocument).body;
     }
     return {
-      parameters: get(
-        d,
-        hasPrefix ? "body.hydra:search.hydra:mapping" : "body.search.mapping"
-      ) as unknown as IriTemplateMapping[],
+      parameters:
+        (hasPrefix ? (d as any)?.body?.["hydra:search"]?.["hydra:mapping"] : (d as any)?.body?.search?.mapping) as unknown as IriTemplateMapping[],
     };
   });
 };
