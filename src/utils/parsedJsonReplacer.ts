@@ -7,7 +7,7 @@ type ParsedJsonReplacerResult = ResourceValue | string | null;
 
 const parsedJsonReplacer = (
   key: string,
-  value: null | ResourceValue
+  value: null | ResourceValue,
 ): ParsedJsonReplacerResult => {
   if (
     ["reference", "embedded"].includes(key) &&

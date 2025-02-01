@@ -23,7 +23,7 @@ export class Resource {
   constructor(
     public name: string,
     public url: string,
-    options: ResourceOptions = {}
+    options: ResourceOptions = {},
   ) {
     assignSealed(this, options);
   }

@@ -1231,7 +1231,7 @@ const parsed = [
 describe(`Parse Swagger Documentation from Json`, () => {
   const toBeParsed = handleJson(
     swaggerApiDefinition,
-    "https://demo.api-platform.com"
+    "https://demo.api-platform.com",
   );
 
   test(`Properties to be equal`, () => {

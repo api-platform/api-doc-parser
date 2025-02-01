@@ -1307,7 +1307,7 @@ test("parse a Hydra documentation", async () => {
 
   await parseHydraDocumentation("http://localhost", options).then((data) => {
     expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2)
+      JSON.stringify(expectedApi, null, 2),
     );
     expect(data.response).toBeDefined();
     expect(data.status).toBe(200);
@@ -1333,7 +1333,7 @@ test("parse a Hydra documentation using dynamic headers", async () => {
     headers: getHeaders,
   }).then((data) => {
     expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2)
+      JSON.stringify(expectedApi, null, 2),
     );
     expect(data.response).toBeDefined();
     expect(data.status).toBe(200);
@@ -1354,7 +1354,7 @@ test("parse a Hydra documentation (http://localhost/)", async () => {
 
   await parseHydraDocumentation("http://localhost/").then((data) => {
     expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2)
+      JSON.stringify(expectedApi, null, 2),
     );
     expect(data.response).toBeDefined();
     expect(data.status).toBe(200);
@@ -1385,7 +1385,7 @@ test("parse a Hydra documentation without authorization", () => {
       expect(data.response).toBeDefined();
       await expect(data.response.json()).resolves.toEqual(expectedResponse);
       expect(data.status).toBe(401);
-    }
+    },
   );
 });
 
@@ -1473,7 +1473,7 @@ test('Parse entrypoint class without "supportedClass" key', async () => {
   }
 
   expect(expectedError.message).toBe(
-    'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.'
+    'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
   );
 });
 
@@ -1537,7 +1537,7 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
   }
 
   expect(expectedError.message).toBe(
-    'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.'
+    'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.',
   );
 });
 
@@ -1581,24 +1581,22 @@ test("Resource parameters can be retrieved", async () => {
   fetchMock.mockResponses(
     [entrypoint, init],
     [docs, init],
-    [resourceCollectionWithParameters, init]
+    [resourceCollectionWithParameters, init],
   );
 
-  await parseHydraDocumentation("http://localhost").then(
-    async (data: { api: Api }) => {
-      const resource = data.api.resources?.[0];
-      resource &&
-        resource.getParameters &&
-        (await resource.getParameters().then((parameters: any) => {
-          expect(parameters).toEqual([
-            {
-              description: "",
-              range: "http://www.w3.org/2001/XMLSchema#string",
-              required: false,
-              variable: "isbn",
-            },
-          ]);
-        }));
-    }
-  );
+  const data: { api: Api } = await parseHydraDocumentation("http://localhost");
+  const resource = data.api.resources?.[0];
+  if (!resource?.getParameters) {
+    return;
+  }
+
+  const parameters = await resource.getParameters();
+  expect(parameters).toEqual([
+    {
+      description: "",
+      range: "http://www.w3.org/2001/XMLSchema#string",
+      required: false,
+      variable: "isbn",
+    },
+  ]);
 });

@@ -15,7 +15,7 @@ export const removeTrailingSlash = (url: string): string => {
 
 export default function (
   response: OpenAPIV2.Document,
-  entrypointUrl: string
+  entrypointUrl: string,
 ): Resource[] {
   const paths = getResourcePaths(response.paths);
 
@@ -47,7 +47,7 @@ export default function (
     const requiredFields = get(
       response,
       ["definitions", title, "required"],
-      []
+      [],
     ) as string[];
 
     const fields = fieldNames.map((fieldName) => {
@@ -58,7 +58,7 @@ export default function (
         range: null,
         type: getType(
           get(property, "type", "") as string,
-          get(property, "format", "") as string
+          get(property, "format", "") as string,
         ),
         enum: property.enum
           ? Object.fromEntries(
@@ -67,7 +67,7 @@ export default function (
                   ? inflection.humanize(enumValue)
                   : enumValue,
                 enumValue,
-              ])
+              ]),
             )
           : null,
         reference: null,

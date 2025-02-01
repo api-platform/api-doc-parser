@@ -17,13 +17,13 @@ test("fetch a JSON-LD document", () => {
       status: 200,
       statusText: "OK",
       headers: { "Content-Type": "application/ld+json" },
-    }
+    },
   );
 
   return fetchJsonLd("/foo.jsonld").then((data) => {
     expect(data.response.ok).toBe(true);
     expect(((data as ResponseDocument).body as { name: string }).name).toBe(
-      "John Lennon"
+      "John Lennon",
     );
   });
 });
@@ -39,7 +39,7 @@ test("fetch a non JSON-LD document", () => {
     (data: { response: Response; body: undefined }) => {
       expect(data.response.ok).toBe(true);
       expect(typeof data.body).toBe("undefined");
-    }
+    },
   );
 });
 
@@ -56,7 +56,7 @@ test("fetch an error with Content-Type application/ld+json", () => {
       status: 400,
       statusText: "Bad Request",
       headers: { "Content-Type": "application/ld+json" },
-    }
+    },
   );
 
   return fetchJsonLd("/foo.jsonld").catch(
@@ -65,7 +65,7 @@ test("fetch an error with Content-Type application/ld+json", () => {
         expect(response.ok).toBe(false);
         expect(body.born).toBe("1940-10-09");
       });
-    }
+    },
   );
 });
 
@@ -82,7 +82,7 @@ test("fetch an error with Content-Type application/error+json", () => {
       status: 400,
       statusText: "Bad Request",
       headers: { "Content-Type": "application/error+json" },
-    }
+    },
   );
 
   return fetchJsonLd("/foo.jsonld").catch(
@@ -91,7 +91,7 @@ test("fetch an error with Content-Type application/error+json", () => {
         expect(response.ok).toBe(false);
         expect(body.born).toBe("1940-10-09");
       });
-    }
+    },
   );
 });
 

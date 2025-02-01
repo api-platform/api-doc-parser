@@ -11,7 +11,7 @@ export interface ParsedOpenApi3Documentation {
 
 export default function parseOpenApi3Documentation(
   entrypointUrl: string,
-  options: RequestInitExtended = {}
+  options: RequestInitExtended = {},
 ): Promise<ParsedOpenApi3Documentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
   let headers: HeadersInit | undefined =
@@ -35,6 +35,6 @@ export default function parseOpenApi3Documentation(
           api: new Api(entrypointUrl, { resources: [] }),
           response,
           status: res.status,
-        })
+        }),
     );
 }

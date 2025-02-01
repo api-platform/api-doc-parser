@@ -5,7 +5,7 @@ import type { RequestInitExtended } from "./types.js";
 
 export default (
   resource: Resource,
-  options: RequestInitExtended = {}
+  options: RequestInitExtended = {},
 ): Promise<Parameter[]> =>
   fetchResource(resource.url, options).then(({ parameters = [] }) => {
     const resourceParameters: Parameter[] = [];
