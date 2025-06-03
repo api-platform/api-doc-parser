@@ -1,28 +1,41 @@
 {
   "compilerOptions": {
     /* Type checking */
+    // "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    // "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strict": true,
 
     /* Modules */
-    "module": "esnext",
-    "moduleResolution": "node",
-    "rootDir": "./src",
+    "module": "NodeNext",
+    "noUncheckedSideEffectImports": true,
+    "types": ["jest"],
 
     /* Language and Environment */
-    "target": "es6",
+    "lib": ["ES2022", "DOM"],
+    "moduleDetection": "force",
+    "target": "ES2022",
+
+    /* Output Formatting */
+    "noErrorTruncation": true,
 
     /* Emit */
     "declaration": true,
     "declarationMap": true,
-    "importHelpers": true,
+    "inlineSources": true,
+    "outDir": "lib",
     "sourceMap": true,
-    "outDir": "./lib",
 
     /* Interop Constraints */
-    "esModuleInterop": true
+    // "erasableSyntaxOnly": true,
+    "isolatedDeclarations": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": [
-    "src/**/*.test.ts",
-  ],
   "include": ["./src"]
 }
