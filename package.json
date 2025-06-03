@@ -9,8 +9,16 @@
   "author": "Kévin Dunglas",
   "sideEffects": false,
   "type": "module",
-  "exports": "./lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
     "*.md",
     "lib",
@@ -29,8 +37,7 @@
     "inflection": "^3.0.0",
     "jsonld": "^8.3.2",
     "jsonref": "^9.0.0",
-    "lodash.get": "^4.4.0",
-    "tslib": "^2.0.0"
+    "lodash.get": "^4.4.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.5",
