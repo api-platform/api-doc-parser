@@ -2,9 +2,24 @@
   "name": "@api-platform/api-doc-parser",
   "version": "0.16.8",
   "description": "Transform an API documentation (Hydra, OpenAPI, GraphQL) in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building administration interfaces.",
+  "keywords": [
+    "api",
+    "api-platform",
+    "documentation",
+    "hydra",
+    "openapi",
+    "graphql",
+    "jsonld",
+    "json-schema",
+    "typescript",
+    "client"
+  ],
   "homepage": "https://github.com/api-platform/api-doc-parser",
   "bugs": "https://github.com/api-platform/api-doc-parser/issues",
-  "repository": "api-platform/api-doc-parser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-platform/api-doc-parser.git"
+  },
   "license": "MIT",
   "author": "Kévin Dunglas",
   "sideEffects": false,
@@ -26,7 +41,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf lib tsconfig.tsbuildinfo && tsc",
+    "build": "rm -rf lib && tsc --project tsconfig.build.json",
     "build:watch": "tsc --watch",
     "eslint-check": "eslint-config-prettier src/index.ts",
     "lint": "eslint src",
@@ -69,6 +84,9 @@
     "typescript-eslint": "^8.22.0"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
   }
