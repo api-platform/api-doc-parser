@@ -20,9 +20,10 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "files": [
-    "*.md",
     "lib",
-    "src"
+    "LICENSE",
+    "package.json",
+    "README.md"
   ],
   "scripts": {
     "build": "rm -rf lib/* && tsc",
