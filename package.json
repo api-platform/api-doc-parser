@@ -26,12 +26,14 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf lib/* && tsc",
+    "build": "rm -rf lib tsconfig.tsbuildinfo && tsc",
+    "build:watch": "tsc --watch",
     "eslint-check": "eslint-config-prettier src/index.ts",
-    "fix": "pnpm lint --fix",
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "watch": "tsc --watch"
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch"
   },
   "dependencies": {
     "graphql": "^16.0.0",
