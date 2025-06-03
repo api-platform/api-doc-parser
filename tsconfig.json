@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    /* Type checking */
+    "strict": true,
+
+    /* Modules */
     "module": "esnext",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "./lib",
+    "rootDir": "./src",
+
+    /* Language and Environment */
+    "target": "es6",
+
+    /* Emit */
     "declaration": true,
     "declarationMap": true,
-    "rootDir": "./src",
     "importHelpers": true,
-    "strict": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+
+    /* Interop Constraints */
     "esModuleInterop": true
   },
   "exclude": [
