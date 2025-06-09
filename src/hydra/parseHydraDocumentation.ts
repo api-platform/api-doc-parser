@@ -22,7 +22,7 @@ import type {
  * Extracts the short name of a resource.
  */
 function guessNameFromUrl(url: string, entrypointUrl: string): string {
-  return url.substr(entrypointUrl.length + 1);
+  return url.slice(entrypointUrl.length + 1);
 }
 
 function getTitleOrLabel(obj: ExpandedOperation): string {
