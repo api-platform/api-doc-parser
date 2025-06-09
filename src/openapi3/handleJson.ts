@@ -24,25 +24,25 @@ export function removeTrailingSlash(url: string): string {
 }
 
 function mergeResources(resourceA: Resource, resourceB: Resource) {
-  resourceB.fields?.forEach((fieldB) => {
+  for (const fieldB of resourceB.fields ?? []) {
     if (!resourceA.fields?.some((fieldA) => fieldA.name === fieldB.name)) {
       resourceA.fields?.push(fieldB);
     }
-  });
-  resourceB.readableFields?.forEach((fieldB) => {
+  }
+  for (const fieldB of resourceB.readableFields ?? []) {
     if (
       !resourceA.readableFields?.some((fieldA) => fieldA.name === fieldB.name)
     ) {
       resourceA.readableFields?.push(fieldB);
     }
-  });
-  resourceB.writableFields?.forEach((fieldB) => {
+  }
+  for (const fieldB of resourceB.writableFields ?? []) {
     if (
       !resourceA.writableFields?.some((fieldA) => fieldA.name === fieldB.name)
     ) {
       resourceA.writableFields?.push(fieldB);
     }
-  });
+  }
 
   return resourceA;
 }
@@ -157,7 +157,7 @@ export default async function (
 
   const resources: Resource[] = [];
 
-  paths.forEach((path) => {
+  for (const path of paths) {
     const splittedPath = removeTrailingSlash(path).split("/");
     const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
@@ -170,7 +170,7 @@ export default async function (
 
     const showOperation = pathItem.get;
     const editOperation = pathItem.put || pathItem.patch;
-    if (!showOperation && !editOperation) return;
+    if (!showOperation && !editOperation) continue;
 
     const showSchema = showOperation
       ? (get(
@@ -186,7 +186,7 @@ export default async function (
         ) as unknown as OpenAPIV3.SchemaObject)
       : null;
 
-    if (!showSchema && !editSchema) return;
+    if (!showSchema && !editSchema) continue;
 
     const showResource = showSchema
       ? buildResourceFromSchema(showSchema, name, title, url)
@@ -195,7 +195,7 @@ export default async function (
       ? buildResourceFromSchema(editSchema, name, title, url)
       : null;
     let resource = showResource ?? editResource;
-    if (!resource) return;
+    if (!resource) continue;
     if (showResource && editResource) {
       resource = mergeResources(showResource, editResource);
     }
@@ -247,18 +247,18 @@ export default async function (
     }
 
     resources.push(resource);
-  });
+  }
 
   // Guess embeddeds and references from property names
-  resources.forEach((resource) => {
-    resource.fields?.forEach((field) => {
+  for (const resource of resources) {
+    for (const field of resource.fields ?? []) {
       const name = inflection.camelize(field.name).replace(/Ids?$/, "");
 
       const guessedResource = resources.find(
         (res) => res.title === inflection.classify(name),
       );
       if (!guessedResource) {
-        return;
+        continue;
       }
       field.maxCardinality = field.type === "array" ? null : 1;
       if (field.type === "object" || field.arrayType === "object") {
@@ -266,8 +266,8 @@ export default async function (
       } else {
         field.reference = guessedResource;
       }
-    });
-  });
+    }
+  }
 
   return resources;
 }

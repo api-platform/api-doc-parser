@@ -74,12 +74,12 @@ export default async function parseGraphQl(
   ) as IntrospectionObjectType[];
 
   const resources: Resource[] = [];
-  typeResources.forEach((typeResource) => {
+  for (const typeResource of typeResources) {
     const fields: Field[] = [];
     const readableFields: Field[] = [];
     const writableFields: Field[] = [];
 
-    typeResource.fields.forEach((resourceFieldType) => {
+    for (const resourceFieldType of typeResource.fields) {
       const field = new Field(resourceFieldType.name, {
         range: getRangeFromGraphQlType(resourceFieldType.type),
         reference: getReferenceFromGraphQlType(resourceFieldType.type),
@@ -91,7 +91,7 @@ export default async function parseGraphQl(
       fields.push(field);
       readableFields.push(field);
       writableFields.push(field);
-    });
+    }
 
     resources.push(
       new Resource(typeResource.name, "", {
@@ -100,10 +100,10 @@ export default async function parseGraphQl(
         writableFields,
       }),
     );
-  });
+  }
 
-  resources.forEach((resource) => {
-    resource.fields?.forEach((field) => {
+  for (const resource of resources) {
+    for (const field of resource.fields ?? []) {
       if (field.reference !== null) {
         field.reference =
           resources.find((resource) => resource.name === field.reference) ||
@@ -112,11 +112,11 @@ export default async function parseGraphQl(
         field.reference =
           resources.find((resource) => resource.name === field.range) || null;
       }
-    });
-  });
+    }
+  }
 
   return {
     api: new Api(entrypointUrl, { resources }),
     response,
   };
-};
+}

@@ -9,9 +9,9 @@ export default function getParameters(
 ): Promise<Parameter[]> {
   return fetchResource(resource.url, options).then(({ parameters = [] }) => {
     const resourceParameters: Parameter[] = [];
-    parameters.forEach(({ property = null, required, variable }) => {
+    for (const { property = null, required, variable } of parameters) {
       if (property === null) {
-        return;
+        continue;
       }
 
       const { range = null } = resource.fields
@@ -19,7 +19,7 @@ export default function getParameters(
         : {};
 
       resourceParameters.push(new Parameter(variable, range, required, ""));
-    });
+    }
     resource.parameters = resourceParameters;
 
     return resourceParameters;
