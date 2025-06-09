@@ -1,5 +1,5 @@
 export function assignSealed<
-  TSrc extends { [key: string]: any },
+  TSrc extends Record<string, any>,
   TTarget extends TSrc,
 >(target: TTarget, src: TSrc): void {
   for (const key of Object.keys(src)) {
