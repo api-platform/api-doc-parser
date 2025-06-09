@@ -310,10 +310,10 @@ export default function parseHydraDocumentation(
                   ? range // Will be updated in a subsequent pass
                   : null,
               embedded:
-                "http://www.w3.org/ns/hydra/core#Link" !==
-                get(supportedProperty, '["@type"][0]')
-                  ? (range as unknown as Resource) // Will be updated in a subsequent pass
-                  : null,
+                get(supportedProperty, '["@type"][0]') ===
+                "http://www.w3.org/ns/hydra/core#Link"
+                  ? null
+                  : (range as unknown as Resource), // Will be updated in a subsequent pass
               required: get(
                 supportedProperties,
                 '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]',
