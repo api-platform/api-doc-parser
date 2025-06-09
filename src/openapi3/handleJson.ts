@@ -138,7 +138,7 @@ function buildOperationFromPathItem(
   probably accepts parameters and would respond with an object.
 */
 
-export default async function (
+export default async function handleJson(
   response: OpenAPIV3.Document,
   entrypointUrl: string,
 ): Promise<Resource[]> {

@@ -20,7 +20,7 @@ function setOptions(query: string, options: RequestInit): RequestInit {
   return options;
 }
 
-export default async function <TData = { [key: string]: unknown }>(
+export default async function fetchQuery<TData = { [key: string]: unknown }>(
   url: string,
   query: string,
   options: RequestInit = {},

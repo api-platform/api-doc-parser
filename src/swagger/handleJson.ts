@@ -13,7 +13,7 @@ export function removeTrailingSlash(url: string): string {
   return url;
 }
 
-export default function (
+export default function handleJson(
   response: OpenAPIV2.Document,
   entrypointUrl: string,
 ): Resource[] {
