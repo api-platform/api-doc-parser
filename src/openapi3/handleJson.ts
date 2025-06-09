@@ -91,7 +91,7 @@ function buildResourceFromSchema(
       reference: null,
       embedded: null,
       nullable: property.nullable || false,
-      required: !!requiredFields.find((value) => value === fieldName),
+      required: requiredFields.some((value) => value === fieldName),
       description: property.description || "",
     });
 

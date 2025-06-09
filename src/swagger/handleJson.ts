@@ -72,7 +72,7 @@ export default function handleJson(
           : null,
         reference: null,
         embedded: null,
-        required: !!requiredFields.find((value) => value === fieldName),
+        required: requiredFields.some((value) => value === fieldName),
         description: property.description || "",
       });
     });
