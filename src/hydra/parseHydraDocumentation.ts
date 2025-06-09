@@ -50,7 +50,7 @@ function findSupportedClass(
     '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]',
   ) as ExpandedClass[] | undefined;
   if (!Array.isArray(supportedClasses)) {
-    throw new Error(
+    throw new TypeError(
       'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
     );
   }
@@ -241,7 +241,7 @@ export default function parseHydraDocumentation(
           entrypointClass["http://www.w3.org/ns/hydra/core#supportedProperty"],
         )
       ) {
-        throw new Error(
+        throw new TypeError(
           'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.',
         );
       }
