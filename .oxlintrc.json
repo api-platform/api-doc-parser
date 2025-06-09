@@ -1,0 +1,118 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "nursery": "error",
+    "pedantic": "error",
+    "perf": "error",
+    "restriction": "error",
+    "style": "error",
+    "suspicious": "error"
+  },
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "vitest",
+    "import",
+    "eslint",
+    "oxc",
+    "promise"
+  ],
+  "rules": {
+    "@typescript-eslint/no-empty-object-type": [
+      "error",
+      {
+        "allowInterfaces": "with-single-extends"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "eslint/curly": "off",
+    "eslint/max-depth": "off",
+    "eslint/max-lines": "off",
+    "eslint/max-lines-per-function": "off",
+    "eslint/max-nested-callbacks": "off",
+    "eslint/no-duplicate-imports": "off",
+    "func-style": [
+      "error",
+      "declaration",
+      {
+        "overrides": {
+          "namedExports": "declaration"
+        }
+      }
+    ],
+    "import/exports-last": "off",
+    "import/group-exports": "off",
+    "import/max-dependencies": "off",
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowCallExpression": true
+      }
+    ],
+    "import/no-default-export": "off",
+    "max-params": "off",
+    "no-async-await": "off",
+    "no-console": "off",
+    "no-continue": "off",
+    "no-magic-numbers": "off",
+    "no-nested-ternary": "off",
+    "no-optional-chaining": "off",
+    "no-ternary": "off",
+    "no-undefined": "off",
+    "no-unexpected-multiline": "off",
+    "oxc/no-barrel-file": "off",
+    "oxc/no-rest-spread-properties": "off",
+    "prefer-promise-reject-errors": "off",
+    "promise/catch-or-return": "off",
+    "promise/no-nesting": "off",
+    "promise/no-return-wrap": "off",
+    "promise/prefer-await-to-callbacks": "off",
+    "promise/prefer-await-to-then": "off",
+    "sort-imports": "off",
+    "sort-keys": "off",
+    "sort-vars": "off",
+    "typescript/consistent-indexed-object-style": "error",
+    "typescript/explicit-function-return-type": "off",
+    "typescript/no-empty-interface": "off",
+    "unicorn/empty-brace-spaces": "off",
+    "unicorn/error-message": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true,
+          "kebabCase": false,
+          "pascalCase": true,
+          "snakeCase": false
+        }
+      }
+    ],
+    "unicorn/no-nested-ternary": "off",
+    "unicorn/no-null": "off",
+    "unicorn/number-literal-case": "off",
+    "vitest/consistent-test-it": [
+      "error",
+      {
+        "fn": "test",
+        "withinDescribe": "test"
+      }
+    ],
+    "vitest/expect-expect": "off",
+    "vitest/max-expects": "off",
+    "vitest/no-conditional-expect": "off",
+    "vitest/no-conditional-in-test": "off",
+    "vitest/no-hooks": "off",
+    "vitest/no-standalone-expect": "off",
+    "vitest/prefer-lowercase-title": "off",
+    "vitest/prefer-strict-equal": "off",
+    "vitest/prefer-to-be-falsy": "off",
+    "vitest/prefer-to-be-truthy": "off",
+    "vitest/require-top-level-describe": "off",
+    "yoda": "error"
+  }
+}
