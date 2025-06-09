@@ -30,11 +30,13 @@ export default function parseOpenApi3Documentation(
           status: res.status,
         }));
       },
-      ([res, response]: [res: Response, response: OpenAPIV3.Document]) =>
-        Promise.reject({
+      ([res, response]: [res: Response, response: OpenAPIV3.Document]) => {
+        // oxlint-disable-next-line no-throw-literal
+        throw {
           api: new Api(entrypointUrl, { resources: [] }),
           response,
           status: res.status,
-        }),
+        };
+      },
     );
 }

@@ -39,7 +39,8 @@ export default async function fetchJsonLd(
       !contentType.includes(jsonProblemMimeType))
   ) {
     const reason: RejectedResponseDocument = { response };
-    return Promise.reject(reason);
+    // oxlint-disable-next-line no-throw-literal
+    throw reason;
   }
 
   return response.json().then((body: JsonLd) => ({

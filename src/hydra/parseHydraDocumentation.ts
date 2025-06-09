@@ -512,12 +512,14 @@ export default function parseHydraDocumentation(
         status: response.status,
       };
     },
-    (data: { response: Response }) =>
-      Promise.reject({
+    (error: { response: Response }) => {
+      // oxlint-disable-next-line no-throw-literal
+      throw {
         api: new Api(entrypointUrl, { resources: [] }),
-        error: data,
-        response: data.response,
-        status: get(data.response, "status"),
-      }),
+        error,
+        response: error.response,
+        status: get(error.response, "status"),
+      };
+    },
   );
 }

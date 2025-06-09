@@ -32,8 +32,9 @@ export default async function <TData = { [key: string]: unknown }>(
   const body = (await response.json()) as ExecutionResult<TData>;
 
   if (body?.errors) {
-    return Promise.reject({ response, body });
+    // oxlint-disable-next-line no-throw-literal
+    throw { response, body };
   }
 
-  return Promise.resolve({ response, body });
+  return { response, body };
 }
