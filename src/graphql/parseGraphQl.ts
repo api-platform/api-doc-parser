@@ -104,11 +104,11 @@ export default async (
 
   resources.forEach((resource) => {
     resource.fields?.forEach((field) => {
-      if (null !== field.reference) {
+      if (field.reference !== null) {
         field.reference =
           resources.find((resource) => resource.name === field.reference) ||
           null;
-      } else if (null !== field.range) {
+      } else if (field.range !== null) {
         field.reference =
           resources.find((resource) => resource.name === field.range) || null;
       }

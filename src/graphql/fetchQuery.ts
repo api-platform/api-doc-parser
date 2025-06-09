@@ -9,11 +9,11 @@ const setOptions = (query: string, options: RequestInit): RequestInit => {
     options.headers = new Headers(options.headers);
   }
 
-  if (null === options.headers.get("Content-Type")) {
+  if (options.headers.get("Content-Type") === null) {
     options.headers.set("Content-Type", "application/json");
   }
 
-  if ("GET" !== options.method && !options.body) {
+  if (options.method !== "GET" && !options.body) {
     options.body = JSON.stringify({ query });
   }
 

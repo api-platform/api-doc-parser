@@ -10,7 +10,7 @@ export default (
   fetchResource(resource.url, options).then(({ parameters = [] }) => {
     const resourceParameters: Parameter[] = [];
     parameters.forEach(({ property = null, required, variable }) => {
-      if (null === property) {
+      if (property === null) {
         return;
       }
 

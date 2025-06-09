@@ -171,7 +171,7 @@ function findRelatedClass(
 
       if (
         allValuesFrom &&
-        "http://www.w3.org/ns/hydra/core#member" === onProperty
+        onProperty === "http://www.w3.org/ns/hydra/core#member"
       ) {
         return findSupportedClass(docs, allValuesFrom);
       }
@@ -193,8 +193,8 @@ function findRelatedClass(
       '["http://www.w3.org/ns/hydra/core#returns"][0]["@id"]',
     ) as string | undefined;
     if (
-      "string" === typeof returns &&
-      0 !== returns.indexOf("http://www.w3.org/ns/hydra/core")
+      typeof returns === "string" &&
+      returns.indexOf("http://www.w3.org/ns/hydra/core") !== 0
     ) {
       return findSupportedClass(docs, returns);
     }
@@ -304,8 +304,8 @@ export default function parseHydraDocumentation(
               range,
               type: getType(id, range),
               reference:
-                "http://www.w3.org/ns/hydra/core#Link" ===
-                get(supportedProperty, '["@type"][0]')
+                get(supportedProperty, '["@type"][0]') ===
+                "http://www.w3.org/ns/hydra/core#Link"
                   ? range // Will be updated in a subsequent pass
                   : null,
               embedded:
@@ -493,12 +493,12 @@ export default function parseHydraDocumentation(
 
       // Resolve references and embedded
       for (const field of fields) {
-        if (null !== field.reference) {
+        if (field.reference !== null) {
           field.reference =
             resources.find((resource) => resource.id === field.reference) ||
             null;
         }
-        if (null !== field.embedded) {
+        if (field.embedded !== null) {
           field.embedded =
             resources.find((resource) => resource.id === field.embedded) ||
             null;

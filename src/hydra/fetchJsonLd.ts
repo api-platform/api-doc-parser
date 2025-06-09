@@ -28,12 +28,12 @@ export default async function fetchJsonLd(
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
-  if (204 === status) {
-    return Promise.resolve({ response });
+  if (status === 204) {
+    return { response };
   }
 
   if (
-    500 <= status ||
+    status >= 500 ||
     !contentType ||
     (!contentType.includes(jsonLdMimeType) &&
       !contentType.includes(jsonProblemMimeType))
@@ -60,16 +60,16 @@ function setHeaders(options: RequestInitExtended): RequestInit {
 
   headers = new Headers(headers);
 
-  if (null === headers.get("Accept")) {
+  if (headers.get("Accept") === null) {
     headers.set("Accept", jsonLdMimeType);
   }
 
   const result = { ...options, headers };
 
   if (
-    "undefined" !== result.body &&
+    result.body !== "undefined" &&
     !(typeof FormData !== "undefined" && result.body instanceof FormData) &&
-    null === result.headers.get("Content-Type")
+    result.headers.get("Content-Type") === null
   ) {
     result.headers.set("Content-Type", jsonLdMimeType);
   }
