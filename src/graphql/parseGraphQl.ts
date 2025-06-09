@@ -9,7 +9,7 @@ import type {
   IntrospectionQuery,
 } from "graphql/utilities";
 
-const getRangeFromGraphQlType = (type: IntrospectionOutputTypeRef): string => {
+function getRangeFromGraphQlType(type: IntrospectionOutputTypeRef): string {
   if (type.kind === "NON_NULL") {
     if (type.ofType.kind === "LIST") {
       return `Array<${getRangeFromGraphQlType(type.ofType.ofType)}>`;
@@ -23,25 +23,25 @@ const getRangeFromGraphQlType = (type: IntrospectionOutputTypeRef): string => {
   }
 
   return type.name;
-};
+}
 
-const getReferenceFromGraphQlType = (
+function getReferenceFromGraphQlType(
   type: IntrospectionOutputTypeRef,
-): null | string => {
+): null | string {
   if (type.kind === "OBJECT" && type.name.endsWith("Connection")) {
     return type.name.slice(0, type.name.lastIndexOf("Connection"));
   }
 
   return null;
-};
+}
 
-export default async (
+export default async function parseGraphQl(
   entrypointUrl: string,
   options: RequestInit = {},
 ): Promise<{
   api: Api;
   response: Response;
-}> => {
+}> {
   const introspectionQuery = getIntrospectionQuery();
 
   const {

@@ -105,8 +105,8 @@ async function fetchEntrypointAndDocs(
   const entrypointJsonLd = d.body;
   const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
 
-  const documentLoader = (input: string) =>
-    fetchJsonLd(input, options).then((response) => {
+  function documentLoader(input: string) {
+    return fetchJsonLd(input, options).then((response) => {
       if (!("body" in response)) {
         throw new Error(
           "An empty response was received when expanding documentation or entrypoint JSON-LD documents.",
@@ -114,6 +114,7 @@ async function fetchEntrypointAndDocs(
       }
       return response;
     });
+  }
 
   const docsResponse = await fetchJsonLd(docsUrl, options);
   if (!("body" in docsResponse)) {

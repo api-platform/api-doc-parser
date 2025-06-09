@@ -3,11 +3,11 @@ import fetchResource from "./fetchResource.js";
 import type { Resource } from "../Resource.js";
 import type { RequestInitExtended } from "./types.js";
 
-export default (
+export default function getParameters(
   resource: Resource,
   options: RequestInitExtended = {},
-): Promise<Parameter[]> =>
-  fetchResource(resource.url, options).then(({ parameters = [] }) => {
+): Promise<Parameter[]> {
+  return fetchResource(resource.url, options).then(({ parameters = [] }) => {
     const resourceParameters: Parameter[] = [];
     parameters.forEach(({ property = null, required, variable }) => {
       if (property === null) {
@@ -24,3 +24,4 @@ export default (
 
     return resourceParameters;
   });
+}

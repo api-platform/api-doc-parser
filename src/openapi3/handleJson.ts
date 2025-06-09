@@ -10,18 +10,20 @@ import getType from "./getType.js";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
-const isRef = <T extends object>(
+function isRef<T extends object>(
   maybeRef: T | OpenAPIV3.ReferenceObject,
-): maybeRef is T => !("$ref" in maybeRef);
+): maybeRef is T {
+  return !("$ref" in maybeRef);
+}
 
-export const removeTrailingSlash = (url: string): string => {
+export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
   return url;
-};
+}
 
-const mergeResources = (resourceA: Resource, resourceB: Resource) => {
+function mergeResources(resourceA: Resource, resourceB: Resource) {
   resourceB.fields?.forEach((fieldB) => {
     if (!resourceA.fields?.some((fieldA) => fieldA.name === fieldB.name)) {
       resourceA.fields?.push(fieldB);
@@ -43,14 +45,14 @@ const mergeResources = (resourceA: Resource, resourceB: Resource) => {
   });
 
   return resourceA;
-};
+}
 
-const buildResourceFromSchema = (
+function buildResourceFromSchema(
   schema: OpenAPIV3.SchemaObject,
   name: string,
   title: string,
   url: string,
-) => {
+) {
   const description = schema.description;
   const properties = schema.properties || {};
 
@@ -113,18 +115,18 @@ const buildResourceFromSchema = (
     parameters: [],
     getParameters: () => Promise.resolve([]),
   });
-};
+}
 
-const buildOperationFromPathItem = (
+function buildOperationFromPathItem(
   httpMethod: `${OpenAPIV3.HttpMethods}`,
   operationType: OperationType,
   pathItem: OpenAPIV3.OperationObject,
-): Operation => {
+): Operation {
   return new Operation(pathItem.summary || operationType, operationType, {
     method: httpMethod.toUpperCase(),
     deprecated: !!pathItem.deprecated,
   });
-};
+}
 
 /*
   Assumptions:

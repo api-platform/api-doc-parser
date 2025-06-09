@@ -1,6 +1,6 @@
 import type { ExecutionResult } from "graphql";
 
-const setOptions = (query: string, options: RequestInit): RequestInit => {
+function setOptions(query: string, options: RequestInit): RequestInit {
   if (!options.method) {
     options.method = "POST";
   }
@@ -18,16 +18,16 @@ const setOptions = (query: string, options: RequestInit): RequestInit => {
   }
 
   return options;
-};
+}
 
-export default async <TData = { [key: string]: unknown }>(
+export default async function <TData = { [key: string]: unknown }>(
   url: string,
   query: string,
   options: RequestInit = {},
 ): Promise<{
   response: Response;
   body: ExecutionResult<TData>;
-}> => {
+}> {
   const response = await fetch(url, setOptions(query, options));
   const body = (await response.json()) as ExecutionResult<TData>;
 
@@ -36,4 +36,4 @@ export default async <TData = { [key: string]: unknown }>(
   }
 
   return Promise.resolve({ response, body });
-};
+}

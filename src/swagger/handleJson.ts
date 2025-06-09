@@ -6,12 +6,12 @@ import getResourcePaths from "../utils/getResources.js";
 import getType from "../openapi3/getType.js";
 import type { OpenAPIV2 } from "openapi-types";
 
-export const removeTrailingSlash = (url: string): string => {
+export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
   return url;
-};
+}
 
 export default function (
   response: OpenAPIV2.Document,

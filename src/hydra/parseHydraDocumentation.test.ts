@@ -1344,8 +1344,9 @@ test("parse a Hydra documentation using dynamic headers", async () => {
   );
 
   const fetchSpy = vi.spyOn(globalThis, "fetch");
-  const getHeaders = (): Headers =>
-    new Headers({ CustomHeader: "customValue" });
+  function getHeaders(): Headers {
+    return new Headers({ CustomHeader: "customValue" });
+  }
 
   try {
     const data = await parseHydraDocumentation("http://localhost", {
