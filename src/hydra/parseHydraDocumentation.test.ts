@@ -1335,6 +1335,10 @@ test("parse a Hydra documentation", async () => {
   fetchSpy.mockRestore();
 });
 
+function getHeaders(): Headers {
+  return new Headers({ CustomHeader: "customValue" });
+}
+
 test("parse a Hydra documentation using dynamic headers", async () => {
   server.use(
     http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
@@ -1344,9 +1348,6 @@ test("parse a Hydra documentation using dynamic headers", async () => {
   );
 
   const fetchSpy = vi.spyOn(globalThis, "fetch");
-  function getHeaders(): Headers {
-    return new Headers({ CustomHeader: "customValue" });
-  }
 
   try {
     const data = await parseHydraDocumentation("http://localhost", {
