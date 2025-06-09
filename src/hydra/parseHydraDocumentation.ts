@@ -98,13 +98,6 @@ async function fetchEntrypointAndDocs(
   entrypoint: Entrypoint[];
   docs: ExpandedDoc[];
 }> {
-  const d = await fetchJsonLd(entrypointUrl, options);
-  if (!("body" in d)) {
-    throw new Error("An empty response was received for the entrypoint URL.");
-  }
-  const entrypointJsonLd = d.body;
-  const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
-
   function documentLoader(input: string) {
     return fetchJsonLd(input, options).then((response) => {
       if (!("body" in response)) {
@@ -116,32 +109,50 @@ async function fetchEntrypointAndDocs(
     });
   }
 
-  const docsResponse = await fetchJsonLd(docsUrl, options);
-  if (!("body" in docsResponse)) {
-    throw new Error(
-      "An empty response was received for the documentation URL.",
-    );
+  try {
+    const d = await fetchJsonLd(entrypointUrl, options);
+    if (!("body" in d)) {
+      throw new Error("An empty response was received for the entrypoint URL.");
+    }
+    const entrypointJsonLd = d.body;
+    const docsUrl = getDocumentationUrlFromHeaders(d.response.headers);
+
+    const docsResponse = await fetchJsonLd(docsUrl, options);
+    if (!("body" in docsResponse)) {
+      throw new Error(
+        "An empty response was received for the documentation URL.",
+      );
+    }
+    const docsJsonLd = docsResponse.body;
+
+    const [docs, entrypoint] = (await Promise.all([
+      jsonld.expand(docsJsonLd, {
+        base: docsUrl,
+        documentLoader,
+      }),
+      jsonld.expand(entrypointJsonLd, {
+        base: entrypointUrl,
+        documentLoader,
+      }),
+    ])) as unknown as [ExpandedDoc[], Entrypoint[]];
+
+    return {
+      entrypointUrl,
+      docsUrl,
+      entrypoint,
+      response: d.response,
+      docs,
+    };
+  } catch (error) {
+    const { response } = error as { response: Response };
+    // oxlint-disable-next-line no-throw-literal
+    throw {
+      api: new Api(entrypointUrl, { resources: [] }),
+      error,
+      response,
+      status: get(response, "status"),
+    };
   }
-  const docsJsonLd = docsResponse.body;
-
-  const [docs, entrypoint] = (await Promise.all([
-    jsonld.expand(docsJsonLd, {
-      base: docsUrl,
-      documentLoader,
-    }),
-    jsonld.expand(entrypointJsonLd, {
-      base: entrypointUrl,
-      documentLoader,
-    }),
-  ])) as unknown as [ExpandedDoc[], Entrypoint[]];
-
-  return {
-    entrypointUrl,
-    docsUrl,
-    entrypoint,
-    response: d.response,
-    docs,
-  };
 }
 
 function removeTrailingSlash(url: string): string {
@@ -510,15 +521,6 @@ export default function parseHydraDocumentation(
         api: new Api(entrypointUrl, { title, resources }),
         response,
         status: response.status,
-      };
-    },
-    (error: { response: Response }) => {
-      // oxlint-disable-next-line no-throw-literal
-      throw {
-        api: new Api(entrypointUrl, { resources: [] }),
-        error,
-        response: error.response,
-        status: get(error.response, "status"),
       };
     },
   );
