@@ -1235,33 +1235,28 @@ describe(`Parse Swagger Documentation from Json`, () => {
   );
 
   test(`Properties to be equal`, () => {
-    expect(toBeParsed[0].name).toBe(parsed[0].name);
-    expect(toBeParsed[0].url).toBe(parsed[0].url);
-    expect(toBeParsed[0].id).toBe(parsed[0].id);
+    expect(toBeParsed[0]).toMatchObject({
+      name: parsed[0]?.name,
+      url: parsed[0]?.url,
+      id: parsed[0]?.id,
+    });
 
-    assert(
-      "fields" in toBeParsed[0],
-      "Expected 'fields' property in the first resource",
-    );
+    const toBeParsedFields = toBeParsed[0]?.fields;
 
-    const toBeParsedFields = toBeParsed[0].fields;
     assert(!!toBeParsedFields, "Expected 'fields' to be defined");
-    expect(toBeParsedFields[0]).toEqual(parsed[0].fields[0]);
-    expect(toBeParsedFields[1]).toEqual(parsed[0].fields[1]);
-    expect(toBeParsedFields[2]).toEqual(parsed[0].fields[2]);
-    expect(toBeParsedFields[3]).toEqual(parsed[0].fields[3]);
-    expect(toBeParsedFields[4]).toEqual(parsed[0].fields[4]);
-    expect(toBeParsedFields[5]).toEqual(parsed[0].fields[5]);
+    expect(toBeParsedFields).toEqual(parsed[0]?.fields);
 
-    expect(toBeParsed[1].name).toBe(parsed[1].name);
-    expect(toBeParsed[1].url).toBe(parsed[1].url);
-    expect(toBeParsed[1].id).toBe(parsed[1].id);
+    expect(toBeParsed[1]).toMatchObject({
+      name: parsed[1]?.name,
+      url: parsed[1]?.url,
+      id: parsed[1]?.id,
+    });
 
     assert(
-      "fields" in toBeParsed[1],
+      !!toBeParsed[1]?.fields,
       "Expected 'fields' property in the second resource",
     );
 
-    expect(toBeParsed[1].fields?.[0]).toEqual(parsed[1].fields[0]);
+    expect(toBeParsed[1].fields?.[0]).toEqual(parsed[1]?.fields[0]);
   });
 });

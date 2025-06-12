@@ -116,7 +116,15 @@ export interface ExpandedSupportedProperty {
       "@value": boolean;
     },
   ];
+  /**
+   * @deprecated
+   */
   "http://www.w3.org/ns/hydra/core#writeable": [
+    {
+      "@value": boolean;
+    },
+  ];
+  "http://www.w3.org/ns/hydra/core#writable": [
     {
       "@value": boolean;
     },

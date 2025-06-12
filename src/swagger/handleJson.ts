@@ -21,10 +21,15 @@ export default function handleJson(
 
   return paths.map((path) => {
     const splittedPath = removeTrailingSlash(path).split("/");
-    const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
+    const baseName = splittedPath[splittedPath.length - 2];
+    if (!baseName) {
+      throw new Error("Invalid path: " + path);
+    }
+
+    const name = inflection.pluralize(baseName);
     const url = `${removeTrailingSlash(entrypointUrl)}/${name}`;
 
-    const title = inflection.classify(splittedPath[splittedPath.length - 2]);
+    const title = inflection.classify(baseName);
 
     if (!response.definitions) {
       throw new Error(); // @TODO
@@ -36,7 +41,7 @@ export default function handleJson(
       throw new Error(); // @TODO
     }
 
-    const description = definition.description;
+    const description = definition.description || "";
     const properties = definition.properties;
 
     if (!properties) {
@@ -60,7 +65,7 @@ export default function handleJson(
           get(property, "type", "") as string,
           get(property, "format", "") as string,
         ),
-        enum: property.enum
+        enum: property?.enum
           ? Object.fromEntries(
               property.enum.map((enumValue: string | number) => [
                 typeof enumValue === "string"
@@ -73,7 +78,7 @@ export default function handleJson(
         reference: null,
         embedded: null,
         required: requiredFields.some((value) => value === fieldName),
-        description: property.description || "",
+        description: property?.description || "",
       });
     });
 

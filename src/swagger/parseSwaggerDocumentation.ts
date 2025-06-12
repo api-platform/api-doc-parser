@@ -1,3 +1,4 @@
+// oxlint-disable prefer-await-to-then
 import { Api } from "../Api.js";
 import handleJson, { removeTrailingSlash } from "./handleJson.js";
 import type { OpenAPIV2 } from "openapi-types";

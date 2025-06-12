@@ -1,24 +1,24 @@
-import type { EmptyResponseDocument, ResponseDocument } from "./fetchJsonLd.js";
 import fetchJsonLd from "./fetchJsonLd.js";
 import type { IriTemplateMapping, RequestInitExtended } from "./types.js";
 
-export default function fetchResource(
+export default async function fetchResource(
   resourceUrl: string,
   options: RequestInitExtended = {},
 ): Promise<{ parameters: IriTemplateMapping[] }> {
-  return fetchJsonLd(
+  const response = await fetchJsonLd(
     resourceUrl,
     // oxlint-disable-next-line prefer-object-spread
     Object.assign({ itemsPerPage: 0 }, options),
-  ).then((d: ResponseDocument | EmptyResponseDocument) => {
-    let hasPrefix = true;
-    if ((d as ResponseDocument).body) {
-      hasPrefix = "hydra:search" in (d as ResponseDocument).body;
-    }
-    return {
-      parameters: (hasPrefix
-        ? (d as any)?.body?.["hydra:search"]?.["hydra:mapping"]
-        : (d as any)?.body?.search?.mapping) as unknown as IriTemplateMapping[],
-    };
-  });
+  );
+
+  let hasPrefix = true;
+  if ("body" in response) {
+    hasPrefix = "hydra:search" in response.body;
+  }
+  return {
+    parameters: (hasPrefix
+      ? (response as any)?.body?.["hydra:search"]?.["hydra:mapping"]
+      : (response as any)?.body?.search
+          ?.mapping) as unknown as IriTemplateMapping[],
+  };
 }

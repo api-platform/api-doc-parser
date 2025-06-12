@@ -10,10 +10,20 @@ import getType from "./getType.js";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
-function isRef<T extends object>(
-  maybeRef: T | OpenAPIV3.ReferenceObject,
-): maybeRef is T {
-  return !("$ref" in maybeRef);
+function isParameter(
+  maybeParameter: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject,
+): maybeParameter is OpenAPIV3.ParameterObject {
+  return (
+    maybeParameter !== undefined &&
+    "name" in maybeParameter &&
+    "in" in maybeParameter
+  );
+}
+
+function isSchema(
+  maybeSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | undefined,
+): maybeSchema is OpenAPIV3.SchemaObject {
+  return maybeSchema !== undefined && !("$ref" in maybeSchema);
 }
 
 export function removeTrailingSlash(url: string): string {
@@ -53,9 +63,7 @@ function buildResourceFromSchema(
   title: string,
   url: string,
 ) {
-  const description = schema.description;
-  const properties = schema.properties || {};
-
+  const { description = "", properties = {} } = schema;
   const fieldNames = Object.keys(properties);
   const requiredFields = schema.required || [];
 
@@ -113,6 +121,7 @@ function buildResourceFromSchema(
     readableFields,
     writableFields,
     parameters: [],
+    // oxlint-disable-next-line prefer-await-to-then
     getParameters: () => Promise.resolve([]),
   });
 }
@@ -148,29 +157,32 @@ export default async function handleJson(
 
   const paths = getResourcePaths(document.paths);
 
-  let serverUrlOrRelative = "/";
-  if (document.servers) {
-    serverUrlOrRelative = document.servers[0].url;
-  }
-
+  const serverUrlOrRelative = document.servers?.[0]?.url || "/";
   const serverUrl = new URL(serverUrlOrRelative, entrypointUrl).href;
 
   const resources: Resource[] = [];
 
   for (const path of paths) {
     const splittedPath = removeTrailingSlash(path).split("/");
-    const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
+    const baseName = splittedPath[splittedPath.length - 2];
+    if (!baseName) {
+      throw new Error("Invalid path: " + path);
+    }
+
+    const name = inflection.pluralize(baseName);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
     const pathItem = document.paths[path];
     if (!pathItem) {
       throw new Error();
     }
 
-    const title = inflection.classify(splittedPath[splittedPath.length - 2]);
+    const title = inflection.classify(baseName);
 
     const showOperation = pathItem.get;
     const editOperation = pathItem.put || pathItem.patch;
-    if (!showOperation && !editOperation) continue;
+    if (!showOperation && !editOperation) {
+      continue;
+    }
 
     const showSchema = showOperation
       ? (get(
@@ -186,7 +198,9 @@ export default async function handleJson(
         ) as unknown as OpenAPIV3.SchemaObject)
       : null;
 
-    if (!showSchema && !editSchema) continue;
+    if (!showSchema && !editSchema) {
+      continue;
+    }
 
     const showResource = showSchema
       ? buildResourceFromSchema(showSchema, name, title, url)
@@ -195,7 +209,9 @@ export default async function handleJson(
       ? buildResourceFromSchema(editSchema, name, title, url)
       : null;
     let resource = showResource ?? editResource;
-    if (!resource) continue;
+    if (!resource) {
+      continue;
+    }
     if (showResource && editResource) {
       resource = mergeResources(showResource, editResource);
     }
@@ -229,15 +245,15 @@ export default async function handleJson(
 
     if (listOperation && listOperation.parameters) {
       resource.parameters = listOperation.parameters
-        .filter(isRef)
+        .filter(isParameter)
         .map(
           (parameter) =>
             new Parameter(
               parameter.name,
-              parameter.schema && isRef(parameter.schema)
-                ? parameter.schema.type
-                  ? getType(parameter.schema.type)
-                  : null
+              parameter.schema &&
+              isSchema(parameter.schema) &&
+              parameter.schema.type
+                ? getType(parameter.schema.type)
                 : null,
               parameter.required || false,
               parameter.description || "",

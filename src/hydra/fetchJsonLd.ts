@@ -43,12 +43,13 @@ export default async function fetchJsonLd(
     throw reason;
   }
 
-  return response.json().then((body: JsonLd) => ({
+  const body = (await response.json()) as JsonLd;
+  return {
     response,
     body,
     document: body,
     documentUrl: url,
-  }));
+  };
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {
@@ -56,7 +57,7 @@ function setHeaders(options: RequestInitExtended): RequestInit {
     return { ...options, headers: {} };
   }
 
-  let headers: HeadersInit =
+  let headers =
     typeof options.headers === "function" ? options.headers() : options.headers;
 
   headers = new Headers(headers);

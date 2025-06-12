@@ -67,10 +67,9 @@ export default async function parseGraphQl(
       type.name !== schema.subscriptionType?.name &&
       !type.name.startsWith("__") &&
       // mutation
-      !type.name.startsWith(type.name[0].toLowerCase()) &&
+      (!type.name[0] || !type.name.startsWith(type.name[0].toLowerCase())) &&
       !type.name.endsWith("Connection") &&
-      !type.name.endsWith("Edge") &&
-      !type.name.endsWith("PageInfo"),
+      !type.name.endsWith("Edge"),
   ) as IntrospectionObjectType[];
 
   const resources: Resource[] = [];
@@ -84,7 +83,7 @@ export default async function parseGraphQl(
         range: getRangeFromGraphQlType(resourceFieldType.type),
         reference: getReferenceFromGraphQlType(resourceFieldType.type),
         required: resourceFieldType.type.kind === "NON_NULL",
-        description: resourceFieldType.description,
+        description: resourceFieldType.description || "",
         deprecated: resourceFieldType.isDeprecated,
       });
 
