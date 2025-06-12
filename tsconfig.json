@@ -33,7 +33,7 @@
     "sourceMap": true,
 
     /* Interop Constraints */
-    // "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "verbatimModuleSyntax": true
   },

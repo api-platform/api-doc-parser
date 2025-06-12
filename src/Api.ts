@@ -10,10 +10,9 @@ export interface ApiOptions
 
 export interface Api extends ApiOptions {}
 export class Api {
-  constructor(
-    public entrypoint: string,
-    options: ApiOptions = {},
-  ) {
+  entrypoint: string;
+  constructor(entrypoint: string, options: ApiOptions = {}) {
+    this.entrypoint = entrypoint;
     assignSealed(this, options);
   }
 }

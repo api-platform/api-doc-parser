@@ -48,10 +48,9 @@ export interface FieldOptions
 
 export interface Field extends FieldOptions {}
 export class Field {
-  constructor(
-    public name: string,
-    options: FieldOptions = {},
-  ) {
+  name: string;
+  constructor(name: string, options: FieldOptions = {}) {
+    this.name = name;
     assignSealed(this, options);
   }
 }

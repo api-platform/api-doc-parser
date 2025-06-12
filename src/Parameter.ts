@@ -1,9 +1,21 @@
 export class Parameter {
+  variable: string;
+  range: string | null;
+  required: boolean;
+  description: string;
+  deprecated?: boolean | undefined;
+
   constructor(
-    public variable: string,
-    public range: string | null,
-    public required: boolean,
-    public description: string,
-    public deprecated?: boolean,
-  ) {}
+    variable: string,
+    range: string | null,
+    required: boolean,
+    description: string,
+    deprecated?: boolean,
+  ) {
+    this.variable = variable;
+    this.range = range;
+    this.required = required;
+    this.description = description;
+    this.deprecated = deprecated;
+  }
 }

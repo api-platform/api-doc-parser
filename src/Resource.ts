@@ -20,11 +20,11 @@ export interface ResourceOptions
 
 export interface Resource extends ResourceOptions {}
 export class Resource {
-  constructor(
-    public name: string,
-    public url: string,
-    options: ResourceOptions = {},
-  ) {
+  name: string;
+  url: string;
+  constructor(name: string, url: string, options: ResourceOptions = {}) {
+    this.name = name;
+    this.url = url;
     assignSealed(this, options);
   }
 }

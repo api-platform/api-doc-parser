@@ -14,11 +14,16 @@ export interface OperationOptions
 
 export interface Operation extends OperationOptions {}
 export class Operation {
+  name: string;
+  type: OperationType;
   constructor(
-    public name: string,
-    public type: OperationType,
+    name: string,
+    type: OperationType,
     options: OperationOptions = {},
   ) {
+    this.name = name;
+    this.type = type;
+
     assignSealed(this, options);
   }
 }
