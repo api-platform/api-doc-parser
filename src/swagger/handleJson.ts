@@ -1,4 +1,3 @@
-import get from "lodash.get";
 import inflection from "inflection";
 import { Field } from "../Field.js";
 import { Resource } from "../Resource.js";
@@ -8,7 +7,7 @@ import type { OpenAPIV2 } from "openapi-types";
 
 export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
-    url = url.slice(0, -1);
+    return url.slice(0, -1);
   }
   return url;
 }
@@ -41,31 +40,23 @@ export default function handleJson(
       throw new Error(); // @TODO
     }
 
-    const description = definition.description || "";
-    const properties = definition.properties;
+    const { description = "", properties } = definition;
 
     if (!properties) {
       throw new Error(); // @TODO
     }
 
-    const fieldNames = Object.keys(properties);
-    const requiredFields = get(
-      response,
-      ["definitions", title, "required"],
-      [],
-    ) as string[];
+    const requiredFields = response.definitions?.[title]?.required ?? [];
 
-    const fields = fieldNames.map((fieldName) => {
-      const property = properties[fieldName];
-
+    const fields = Object.entries(properties).map(([fieldName, property]) => {
       return new Field(fieldName, {
         id: null,
         range: null,
         type: getType(
-          get(property, "type", "") as string,
-          get(property, "format", "") as string,
+          typeof property?.type === "string" ? property.type : "",
+          property?.["format"] ?? "",
         ),
-        enum: property?.enum
+        enum: property.enum
           ? Object.fromEntries(
               property.enum.map((enumValue: string | number) => [
                 typeof enumValue === "string"
@@ -78,7 +69,7 @@ export default function handleJson(
         reference: null,
         embedded: null,
         required: requiredFields.some((value) => value === fieldName),
-        description: property?.description || "",
+        description: property.description || "",
       });
     });
 
