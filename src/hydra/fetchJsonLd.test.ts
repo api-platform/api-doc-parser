@@ -3,37 +3,32 @@ import { server } from "../../vitest.setup.js";
 import fetchJsonLd from "./fetchJsonLd.js";
 import { assert, expect, test } from "vitest";
 
+const httpResponse = {
+  "@context": "http://json-ld.org/contexts/person.jsonld",
+  "@id": "http://dbpedia.org/resource/John_Lennon",
+  name: "John Lennon",
+  born: "1940-10-09",
+  spouse: "http://dbpedia.org/resource/Cynthia_Lennon",
+};
+
 test("fetch a JSON-LD document", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () =>
-      HttpResponse.json(
-        {
-          "@context": "http://json-ld.org/contexts/person.jsonld",
-          "@id": "http://dbpedia.org/resource/John_Lennon",
-          name: "John Lennon",
-          born: "1940-10-09",
-          spouse: "http://dbpedia.org/resource/Cynthia_Lennon",
-        },
-        {
-          headers: { "Content-Type": "application/ld+json" },
-          status: 200,
-          statusText: "OK",
-        },
-      ),
+      HttpResponse.json(httpResponse, {
+        headers: { "Content-Type": "application/ld+json" },
+        status: 200,
+        statusText: "OK",
+      }),
     ),
   );
-  try {
-    const data = await fetchJsonLd("http://localhost/foo.jsonld");
-    expect(data.response.ok).toBe(true);
-    expect(data).toHaveProperty("body");
-    assert(
-      "body" in data && "name" in data.body,
-      "Response should contain a body with a name property",
-    );
-    expect(data.body["name"]).toBe("John Lennon");
-  } catch {
-    assert.fail("Should not have thrown an error");
-  }
+
+  const data = await fetchJsonLd("http://localhost/foo.jsonld");
+  expect(data.response.ok).toBe(true);
+
+  assert("body" in data, "Response should have a body property");
+  assert(data.body !== null, "Body should not be null");
+  assert("name" in data.body, "Body should have a name property");
+  expect(data.body["name"]).toBe("John Lennon");
 });
 
 test("fetch a non JSON-LD document", async () => {
@@ -47,80 +42,54 @@ test("fetch a non JSON-LD document", async () => {
     }),
   );
 
-  try {
-    await fetchJsonLd("http://localhost/foo.jsonld");
-    assert.fail("Should have thrown an error");
-  } catch (error) {
-    const data = error as unknown as { response: Response; body: undefined };
-    expect(data.response.ok).toBe(true);
-    expect(typeof data.body).toBe("undefined");
-  }
+  const promise = fetchJsonLd("http://localhost/foo.jsonld");
+
+  await expect(promise).rejects.toHaveProperty("response.ok", true);
+  await expect(promise).rejects.not.toHaveProperty("body");
 });
 
-test("fetch an error with Content-Type application/ld+json", () => {
+test("fetch an error with Content-Type application/ld+json", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () => {
-      return HttpResponse.json(
-        {
-          "@context": "http://json-ld.org/contexts/person.jsonld",
-          "@id": "http://dbpedia.org/resource/John_Lennon",
-          name: "John Lennon",
-          born: "1940-10-09",
-          spouse: "http://dbpedia.org/resource/Cynthia_Lennon",
-        },
-        {
-          status: 400,
-          statusText: "Bad Request",
-          headers: { "Content-Type": "application/ld+json" },
-        },
-      );
+      return HttpResponse.json(httpResponse, {
+        status: 500,
+        statusText: "Internal Server Error",
+        headers: { "Content-Type": "application/ld+json" },
+      });
     }),
   );
 
-  return fetchJsonLd("http://localhost/foo.jsonld").catch(
-    ({ response }: { response: Response }) => {
-      response
-        .json()
-        .then((body: { born: string }) => {
-          expect(response.ok).toBe(false);
-          expect(body.born).toBe("1940-10-09");
-        })
-        .catch(() => {
-          assert.fail("Response should have been JSON parsable");
-        });
-    },
+  const rejectedResponse = await fetchJsonLd(
+    "http://localhost/foo.jsonld",
+  ).catch((error) => error as { response: Response });
+
+  await expect(rejectedResponse).toHaveProperty("response.ok", false);
+  await expect(rejectedResponse.response.json()).resolves.toHaveProperty(
+    "born",
+    "1940-10-09",
   );
 });
 
 test("fetch an error with Content-Type application/error+json", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () => {
-      return HttpResponse.json(
-        {
-          "@context": "http://json-ld.org/contexts/person.jsonld",
-          "@id": "http://dbpedia.org/resource/John_Lennon",
-          name: "John Lennon",
-          born: "1940-10-09",
-          spouse: "http://dbpedia.org/resource/Cynthia_Lennon",
-        },
-        {
-          status: 400,
-          statusText: "Bad Request",
-          headers: { "Content-Type": "application/error+json" },
-        },
-      );
+      return HttpResponse.json(httpResponse, {
+        status: 400,
+        statusText: "Bad Request",
+        headers: { "Content-Type": "application/error+json" },
+      });
     }),
   );
 
-  try {
-    await fetchJsonLd("http://localhost/foo.jsonld");
-    assert.fail("Should have thrown an error");
-  } catch (error) {
-    const data = error as unknown as { response: Response };
-    const body = await data.response.json();
-    expect(data.response.ok).toBe(false);
-    expect(body.born).toBe("1940-10-09");
-  }
+  const rejectedResponse = await fetchJsonLd(
+    "http://localhost/foo.jsonld",
+  ).catch((error) => error as { response: Response });
+
+  await expect(rejectedResponse).toHaveProperty("response.ok", false);
+  await expect(rejectedResponse.response.json()).resolves.toHaveProperty(
+    "born",
+    "1940-10-09",
+  );
 });
 
 test("fetch an empty document", async () => {
@@ -133,11 +102,9 @@ test("fetch an empty document", async () => {
       });
     }),
   );
-  try {
-    const data = await fetchJsonLd("http://localhost/foo.jsonld");
-    expect(data.response.ok).toBe(true);
-    expect(data).not.toHaveProperty("body");
-  } catch {
-    assert.fail("Should not have thrown an error");
-  }
+
+  const dataPromise = fetchJsonLd("http://localhost/foo.jsonld");
+
+  await expect(dataPromise).resolves.toHaveProperty("response.ok", true);
+  await expect(dataPromise).resolves.not.toHaveProperty("body");
 });

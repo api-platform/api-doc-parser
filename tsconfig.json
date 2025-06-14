@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     /* Type checking */
-    // "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    // "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -33,7 +33,7 @@
     "sourceMap": true,
 
     /* Interop Constraints */
-    // "erasableSyntaxOnly": true,
+    "erasableSyntaxOnly": true,
     "isolatedDeclarations": true,
     "verbatimModuleSyntax": true
   },

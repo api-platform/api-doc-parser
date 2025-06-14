@@ -10,50 +10,60 @@ import getType from "./getType.js";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
-const isRef = <T extends object>(
-  maybeRef: T | OpenAPIV3.ReferenceObject,
-): maybeRef is T => !("$ref" in maybeRef);
+function isParameter(
+  maybeParameter: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject,
+): maybeParameter is OpenAPIV3.ParameterObject {
+  return (
+    maybeParameter !== undefined &&
+    "name" in maybeParameter &&
+    "in" in maybeParameter
+  );
+}
 
-export const removeTrailingSlash = (url: string): string => {
+function isSchema(
+  maybeSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | undefined,
+): maybeSchema is OpenAPIV3.SchemaObject {
+  return maybeSchema !== undefined && !("$ref" in maybeSchema);
+}
+
+export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
     url = url.slice(0, -1);
   }
   return url;
-};
+}
 
-const mergeResources = (resourceA: Resource, resourceB: Resource) => {
-  resourceB.fields?.forEach((fieldB) => {
+function mergeResources(resourceA: Resource, resourceB: Resource) {
+  for (const fieldB of resourceB.fields ?? []) {
     if (!resourceA.fields?.some((fieldA) => fieldA.name === fieldB.name)) {
       resourceA.fields?.push(fieldB);
     }
-  });
-  resourceB.readableFields?.forEach((fieldB) => {
+  }
+  for (const fieldB of resourceB.readableFields ?? []) {
     if (
       !resourceA.readableFields?.some((fieldA) => fieldA.name === fieldB.name)
     ) {
       resourceA.readableFields?.push(fieldB);
     }
-  });
-  resourceB.writableFields?.forEach((fieldB) => {
+  }
+  for (const fieldB of resourceB.writableFields ?? []) {
     if (
       !resourceA.writableFields?.some((fieldA) => fieldA.name === fieldB.name)
     ) {
       resourceA.writableFields?.push(fieldB);
     }
-  });
+  }
 
   return resourceA;
-};
+}
 
-const buildResourceFromSchema = (
+function buildResourceFromSchema(
   schema: OpenAPIV3.SchemaObject,
   name: string,
   title: string,
   url: string,
-) => {
-  const description = schema.description;
-  const properties = schema.properties || {};
-
+) {
+  const { description = "", properties = {} } = schema;
   const fieldNames = Object.keys(properties);
   const requiredFields = schema.required || [];
 
@@ -89,7 +99,7 @@ const buildResourceFromSchema = (
       reference: null,
       embedded: null,
       nullable: property.nullable || false,
-      required: !!requiredFields.find((value) => value === fieldName),
+      required: requiredFields.some((value) => value === fieldName),
       description: property.description || "",
     });
 
@@ -111,20 +121,21 @@ const buildResourceFromSchema = (
     readableFields,
     writableFields,
     parameters: [],
+    // oxlint-disable-next-line prefer-await-to-then
     getParameters: () => Promise.resolve([]),
   });
-};
+}
 
-const buildOperationFromPathItem = (
+function buildOperationFromPathItem(
   httpMethod: `${OpenAPIV3.HttpMethods}`,
   operationType: OperationType,
   pathItem: OpenAPIV3.OperationObject,
-): Operation => {
+): Operation {
   return new Operation(pathItem.summary || operationType, operationType, {
     method: httpMethod.toUpperCase(),
     deprecated: !!pathItem.deprecated,
   });
-};
+}
 
 /*
   Assumptions:
@@ -136,7 +147,7 @@ const buildOperationFromPathItem = (
   probably accepts parameters and would respond with an object.
 */
 
-export default async function (
+export default async function handleJson(
   response: OpenAPIV3.Document,
   entrypointUrl: string,
 ): Promise<Resource[]> {
@@ -146,29 +157,32 @@ export default async function (
 
   const paths = getResourcePaths(document.paths);
 
-  let serverUrlOrRelative = "/";
-  if (document.servers) {
-    serverUrlOrRelative = document.servers[0].url;
-  }
-
+  const serverUrlOrRelative = document.servers?.[0]?.url || "/";
   const serverUrl = new URL(serverUrlOrRelative, entrypointUrl).href;
 
   const resources: Resource[] = [];
 
-  paths.forEach((path) => {
+  for (const path of paths) {
     const splittedPath = removeTrailingSlash(path).split("/");
-    const name = inflection.pluralize(splittedPath[splittedPath.length - 2]);
+    const baseName = splittedPath[splittedPath.length - 2];
+    if (!baseName) {
+      throw new Error("Invalid path: " + path);
+    }
+
+    const name = inflection.pluralize(baseName);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
     const pathItem = document.paths[path];
     if (!pathItem) {
       throw new Error();
     }
 
-    const title = inflection.classify(splittedPath[splittedPath.length - 2]);
+    const title = inflection.classify(baseName);
 
     const showOperation = pathItem.get;
     const editOperation = pathItem.put || pathItem.patch;
-    if (!showOperation && !editOperation) return;
+    if (!showOperation && !editOperation) {
+      continue;
+    }
 
     const showSchema = showOperation
       ? (get(
@@ -184,7 +198,9 @@ export default async function (
         ) as unknown as OpenAPIV3.SchemaObject)
       : null;
 
-    if (!showSchema && !editSchema) return;
+    if (!showSchema && !editSchema) {
+      continue;
+    }
 
     const showResource = showSchema
       ? buildResourceFromSchema(showSchema, name, title, url)
@@ -193,7 +209,9 @@ export default async function (
       ? buildResourceFromSchema(editSchema, name, title, url)
       : null;
     let resource = showResource ?? editResource;
-    if (!resource) return;
+    if (!resource) {
+      continue;
+    }
     if (showResource && editResource) {
       resource = mergeResources(showResource, editResource);
     }
@@ -227,15 +245,15 @@ export default async function (
 
     if (listOperation && listOperation.parameters) {
       resource.parameters = listOperation.parameters
-        .filter(isRef)
+        .filter(isParameter)
         .map(
           (parameter) =>
             new Parameter(
               parameter.name,
-              parameter.schema && isRef(parameter.schema)
-                ? parameter.schema.type
-                  ? getType(parameter.schema.type)
-                  : null
+              parameter.schema &&
+              isSchema(parameter.schema) &&
+              parameter.schema.type
+                ? getType(parameter.schema.type)
                 : null,
               parameter.required || false,
               parameter.description || "",
@@ -245,18 +263,18 @@ export default async function (
     }
 
     resources.push(resource);
-  });
+  }
 
   // Guess embeddeds and references from property names
-  resources.forEach((resource) => {
-    resource.fields?.forEach((field) => {
+  for (const resource of resources) {
+    for (const field of resource.fields ?? []) {
       const name = inflection.camelize(field.name).replace(/Ids?$/, "");
 
       const guessedResource = resources.find(
         (res) => res.title === inflection.classify(name),
       );
       if (!guessedResource) {
-        return;
+        continue;
       }
       field.maxCardinality = field.type === "array" ? null : 1;
       if (field.type === "object" || field.arrayType === "object") {
@@ -264,8 +282,8 @@ export default async function (
       } else {
         field.reference = guessedResource;
       }
-    });
-  });
+    }
+  }
 
   return resources;
 }

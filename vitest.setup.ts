@@ -1,4 +1,5 @@
-import { setupServer, type SetupServerApi } from "msw/node";
+import { setupServer } from "msw/node";
+import type { SetupServerApi } from "msw/node";
 import { beforeAll, afterEach, afterAll } from "vitest";
 
 export const server: SetupServerApi = setupServer();

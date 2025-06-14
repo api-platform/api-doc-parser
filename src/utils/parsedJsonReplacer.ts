@@ -5,10 +5,10 @@ interface ResourceValue {
 
 type ParsedJsonReplacerResult = ResourceValue | string | null;
 
-const parsedJsonReplacer = (
+export default function parsedJsonReplacer(
   key: string,
   value: null | ResourceValue,
-): ParsedJsonReplacerResult => {
+): ParsedJsonReplacerResult {
   if (
     ["reference", "embedded"].includes(key) &&
     typeof value === "object" &&
@@ -18,6 +18,4 @@ const parsedJsonReplacer = (
   }
 
   return value;
-};
-
-export default parsedJsonReplacer;
+}

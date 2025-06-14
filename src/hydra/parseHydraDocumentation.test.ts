@@ -1,6 +1,5 @@
 import parseHydraDocumentation from "./parseHydraDocumentation.js";
 import parsedJsonReplacer from "../utils/parsedJsonReplacer.js";
-import type { Api } from "../Api.js";
 import { server } from "../../vitest.setup.js";
 import { http, HttpResponse } from "msw";
 import { assert, expect, test, vi } from "vitest";
@@ -1309,31 +1308,27 @@ test("parse a Hydra documentation", async () => {
   const fetchSpy = vi.spyOn(globalThis, "fetch");
   const options = { headers: new Headers({ CustomHeader: "customValue" }) };
 
-  try {
-    const response = await parseHydraDocumentation("http://localhost", options);
-    expect(JSON.stringify(response.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2),
-    );
-    expect(response.response).toBeDefined();
-    expect(response.status).toBe(200);
+  const response = await parseHydraDocumentation("http://localhost", options);
+  expect(JSON.stringify(response.api, parsedJsonReplacer, 2)).toBe(
+    JSON.stringify(expectedApi, null, 2),
+  );
+  expect(response.response).toBeDefined();
+  expect(response.status).toBe(200);
 
-    expect(fetchSpy).toHaveBeenCalledTimes(2);
-    expect(fetchSpy).toHaveBeenNthCalledWith(
-      2,
-      "http://localhost/docs.jsonld",
-      {
-        headers: new Headers({
-          Accept: "application/ld+json",
-          "Content-Type": "application/ld+json",
-          CustomHeader: "customValue",
-        }),
-      },
-    );
-  } catch (error) {
-    assert.fail(`Unexpected error: ${(error as Error).message}`);
-  }
+  expect(fetchSpy).toHaveBeenCalledTimes(2);
+  expect(fetchSpy).toHaveBeenNthCalledWith(2, "http://localhost/docs.jsonld", {
+    headers: new Headers({
+      Accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+      CustomHeader: "customValue",
+    }),
+  });
   fetchSpy.mockRestore();
 });
+
+function getHeaders(): Headers {
+  return new Headers({ CustomHeader: "customValue" });
+}
 
 test("parse a Hydra documentation using dynamic headers", async () => {
   server.use(
@@ -1344,34 +1339,24 @@ test("parse a Hydra documentation using dynamic headers", async () => {
   );
 
   const fetchSpy = vi.spyOn(globalThis, "fetch");
-  const getHeaders = (): Headers =>
-    new Headers({ CustomHeader: "customValue" });
 
-  try {
-    const data = await parseHydraDocumentation("http://localhost", {
-      headers: getHeaders,
-    });
-    expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2),
-    );
-    expect(data.response).toBeDefined();
-    expect(data.status).toBe(200);
+  const data = await parseHydraDocumentation("http://localhost", {
+    headers: getHeaders,
+  });
+  expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
+    JSON.stringify(expectedApi, null, 2),
+  );
+  expect(data.response).toBeDefined();
+  expect(data.status).toBe(200);
 
-    expect(fetchSpy).toHaveBeenCalledTimes(2);
-    expect(fetchSpy).toHaveBeenNthCalledWith(
-      2,
-      "http://localhost/docs.jsonld",
-      {
-        headers: new Headers({
-          CustomHeader: "customValue",
-          Accept: "application/ld+json",
-          "Content-Type": "application/ld+json",
-        }),
-      },
-    );
-  } catch (error) {
-    assert.fail(`Unexpected error: ${(error as Error).message}`);
-  }
+  expect(fetchSpy).toHaveBeenCalledTimes(2);
+  expect(fetchSpy).toHaveBeenNthCalledWith(2, "http://localhost/docs.jsonld", {
+    headers: new Headers({
+      CustomHeader: "customValue",
+      Accept: "application/ld+json",
+      "Content-Type": "application/ld+json",
+    }),
+  });
   fetchSpy.mockRestore();
 });
 
@@ -1383,16 +1368,12 @@ test("parse a Hydra documentation (http://localhost/)", async () => {
     ),
   );
 
-  try {
-    const data = await parseHydraDocumentation("http://localhost/");
-    expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
-      JSON.stringify(expectedApi, null, 2),
-    );
-    expect(data.response).toBeDefined();
-    expect(data.status).toBe(200);
-  } catch (error) {
-    assert.fail(`Unexpected error: ${(error as Error).message}`);
-  }
+  const data = await parseHydraDocumentation("http://localhost/");
+  expect(JSON.stringify(data.api, parsedJsonReplacer, 2)).toBe(
+    JSON.stringify(expectedApi, null, 2),
+  );
+  expect(data.response).toBeDefined();
+  expect(data.status).toBe(200);
 });
 
 test("parse a Hydra documentation without authorization", async () => {
@@ -1416,21 +1397,16 @@ test("parse a Hydra documentation without authorization", async () => {
       HttpResponse.json(expectedResponse, init),
     ),
   );
+  const promise = parseHydraDocumentation("http://localhost");
+  await expect(promise).rejects.toMatchObject({
+    status: 401,
+    api: expectedApi,
+    response: expect.any(Response),
+  });
 
-  try {
-    await parseHydraDocumentation("http://localhost");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    const data = error as unknown as {
-      api: Api;
-      response: Response;
-      status: number;
-    };
-    expect(data.api).toEqual(expectedApi);
-    expect(data.response).toBeDefined();
-    await expect(data.response.json()).resolves.toEqual(expectedResponse);
-    expect(data.status).toBe(401);
-  }
+  const err = await promise.catch((error) => error);
+
+  await expect(err.response.json()).resolves.toEqual(expectedResponse);
 });
 
 test('Parse entrypoint without "@type" key', async () => {
@@ -1464,14 +1440,9 @@ test('Parse entrypoint without "@type" key', async () => {
     ),
   );
 
-  try {
-    await parseHydraDocumentation("http://localhost/");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    expect((error as Error).message).toBe(
-      'The API entrypoint has no "@type" key.',
-    );
-  }
+  await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
+    'The API entrypoint has no "@type" key.',
+  );
 });
 
 test('Parse entrypoint class without "supportedClass" key', async () => {
@@ -1517,14 +1488,9 @@ test('Parse entrypoint class without "supportedClass" key', async () => {
     ),
   );
 
-  try {
-    await parseHydraDocumentation("http://localhost/");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    expect((error as Error).message).toBe(
-      'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
-    );
-  }
+  await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
+    'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
+  );
 });
 
 test('Parse entrypoint class without "supportedProperty" key', async () => {
@@ -1576,6 +1542,9 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
     ],
   };
 
+  const expectedErrorMessage =
+    'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.';
+
   server.use(
     http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
     http.get("http://localhost/docs.jsonld", () =>
@@ -1583,14 +1552,9 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
     ),
   );
 
-  try {
-    await parseHydraDocumentation("http://localhost/");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    expect((error as Error).message).toBe(
-      'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.',
-    );
-  }
+  await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
+    expectedErrorMessage,
+  );
 });
 
 test("Invalid docs JSON", async () => {
@@ -1604,14 +1568,11 @@ test("Invalid docs JSON", async () => {
     ),
   );
 
-  try {
-    await parseHydraDocumentation("http://localhost/");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    expect(error).toHaveProperty("api");
-    expect(error).toHaveProperty("response");
-    expect(error).toHaveProperty("status");
-  }
+  const promise = parseHydraDocumentation("http://localhost/");
+  await expect(promise).rejects.toBeDefined();
+  await expect(promise).rejects.toHaveProperty("api");
+  await expect(promise).rejects.toHaveProperty("response");
+  await expect(promise).rejects.toHaveProperty("status");
 });
 
 test("Invalid entrypoint JSON", async () => {
@@ -1620,14 +1581,11 @@ test("Invalid entrypoint JSON", async () => {
     http.get("http://localhost", () => new HttpResponse(entrypoint, init)),
   );
 
-  try {
-    await parseHydraDocumentation("http://localhost/");
-    assert.fail("Expected an error to be thrown.");
-  } catch (error) {
-    expect(error).toHaveProperty("api");
-    expect(error).toHaveProperty("response");
-    expect(error).toHaveProperty("status");
-  }
+  const promise = parseHydraDocumentation("http://localhost/");
+
+  await expect(promise).rejects.toHaveProperty("api");
+  await expect(promise).rejects.toHaveProperty("response");
+  await expect(promise).rejects.toHaveProperty("status");
 });
 
 test("Resource parameters can be retrieved", async () => {
@@ -1644,8 +1602,10 @@ test("Resource parameters can be retrieved", async () => {
 
   const data = await parseHydraDocumentation("http://localhost");
   const resource = data.api.resources?.[0];
+
   assert(resource !== undefined);
-  assert("getParameters" in resource && !!resource.getParameters);
+  assert("getParameters" in resource);
+  assert(!!resource.getParameters);
 
   const parameters = await resource.getParameters();
   expect(fetchSpy).toHaveBeenCalledTimes(3);

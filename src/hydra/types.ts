@@ -2,14 +2,14 @@ export interface RequestInitExtended extends Omit<RequestInit, "headers"> {
   headers?: HeadersInit | (() => HeadersInit);
 }
 
-export type IriTemplateMapping = {
+export interface IriTemplateMapping {
   "@type": "IriTemplateMapping";
   variable: "string";
   property: string | null;
   required: boolean;
-};
+}
 
-export type ExpandedOperation = {
+export interface ExpandedOperation {
   "@type": ["http://www.w3.org/ns/hydra/core#Operation"];
   "http://www.w3.org/2000/01/rdf-schema#label": [
     {
@@ -41,9 +41,9 @@ export type ExpandedOperation = {
       "@value": boolean;
     },
   ];
-};
+}
 
-export type ExpandedRdfProperty = {
+export interface ExpandedRdfProperty {
   "@id": string;
   "@type": [
     | "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
@@ -92,9 +92,9 @@ export type ExpandedRdfProperty = {
       "@value": number;
     },
   ];
-};
+}
 
-export type ExpandedSupportedProperty = {
+export interface ExpandedSupportedProperty {
   "@type": ["http://www.w3.org/ns/hydra/core#SupportedProperty"];
   "http://www.w3.org/ns/hydra/core#title": [
     {
@@ -116,7 +116,15 @@ export type ExpandedSupportedProperty = {
       "@value": boolean;
     },
   ];
+  /**
+   * @deprecated
+   */
   "http://www.w3.org/ns/hydra/core#writeable": [
+    {
+      "@value": boolean;
+    },
+  ];
+  "http://www.w3.org/ns/hydra/core#writable": [
     {
       "@value": boolean;
     },
@@ -127,9 +135,9 @@ export type ExpandedSupportedProperty = {
       "@value": boolean;
     },
   ];
-};
+}
 
-export type ExpandedClass = {
+export interface ExpandedClass {
   "@id": string;
   "@type": ["http://www.w3.org/ns/hydra/core#Class"];
   "http://www.w3.org/2000/01/rdf-schema#label"?: [
@@ -159,9 +167,9 @@ export type ExpandedClass = {
       "@value": boolean;
     },
   ];
-};
+}
 
-export type ExpandedDoc = {
+export interface ExpandedDoc {
   "@id": string;
   "@type": ["http://www.w3.org/ns/hydra/core#ApiDocumentation"];
   "http://www.w3.org/ns/hydra/core#title": [
@@ -180,9 +188,9 @@ export type ExpandedDoc = {
     },
   ];
   "http://www.w3.org/ns/hydra/core#supportedClass": ExpandedClass[];
-};
+}
 
-export type Entrypoint = {
+export interface Entrypoint {
   "@id": string;
   "@type": [string];
   [key: string]:
@@ -193,4 +201,4 @@ export type Entrypoint = {
       ]
     | string
     | [string];
-};
+}

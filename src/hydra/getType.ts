@@ -1,6 +1,6 @@
 import type { FieldType } from "../Field.js";
 
-const getType = (id: string, range: string): FieldType => {
+function getType(id: string, range: string): FieldType {
   switch (id) {
     case "http://schema.org/email":
     case "https://schema.org/email":
@@ -67,6 +67,6 @@ const getType = (id: string, range: string): FieldType => {
     default:
       return "string";
   }
-};
+}
 
 export default getType;

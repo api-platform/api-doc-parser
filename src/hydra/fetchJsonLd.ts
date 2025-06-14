@@ -4,13 +4,13 @@ import type { RequestInitExtended } from "./types.js";
 const jsonLdMimeType = "application/ld+json";
 const jsonProblemMimeType = "application/problem+json";
 
-export type RejectedResponseDocument = {
+export interface RejectedResponseDocument {
   response: Response;
-};
+}
 
-export type EmptyResponseDocument = {
+export interface EmptyResponseDocument {
   response: Response;
-};
+}
 
 export interface ResponseDocument extends RemoteDocument {
   response: Response;
@@ -28,26 +28,28 @@ export default async function fetchJsonLd(
   const { headers, status } = response;
   const contentType = headers.get("Content-Type");
 
-  if (204 === status) {
-    return Promise.resolve({ response });
+  if (status === 204) {
+    return { response };
   }
 
   if (
-    500 <= status ||
+    status >= 500 ||
     !contentType ||
     (!contentType.includes(jsonLdMimeType) &&
       !contentType.includes(jsonProblemMimeType))
   ) {
     const reason: RejectedResponseDocument = { response };
-    return Promise.reject(reason);
+    // oxlint-disable-next-line no-throw-literal
+    throw reason;
   }
 
-  return response.json().then((body: JsonLd) => ({
+  const body = (await response.json()) as JsonLd;
+  return {
     response,
     body,
     document: body,
     documentUrl: url,
-  }));
+  };
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {
@@ -55,21 +57,21 @@ function setHeaders(options: RequestInitExtended): RequestInit {
     return { ...options, headers: {} };
   }
 
-  let headers: HeadersInit =
+  let headers =
     typeof options.headers === "function" ? options.headers() : options.headers;
 
   headers = new Headers(headers);
 
-  if (null === headers.get("Accept")) {
+  if (headers.get("Accept") === null) {
     headers.set("Accept", jsonLdMimeType);
   }
 
   const result = { ...options, headers };
 
   if (
-    "undefined" !== result.body &&
+    result.body !== "undefined" &&
     !(typeof FormData !== "undefined" && result.body instanceof FormData) &&
-    null === result.headers.get("Content-Type")
+    result.headers.get("Content-Type") === null
   ) {
     result.headers.set("Content-Type", jsonLdMimeType);
   }

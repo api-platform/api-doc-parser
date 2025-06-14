@@ -1,7 +1,10 @@
 import inflection from "inflection";
 import type { FieldType } from "../Field.js";
 
-const getType = (openApiType: string, format?: string): FieldType => {
+export default function getType(
+  openApiType: string,
+  format?: string,
+): FieldType {
   if (format) {
     switch (format) {
       case "int32":
@@ -13,6 +16,4 @@ const getType = (openApiType: string, format?: string): FieldType => {
   }
 
   return openApiType;
-};
-
-export default getType;
+}
