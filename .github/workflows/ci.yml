@@ -35,5 +35,8 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Run tests
-        run: pnpm test
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Report test coverage
+        uses: davelosert/vitest-coverage-report-action@v2

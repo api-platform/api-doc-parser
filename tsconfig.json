@@ -15,7 +15,7 @@
     /* Modules */
     "module": "NodeNext",
     "noUncheckedSideEffectImports": true,
-    "types": ["jest"],
+    "types": [],
 
     /* Language and Environment */
     "lib": ["ES2022", "DOM"],

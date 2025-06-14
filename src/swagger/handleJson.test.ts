@@ -1,6 +1,6 @@
 import handleJson from "./handleJson.js";
 import type { OpenAPIV2 } from "openapi-types";
-import type { Field } from "../Field.js";
+import { assert, describe, expect, test } from "vitest";
 
 const swaggerApiDefinition: OpenAPIV2.Document = {
   swagger: "2.0",
@@ -1239,7 +1239,13 @@ describe(`Parse Swagger Documentation from Json`, () => {
     expect(toBeParsed[0].url).toBe(parsed[0].url);
     expect(toBeParsed[0].id).toBe(parsed[0].id);
 
-    const toBeParsedFields = toBeParsed[0].fields as Field[];
+    assert(
+      "fields" in toBeParsed[0],
+      "Expected 'fields' property in the first resource",
+    );
+
+    const toBeParsedFields = toBeParsed[0].fields;
+    assert(!!toBeParsedFields, "Expected 'fields' to be defined");
     expect(toBeParsedFields[0]).toEqual(parsed[0].fields[0]);
     expect(toBeParsedFields[1]).toEqual(parsed[0].fields[1]);
     expect(toBeParsedFields[2]).toEqual(parsed[0].fields[2]);
@@ -1251,6 +1257,11 @@ describe(`Parse Swagger Documentation from Json`, () => {
     expect(toBeParsed[1].url).toBe(parsed[1].url);
     expect(toBeParsed[1].id).toBe(parsed[1].id);
 
-    expect((toBeParsed[1].fields as Field[])[0]).toEqual(parsed[1].fields[0]);
+    assert(
+      "fields" in toBeParsed[1],
+      "Expected 'fields' property in the second resource",
+    );
+
+    expect(toBeParsed[1].fields?.[0]).toEqual(parsed[1].fields[0]);
   });
 });
