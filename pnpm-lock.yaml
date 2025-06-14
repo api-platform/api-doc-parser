@@ -23,9 +23,6 @@ importers:
       lodash.get:
         specifier: ^4.4.0
         version: 4.4.2
-      tslib:
-        specifier: ^2.0.0
-        version: 2.8.1
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -36,6 +33,9 @@ importers:
       '@eslint/js':
         specifier: ^9.19.0
         version: 9.28.0
+      '@jest/globals':
+        specifier: 29.7.0
+        version: 29.7.0
       '@jest/types':
         specifier: 29.0.0
         version: 29.0.0
@@ -5177,7 +5177,8 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tslib@2.8.1: {}
+  tslib@2.8.1:
+    optional: true
 
   type-check@0.4.0:
     dependencies:

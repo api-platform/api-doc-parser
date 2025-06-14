@@ -1,19 +1,12 @@
-import type { Config } from "@jest/types";
+import type { JestConfigWithTsJest } from "ts-jest";
 
-const config: Config.InitialOptions = {
-  extensionsToTreatAsEsm: [".ts"],
+const config = {
+  preset: "ts-jest/presets/default-esm",
+  moduleFileExtensions: ["ts", "js"],
   setupFilesAfterEnv: ["./jest.setup.ts"],
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
-  transform: {
-    "^.+\\.ts$": [
-      "ts-jest",
-      {
-        useESM: true,
-      },
-    ],
-  },
-};
+} satisfies JestConfigWithTsJest;
 
-export default config;
+module.exports = config;

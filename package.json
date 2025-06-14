@@ -2,23 +2,66 @@
   "name": "@api-platform/api-doc-parser",
   "version": "0.16.8",
   "description": "Transform an API documentation (Hydra, OpenAPI, GraphQL) in an intermediate representation that can be used for various tasks such as creating smart API clients, scaffolding code or building administration interfaces.",
-  "files": [
-    "*.md",
-    "lib",
-    "src"
+  "keywords": [
+    "api",
+    "api-platform",
+    "documentation",
+    "hydra",
+    "openapi",
+    "graphql",
+    "jsonld",
+    "json-schema",
+    "typescript",
+    "client"
   ],
-  "type": "module",
-  "exports": "./lib/index.js",
-  "main": "./lib/index.js",
-  "repository": "api-platform/api-doc-parser",
   "homepage": "https://github.com/api-platform/api-doc-parser",
   "bugs": "https://github.com/api-platform/api-doc-parser/issues",
-  "author": "Kévin Dunglas",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-platform/api-doc-parser.git"
+  },
   "license": "MIT",
+  "author": "Kévin Dunglas",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf lib && tsc --project tsconfig.build.json",
+    "build:watch": "tsc --watch",
+    "eslint-check": "eslint-config-prettier src/index.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch"
+  },
+  "dependencies": {
+    "graphql": "^16.0.0",
+    "inflection": "^3.0.0",
+    "jsonld": "^8.3.2",
+    "jsonref": "^9.0.0",
+    "lodash.get": "^4.4.0"
+  },
   "devDependencies": {
     "@eslint/compat": "^1.2.5",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
+    "@jest/globals": "29.7.0",
     "@jest/types": "29.0.0",
     "@types/inflection": "^1.13.0",
     "@types/jest": "^29.0.0",
@@ -41,25 +84,11 @@
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.22.0"
   },
-  "dependencies": {
-    "graphql": "^16.0.0",
-    "inflection": "^3.0.0",
-    "jsonld": "^8.3.2",
-    "jsonref": "^9.0.0",
-    "lodash.get": "^4.4.0",
-    "tslib": "^2.0.0"
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
+  "engines": {
+    "node": ">=18"
   },
-  "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "eslint src",
-    "fix": "pnpm lint --fix",
-    "eslint-check": "eslint-config-prettier src/index.ts",
-    "build": "rm -rf lib/* && tsc",
-    "watch": "tsc --watch"
-  },
-  "sideEffects": false,
   "publishConfig": {
     "access": "public"
-  },
-  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
+  }
 }
