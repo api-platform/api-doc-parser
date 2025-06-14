@@ -1,5 +1,4 @@
 import jsonld from "jsonld";
-import get from "lodash.get";
 import { Api } from "../Api.js";
 import { Field } from "../Field.js";
 import { Resource } from "../Resource.js";
@@ -45,10 +44,8 @@ function findSupportedClass(
   docs: ExpandedDoc[],
   classToFind: string,
 ): ExpandedClass {
-  const supportedClasses = get(
-    docs,
-    '[0]["http://www.w3.org/ns/hydra/core#supportedClass"]',
-  ) as ExpandedClass[] | undefined;
+  const supportedClasses =
+    docs?.[0]?.["http://www.w3.org/ns/hydra/core#supportedClass"];
   if (!Array.isArray(supportedClasses)) {
     throw new TypeError(
       'The API documentation has no "http://www.w3.org/ns/hydra/core#supportedClass" key or its value is not an array.',
@@ -155,7 +152,7 @@ async function fetchEntrypointAndDocs(
       api: new Api(entrypointUrl, { resources: [] }),
       error,
       response,
-      status: get(response, "status"),
+      status: response?.status,
     };
   }
 }
@@ -173,25 +170,30 @@ function findRelatedClass(
   property: ExpandedRdfProperty,
 ): ExpandedClass {
   // Use the entrypoint property's owl:equivalentClass if available
-  if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
-    for (const range of property[
-      "http://www.w3.org/2000/01/rdf-schema#range"
-    ]) {
-      const onProperty = get(
-        range,
-        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#onProperty"][0]["@id"]',
-      ) as unknown as string;
-      const allValuesFrom = get(
-        range,
-        '["http://www.w3.org/2002/07/owl#equivalentClass"][0]["http://www.w3.org/2002/07/owl#allValuesFrom"][0]["@id"]',
-      ) as unknown as string;
 
-      if (
-        allValuesFrom &&
-        onProperty === "http://www.w3.org/ns/hydra/core#member"
-      ) {
-        return findSupportedClass(docs, allValuesFrom);
-      }
+  for (const range of property["http://www.w3.org/2000/01/rdf-schema#range"] ??
+    []) {
+    const equivalentClass =
+      "http://www.w3.org/2002/07/owl#equivalentClass" in range
+        ? range?.["http://www.w3.org/2002/07/owl#equivalentClass"]?.[0]
+        : undefined;
+
+    if (!equivalentClass) {
+      continue;
+    }
+
+    const onProperty =
+      equivalentClass["http://www.w3.org/2002/07/owl#onProperty"]?.[0]?.["@id"];
+    const allValuesFrom =
+      equivalentClass["http://www.w3.org/2002/07/owl#allValuesFrom"]?.[0]?.[
+        "@id"
+      ];
+
+    if (
+      allValuesFrom &&
+      onProperty === "http://www.w3.org/ns/hydra/core#member"
+    ) {
+      return findSupportedClass(docs, allValuesFrom);
     }
   }
 
@@ -205,10 +207,10 @@ function findRelatedClass(
       continue;
     }
 
-    const returns = get(
-      entrypointSupportedOperation,
-      '["http://www.w3.org/ns/hydra/core#returns"][0]["@id"]',
-    ) as string | undefined;
+    const returns =
+      entrypointSupportedOperation?.[
+        "http://www.w3.org/ns/hydra/core#returns"
+      ]?.[0]?.["@id"];
     if (
       typeof returns === "string" &&
       returns.indexOf("http://www.w3.org/ns/hydra/core") !== 0
@@ -241,15 +243,11 @@ export default async function parseHydraDocumentation(
   const resources = [],
     fields = [],
     operations = [];
-  const title = get(
-    docs,
-    '[0]["http://www.w3.org/ns/hydra/core#title"][0]["@value"]',
-    "API Platform",
-  ) as string;
+  const title =
+    docs?.[0]?.["http://www.w3.org/ns/hydra/core#title"]?.[0]?.["@value"] ??
+    "API Platform";
 
-  const entrypointType = get(entrypoint, '[0]["@type"][0]') as
-    | string
-    | undefined;
+  const entrypointType = entrypoint?.[0]?.["@type"]?.[0];
   if (!entrypointType) {
     throw new Error('The API entrypoint has no "@type" key.');
   }
@@ -274,23 +272,25 @@ export default async function parseHydraDocumentation(
       writableFields = [],
       resourceOperations = [];
 
-    const property = get(
-      properties,
-      '["http://www.w3.org/ns/hydra/core#property"][0]',
-    ) as ExpandedRdfProperty | undefined;
+    const property =
+      properties?.["http://www.w3.org/ns/hydra/core#property"]?.[0];
+    const propertyIri = property?.["@id"];
 
-    if (!property) {
+    if (!property || !propertyIri) {
       continue;
     }
 
-    const url = get(entrypoint, `[0]["${property["@id"]}"][0]["@id"]`) as
-      | string
-      | undefined;
+    const resourceProperty = entrypoint?.[0]?.[propertyIri]?.[0];
+
+    const url =
+      typeof resourceProperty === "object"
+        ? resourceProperty["@id"]
+        : undefined;
 
     if (!url) {
       console.error(
         new Error(
-          `Unable to find the URL for "${property["@id"]}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`,
+          `Unable to find the URL for "${propertyIri}" in the entrypoint, make sure your API resource has at least one GET collection operation declared.`,
         ),
       );
       continue;
@@ -298,19 +298,16 @@ export default async function parseHydraDocumentation(
 
     // Add fields
     const relatedClass = findRelatedClass(docs, property);
-    for (const supportedProperties of relatedClass[
+    for (const supportedProperties of relatedClass?.[
       "http://www.w3.org/ns/hydra/core#supportedProperty"
-    ]) {
-      const supportedProperty = get(
-        supportedProperties,
-        '["http://www.w3.org/ns/hydra/core#property"][0]',
-      ) as unknown as ExpandedRdfProperty;
+    ] ?? []) {
+      const supportedProperty =
+        supportedProperties?.["http://www.w3.org/ns/hydra/core#property"]?.[0];
       const id = supportedProperty?.["@id"];
-      const range = get(
-        supportedProperty,
-        '["http://www.w3.org/2000/01/rdf-schema#range"][0]["@id"]',
-        null,
-      ) as unknown as string;
+      const range =
+        supportedProperty?.[
+          "http://www.w3.org/2000/01/rdf-schema#range"
+        ]?.[0]?.["@id"] ?? null;
 
       const field = new Field(
         supportedProperties?.["http://www.w3.org/ns/hydra/core#title"]?.[0]?.[
@@ -324,35 +321,31 @@ export default async function parseHydraDocumentation(
           range,
           type: getType(id, range),
           reference:
-            get(supportedProperty, '["@type"][0]') ===
+            supportedProperty?.["@type"]?.[0] ===
             "http://www.w3.org/ns/hydra/core#Link"
               ? range // Will be updated in a subsequent pass
               : null,
           embedded:
-            get(supportedProperty, '["@type"][0]') ===
+            supportedProperty?.["@type"]?.[0] ===
             "http://www.w3.org/ns/hydra/core#Link"
               ? null
               : (range as unknown as Resource), // Will be updated in a subsequent pass
-          required: get(
-            supportedProperties,
-            '["http://www.w3.org/ns/hydra/core#required"][0]["@value"]',
-            false,
-          ) as boolean,
-          description: get(
-            supportedProperties,
-            '["http://www.w3.org/ns/hydra/core#description"][0]["@value"]',
-            "",
-          ) as string,
-          maxCardinality: get(
-            supportedProperty,
-            '["http://www.w3.org/2002/07/owl#maxCardinality"][0]["@value"]',
-            null,
-          ) as number | null,
-          deprecated: get(
-            supportedProperties,
-            '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-            false,
-          ) as boolean,
+          required:
+            supportedProperties?.[
+              "http://www.w3.org/ns/hydra/core#required"
+            ]?.[0]?.["@value"] ?? false,
+          description:
+            supportedProperties?.[
+              "http://www.w3.org/ns/hydra/core#description"
+            ]?.[0]?.["@value"] ?? "",
+          maxCardinality:
+            supportedProperty?.[
+              "http://www.w3.org/2002/07/owl#maxCardinality"
+            ]?.[0]?.["@value"] ?? null,
+          deprecated:
+            supportedProperties?.[
+              "http://www.w3.org/2002/07/owl#deprecated"
+            ]?.[0]?.["@value"] ?? false,
         },
       );
 
@@ -360,23 +353,20 @@ export default async function parseHydraDocumentation(
       resourceFields.push(field);
 
       if (
-        get(
-          supportedProperties,
-          '["http://www.w3.org/ns/hydra/core#readable"][0]["@value"]',
-        )
+        supportedProperties?.[
+          "http://www.w3.org/ns/hydra/core#readable"
+        ]?.[0]?.["@value"]
       ) {
         readableFields.push(field);
       }
 
       if (
-        get(
-          supportedProperties,
-          '["http://www.w3.org/ns/hydra/core#writeable"][0]["@value"]',
-        ) ||
-        get(
-          supportedProperties,
-          '["http://www.w3.org/ns/hydra/core#writable"][0]["@value"]',
-        )
+        supportedProperties?.[
+          "http://www.w3.org/ns/hydra/core#writeable"
+        ]?.[0]?.["@value"] ||
+        supportedProperties?.[
+          "http://www.w3.org/ns/hydra/core#writable"
+        ]?.[0]?.["@value"]
       ) {
         writableFields.push(field);
       }
@@ -414,11 +404,10 @@ export default async function parseHydraDocumentation(
               ]?.[0]?.["@id"],
             returns: range,
             types: entrypointOperation["@type"],
-            deprecated: get(
-              entrypointOperation,
-              '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-              false,
-            ) as boolean,
+            deprecated:
+              entrypointOperation?.[
+                "http://www.w3.org/2002/07/owl#deprecated"
+              ]?.[0]?.["@value"] ?? false,
           },
         );
 
@@ -464,11 +453,10 @@ export default async function parseHydraDocumentation(
             ]?.[0]?.["@id"],
           returns: range,
           types: supportedOperation["@type"],
-          deprecated: get(
-            supportedOperation,
-            '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-            false,
-          ) as boolean,
+          deprecated:
+            supportedOperation?.[
+              "http://www.w3.org/2002/07/owl#deprecated"
+            ]?.[0]?.["@value"] ?? false,
         },
       );
 
@@ -478,20 +466,18 @@ export default async function parseHydraDocumentation(
 
     const resource = new Resource(guessNameFromUrl(url, entrypointUrl), url, {
       id: relatedClass["@id"],
-      title: get(
-        relatedClass,
-        '["http://www.w3.org/ns/hydra/core#title"][0]["@value"]',
-        "",
-      ) as string,
+      title:
+        relatedClass?.["http://www.w3.org/ns/hydra/core#title"]?.[0]?.[
+          "@value"
+        ] ?? "",
       fields: resourceFields,
       readableFields,
       writableFields,
       operations: resourceOperations,
-      deprecated: get(
-        relatedClass,
-        '["http://www.w3.org/2002/07/owl#deprecated"][0]["@value"]',
-        false,
-      ) as boolean,
+      deprecated:
+        relatedClass?.["http://www.w3.org/2002/07/owl#deprecated"]?.[0]?.[
+          "@value"
+        ] ?? false,
     });
 
     resource.parameters = [];

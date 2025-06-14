@@ -1,5 +1,4 @@
 import { parse as dereference } from "jsonref";
-import get from "lodash.get";
 import inflection from "inflection";
 import { Field } from "../Field.js";
 import { Operation } from "../Operation.js";
@@ -11,19 +10,64 @@ import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../Operation.js";
 
 function isParameter(
-  maybeParameter: OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject,
-): maybeParameter is OpenAPIV3.ParameterObject {
-  return (
-    maybeParameter !== undefined &&
-    "name" in maybeParameter &&
-    "in" in maybeParameter
-  );
+  maybeParameter: NonNullable<OpenAPIV3.OperationObject["parameters"]>[number],
+) {
+  return maybeParameter !== undefined && "in" in maybeParameter;
 }
 
 function isSchema(
-  maybeSchema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | undefined,
+  maybeSchema: OpenAPIV3.MediaTypeObject["schema"],
 ): maybeSchema is OpenAPIV3.SchemaObject {
+  // Type predicate can't be inferred because all properties of SchemaObject
+  // type are optional, so we need to check for absence of $ref, but negated
+  // `in` checks can't infer the type.
   return maybeSchema !== undefined && !("$ref" in maybeSchema);
+}
+
+function isResponse(
+  maybeResponse: OpenAPIV3.ResponsesObject[string] | undefined,
+) {
+  return maybeResponse !== undefined && "description" in maybeResponse;
+}
+
+function isRequestBody(
+  maybeRequestBody: OpenAPIV3.OperationObject["requestBody"],
+) {
+  return maybeRequestBody !== undefined && "content" in maybeRequestBody;
+}
+
+function getSchemaFromEditOperation(
+  editOperation: OpenAPIV3.OperationObject | undefined,
+) {
+  if (
+    isRequestBody(editOperation?.requestBody) &&
+    isSchema(editOperation.requestBody.content?.["application/json"]?.schema)
+  ) {
+    return editOperation.requestBody.content["application/json"].schema;
+  }
+
+  return null;
+}
+
+function getSchemaFromShowOperation(
+  showOperation: OpenAPIV3.OperationObject | undefined,
+  document: OpenAPIV3.Document,
+  title: string,
+) {
+  if (
+    isResponse(showOperation?.responses?.["200"]) &&
+    isSchema(
+      showOperation.responses["200"]?.content?.["application/json"]?.schema,
+    )
+  ) {
+    return showOperation.responses["200"].content["application/json"].schema;
+  }
+
+  if (isSchema(document.components?.schemas?.[title])) {
+    return document.components.schemas[title];
+  }
+
+  return null;
 }
 
 export function removeTrailingSlash(url: string): string {
@@ -184,19 +228,13 @@ export default async function handleJson(
       continue;
     }
 
-    const showSchema = showOperation
-      ? (get(
-          showOperation,
-          "responses.200.content.application/json.schema",
-          get(document, `components.schemas[${title}]`),
-        ) as OpenAPIV3.SchemaObject)
-      : null;
-    const editSchema = editOperation
-      ? (get(
-          editOperation,
-          "requestBody.content.application/json.schema",
-        ) as unknown as OpenAPIV3.SchemaObject)
-      : null;
+    const showSchema = getSchemaFromShowOperation(
+      showOperation,
+      document,
+      title,
+    );
+
+    const editSchema = getSchemaFromEditOperation(editOperation);
 
     if (!showSchema && !editSchema) {
       continue;
