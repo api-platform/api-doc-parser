@@ -14,7 +14,7 @@ import type {
   Entrypoint,
   ExpandedOperation,
   ExpandedRdfProperty,
-  } from "./types.js";
+} from "./types.js";
 import type { RequestInitExtended } from "../types.js";
 
 /**

@@ -1,78 +1,23 @@
-import { parse as dereference } from "jsonref";
 import inflection from "inflection";
+import type { ParseOptions } from "jsonref";
+import { parse } from "jsonref";
+import type { OpenAPIV3 } from "openapi-types";
 import { Field } from "../Field.js";
+import type { OperationType } from "../Operation.js";
 import { Operation } from "../Operation.js";
 import { Parameter } from "../Parameter.js";
 import { Resource } from "../Resource.js";
 import getResourcePaths from "../utils/getResources.js";
+import type {
+  OpenAPIV3DocumentDereferenced,
+  OperationObjectDereferenced,
+  SchemaObjectDereferenced,
+} from "./dereferencedOpenApiv3.js";
 import getType from "./getType.js";
-import type { OpenAPIV3 } from "openapi-types";
-import type { OperationType } from "../Operation.js";
-
-function isParameter(
-  maybeParameter: NonNullable<OpenAPIV3.OperationObject["parameters"]>[number],
-) {
-  return maybeParameter !== undefined && "in" in maybeParameter;
-}
-
-function isSchema(
-  maybeSchema: OpenAPIV3.MediaTypeObject["schema"],
-): maybeSchema is OpenAPIV3.SchemaObject {
-  // Type predicate can't be inferred because all properties of SchemaObject
-  // type are optional, so we need to check for absence of $ref, but negated
-  // `in` checks can't infer the type.
-  return maybeSchema !== undefined && !("$ref" in maybeSchema);
-}
-
-function isResponse(
-  maybeResponse: OpenAPIV3.ResponsesObject[string] | undefined,
-) {
-  return maybeResponse !== undefined && "description" in maybeResponse;
-}
-
-function isRequestBody(
-  maybeRequestBody: OpenAPIV3.OperationObject["requestBody"],
-) {
-  return maybeRequestBody !== undefined && "content" in maybeRequestBody;
-}
-
-function getSchemaFromEditOperation(
-  editOperation: OpenAPIV3.OperationObject | undefined,
-) {
-  if (
-    isRequestBody(editOperation?.requestBody) &&
-    isSchema(editOperation.requestBody.content?.["application/json"]?.schema)
-  ) {
-    return editOperation.requestBody.content["application/json"].schema;
-  }
-
-  return null;
-}
-
-function getSchemaFromShowOperation(
-  showOperation: OpenAPIV3.OperationObject | undefined,
-  document: OpenAPIV3.Document,
-  title: string,
-) {
-  if (
-    isResponse(showOperation?.responses?.["200"]) &&
-    isSchema(
-      showOperation.responses["200"]?.content?.["application/json"]?.schema,
-    )
-  ) {
-    return showOperation.responses["200"].content["application/json"].schema;
-  }
-
-  if (isSchema(document.components?.schemas?.[title])) {
-    return document.components.schemas[title];
-  }
-
-  return null;
-}
 
 export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
-    url = url.slice(0, -1);
+    return url.slice(0, -1);
   }
   return url;
 }
@@ -101,45 +46,47 @@ function mergeResources(resourceA: Resource, resourceB: Resource) {
   return resourceA;
 }
 
+function buildEnumObject(enumArray: SchemaObjectDereferenced["enum"]) {
+  if (!enumArray) {
+    return null;
+  }
+  return Object.fromEntries(
+    // Object.values is used because the array is annotated: it contains the __meta symbol used by jsonref.
+    Object.values(enumArray).map((enumValue) => [
+      typeof enumValue === "string"
+        ? inflection.humanize(enumValue)
+        : enumValue,
+      enumValue,
+    ]),
+  );
+}
+
+function getArrayType(property: SchemaObjectDereferenced) {
+  if (property.type !== "array") {
+    return null;
+  }
+  return getType(property.items.type || "string", property.items.format);
+}
+
 function buildResourceFromSchema(
-  schema: OpenAPIV3.SchemaObject,
+  schema: SchemaObjectDereferenced,
   name: string,
   title: string,
   url: string,
 ) {
   const { description = "", properties = {} } = schema;
-  const fieldNames = Object.keys(properties);
   const requiredFields = schema.required || [];
-
+  const fields: Field[] = [];
   const readableFields: Field[] = [];
   const writableFields: Field[] = [];
 
-  const fields = fieldNames.map((fieldName) => {
-    const property = properties[fieldName] as OpenAPIV3.SchemaObject;
-
-    const type = getType(property.type || "string", property.format);
+  for (const [fieldName, property] of Object.entries(properties)) {
     const field = new Field(fieldName, {
       id: null,
       range: null,
-      type,
-      arrayType:
-        type === "array" && "items" in property
-          ? getType(
-              (property.items as OpenAPIV3.SchemaObject).type || "string",
-              (property.items as OpenAPIV3.SchemaObject).format,
-            )
-          : null,
-      enum: property.enum
-        ? Object.fromEntries(
-            // Object.values is used because the array is annotated: it contains the __meta symbol used by jsonref.
-            Object.values<string | number>(property.enum).map((enumValue) => [
-              typeof enumValue === "string"
-                ? inflection.humanize(enumValue)
-                : enumValue,
-              enumValue,
-            ]),
-          )
-        : null,
+      type: getType(property.type || "string", property.format),
+      arrayType: getArrayType(property),
+      enum: buildEnumObject(property.enum),
       reference: null,
       embedded: null,
       nullable: property.nullable || false,
@@ -153,9 +100,8 @@ function buildResourceFromSchema(
     if (!property.readOnly) {
       writableFields.push(field);
     }
-
-    return field;
-  });
+    fields.push(field);
+  }
 
   return new Resource(name, url, {
     id: null,
@@ -173,12 +119,19 @@ function buildResourceFromSchema(
 function buildOperationFromPathItem(
   httpMethod: `${OpenAPIV3.HttpMethods}`,
   operationType: OperationType,
-  pathItem: OpenAPIV3.OperationObject,
+  pathItem: OperationObjectDereferenced,
 ): Operation {
   return new Operation(pathItem.summary || operationType, operationType, {
     method: httpMethod.toUpperCase(),
     deprecated: !!pathItem.deprecated,
   });
+}
+
+function dereferenceOpenAPIV3(
+  response: OpenAPIV3.Document,
+  options: ParseOptions,
+): Promise<OpenAPIV3DocumentDereferenced> {
+  return parse(response, options);
 }
 
 /*
@@ -195,9 +148,9 @@ export default async function handleJson(
   response: OpenAPIV3.Document,
   entrypointUrl: string,
 ): Promise<Resource[]> {
-  const document = (await dereference(response, {
+  const document = await dereferenceOpenAPIV3(response, {
     scope: entrypointUrl,
-  })) as OpenAPIV3.Document;
+  });
 
   const paths = getResourcePaths(document.paths);
 
@@ -227,14 +180,12 @@ export default async function handleJson(
     if (!showOperation && !editOperation) {
       continue;
     }
+    const showSchema =
+      showOperation?.responses?.["200"]?.content?.["application/json"]
+        ?.schema || document.components?.schemas?.[title];
 
-    const showSchema = getSchemaFromShowOperation(
-      showOperation,
-      document,
-      title,
-    );
-
-    const editSchema = getSchemaFromEditOperation(editOperation);
+    const editSchema =
+      editOperation?.requestBody?.content?.["application/json"]?.schema || null;
 
     if (!showSchema && !editSchema) {
       continue;
@@ -282,22 +233,16 @@ export default async function handleJson(
     ];
 
     if (listOperation && listOperation.parameters) {
-      resource.parameters = listOperation.parameters
-        .filter(isParameter)
-        .map(
-          (parameter) =>
-            new Parameter(
-              parameter.name,
-              parameter.schema &&
-              isSchema(parameter.schema) &&
-              parameter.schema.type
-                ? getType(parameter.schema.type)
-                : null,
-              parameter.required || false,
-              parameter.description || "",
-              parameter.deprecated,
-            ),
-        );
+      resource.parameters = listOperation.parameters.map(
+        (parameter) =>
+          new Parameter(
+            parameter.name,
+            parameter.schema?.type ? getType(parameter.schema.type) : null,
+            parameter.required || false,
+            parameter.description || "",
+            parameter.deprecated,
+          ),
+      );
     }
 
     resources.push(resource);
