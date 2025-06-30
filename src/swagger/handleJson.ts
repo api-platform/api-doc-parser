@@ -1,9 +1,9 @@
 import inflection from "inflection";
+import type { OpenAPIV2 } from "openapi-types";
 import { Field } from "../Field.js";
+import getType from "../openapi3/getType.js";
 import { Resource } from "../Resource.js";
 import getResourcePaths from "../utils/getResources.js";
-import getType from "../openapi3/getType.js";
-import type { OpenAPIV2 } from "openapi-types";
 
 export function removeTrailingSlash(url: string): string {
   if (url.endsWith("/")) {
@@ -48,30 +48,31 @@ export default function handleJson(
 
     const requiredFields = response.definitions?.[title]?.required ?? [];
 
-    const fields = Object.entries(properties).map(([fieldName, property]) => {
-      return new Field(fieldName, {
-        id: null,
-        range: null,
-        type: getType(
-          typeof property?.type === "string" ? property.type : "",
-          property?.["format"] ?? "",
-        ),
-        enum: property.enum
-          ? Object.fromEntries(
-              property.enum.map((enumValue: string | number) => [
-                typeof enumValue === "string"
-                  ? inflection.humanize(enumValue)
-                  : enumValue,
-                enumValue,
-              ]),
-            )
-          : null,
-        reference: null,
-        embedded: null,
-        required: requiredFields.some((value) => value === fieldName),
-        description: property.description || "",
-      });
-    });
+    const fields = Object.entries(properties).map(
+      ([fieldName, property]) =>
+        new Field(fieldName, {
+          id: null,
+          range: null,
+          type: getType(
+            typeof property?.type === "string" ? property.type : "",
+            property?.["format"] ?? "",
+          ),
+          enum: property.enum
+            ? Object.fromEntries(
+                property.enum.map((enumValue: string | number) => [
+                  typeof enumValue === "string"
+                    ? inflection.humanize(enumValue)
+                    : enumValue,
+                  enumValue,
+                ]),
+              )
+            : null,
+          reference: null,
+          embedded: null,
+          required: requiredFields.some((value) => value === fieldName),
+          description: property.description || "",
+        }),
+    );
 
     return new Resource(name, url, {
       id: null,

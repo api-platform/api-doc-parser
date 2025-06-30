@@ -5,9 +5,9 @@ export default function getResources(
 ): string[] {
   return [
     ...new Set(
-      Object.keys(paths).filter((path) => {
-        return new RegExp("^[^{}]+/{[^{}]+}/?$").test(path);
-      }),
+      Object.keys(paths).filter((path) =>
+        new RegExp("^[^{}]+/{[^{}]+}/?$").test(path),
+      ),
     ),
   ];
 }
