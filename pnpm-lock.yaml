@@ -21,9 +21,6 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
     devDependencies:
-      '@types/inflection':
-        specifier: ^1.13.0
-        version: 1.13.2
       '@types/jsonld':
         specifier: ^1.5.0
         version: 1.5.15
@@ -33,9 +30,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 3.2.2
         version: 3.2.2(vitest@3.2.2(@types/node@22.15.29)(jiti@2.4.2)(msw@2.9.0(@types/node@22.15.29)(typescript@5.8.3)))
-      globals:
-        specifier: ^15.14.0
-        version: 15.15.0
       knip:
         specifier: ^5.61.3
         version: 5.61.3(@types/node@22.15.29)(typescript@5.8.3)
@@ -570,9 +564,6 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  '@types/inflection@1.13.2':
-    resolution: {integrity: sha512-VxXY8dNLrxn7nDvsud77K60uD3a9RSmKfa0k/N/zvP2G55R5/8DSO5Ferz3mQdlAo8jPnpQLilCx9rABdPHSVg==}
-
   '@types/jsonld@1.5.15':
     resolution: {integrity: sha512-PlAFPZjL+AuGYmwlqwKEL0IMP8M8RexH0NIPGfCVWSQ041H2rR/8OlyZSD7KsCVoN8vCfWdtWDBxX8yBVP+xow==}
 
@@ -809,10 +800,6 @@ packages:
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
-
-  globals@15.15.0:
-    resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
-    engines: {node: '>=18'}
 
   graphql@16.11.0:
     resolution: {integrity: sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==}
@@ -1708,8 +1695,6 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
-  '@types/inflection@1.13.2': {}
-
   '@types/jsonld@1.5.15': {}
 
   '@types/node@22.15.29':
@@ -1968,8 +1953,6 @@ snapshots:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
-
-  globals@15.15.0: {}
 
   graphql@16.11.0: {}
 

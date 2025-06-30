@@ -90,7 +90,7 @@ export interface ExpandedRdfProperty {
   ];
 }
 
-export interface ExpandedSupportedProperty {
+interface ExpandedSupportedProperty {
   "@type": ["http://www.w3.org/ns/hydra/core#SupportedProperty"];
   "http://www.w3.org/ns/hydra/core#title": [
     {
