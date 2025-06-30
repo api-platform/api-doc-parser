@@ -31,7 +31,9 @@
     ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "eslint/arrow-body-style": ["error", "as-needed"],
     "eslint/curly": "error",
+    "eslint/id-length": "off",
     "eslint/max-depth": "off",
     "eslint/max-lines": "off",
     "eslint/max-lines-per-function": "off",
@@ -47,6 +49,7 @@
       }
     ],
     "import/exports-last": "off",
+    "import/extensions": "off",
     "import/group-exports": "off",
     "import/max-dependencies": "off",
     "import/no-anonymous-default-export": [
@@ -56,6 +59,7 @@
       }
     ],
     "import/no-default-export": "off",
+    "import/prefer-default-export": "off",
     "max-params": "off",
     "no-async-await": "off",
     "no-console": "off",
