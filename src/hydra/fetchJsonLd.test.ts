@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
+import { assert, expect, test } from "vitest";
 import { server } from "../../vitest.setup.js";
 import fetchJsonLd from "./fetchJsonLd.js";
-import { assert, expect, test } from "vitest";
 
 const httpResponse = {
   "@context": "http://json-ld.org/contexts/person.jsonld",
@@ -33,13 +33,15 @@ test("fetch a JSON-LD document", async () => {
 
 test("fetch a non JSON-LD document", async () => {
   server.use(
-    http.get("http://localhost/foo.jsonld", () => {
-      return new HttpResponse(`<body>Hello</body>`, {
-        headers: { "Content-Type": "text/html" },
-        status: 200,
-        statusText: "OK",
-      });
-    }),
+    http.get(
+      "http://localhost/foo.jsonld",
+      () =>
+        new HttpResponse(`<body>Hello</body>`, {
+          headers: { "Content-Type": "text/html" },
+          status: 200,
+          statusText: "OK",
+        }),
+    ),
   );
 
   const promise = fetchJsonLd("http://localhost/foo.jsonld");
@@ -50,13 +52,13 @@ test("fetch a non JSON-LD document", async () => {
 
 test("fetch an error with Content-Type application/ld+json", async () => {
   server.use(
-    http.get("http://localhost/foo.jsonld", () => {
-      return HttpResponse.json(httpResponse, {
+    http.get("http://localhost/foo.jsonld", () =>
+      HttpResponse.json(httpResponse, {
         status: 500,
         statusText: "Internal Server Error",
         headers: { "Content-Type": "application/ld+json" },
-      });
-    }),
+      }),
+    ),
   );
 
   const rejectedResponse = await fetchJsonLd(
@@ -72,13 +74,13 @@ test("fetch an error with Content-Type application/ld+json", async () => {
 
 test("fetch an error with Content-Type application/error+json", async () => {
   server.use(
-    http.get("http://localhost/foo.jsonld", () => {
-      return HttpResponse.json(httpResponse, {
+    http.get("http://localhost/foo.jsonld", () =>
+      HttpResponse.json(httpResponse, {
         status: 400,
         statusText: "Bad Request",
         headers: { "Content-Type": "application/error+json" },
-      });
-    }),
+      }),
+    ),
   );
 
   const rejectedResponse = await fetchJsonLd(
@@ -94,13 +96,15 @@ test("fetch an error with Content-Type application/error+json", async () => {
 
 test("fetch an empty document", async () => {
   server.use(
-    http.get("http://localhost/foo.jsonld", () => {
-      return new HttpResponse(``, {
-        status: 204,
-        statusText: "No Content",
-        headers: { "Content-Type": "text/html" },
-      });
-    }),
+    http.get(
+      "http://localhost/foo.jsonld",
+      () =>
+        new HttpResponse(``, {
+          status: 204,
+          statusText: "No Content",
+          headers: { "Content-Type": "text/html" },
+        }),
+    ),
   );
 
   const dataPromise = fetchJsonLd("http://localhost/foo.jsonld");

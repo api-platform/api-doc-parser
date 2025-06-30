@@ -29,11 +29,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
+      - name: Check formatting
+        run: pnpm format:check
 
       - name: Lint
         run: pnpm lint
+
+      - name: Check types
+        run: pnpm typecheck
 
       - name: Run tests with coverage
         run: pnpm test:coverage
@@ -41,5 +44,5 @@ jobs:
       - name: Report test coverage
         uses: davelosert/vitest-coverage-report-action@v2
 
-      - name: Run knip
+      - name: Check unused files and dependencies with knip
         run: pnpm run knip
