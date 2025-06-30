@@ -1,7 +1,7 @@
 import { Parameter } from "../Parameter.js";
 import fetchResource from "./fetchResource.js";
 import type { Resource } from "../Resource.js";
-import type { RequestInitExtended } from "./types.js";
+import type { RequestInitExtended } from "../types.js";
 
 export default async function getParameters(
   resource: Resource,

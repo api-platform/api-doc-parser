@@ -1,5 +1,6 @@
 import fetchJsonLd from "./fetchJsonLd.js";
-import type { IriTemplateMapping, RequestInitExtended } from "./types.js";
+import type { IriTemplateMapping } from "./types.js";
+import type { RequestInitExtended } from "../types.js";
 
 export default async function fetchResource(
   resourceUrl: string,

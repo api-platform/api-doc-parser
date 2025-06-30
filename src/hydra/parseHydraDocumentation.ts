@@ -14,8 +14,8 @@ import type {
   Entrypoint,
   ExpandedOperation,
   ExpandedRdfProperty,
-  RequestInitExtended,
-} from "./types.js";
+  } from "./types.js";
+import type { RequestInitExtended } from "../types.js";
 
 /**
  * Extracts the short name of a resource.
