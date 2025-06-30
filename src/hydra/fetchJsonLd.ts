@@ -4,15 +4,15 @@ import type { RequestInitExtended } from "../types.js";
 const jsonLdMimeType = "application/ld+json";
 const jsonProblemMimeType = "application/problem+json";
 
-export interface RejectedResponseDocument {
+interface RejectedResponseDocument {
   response: Response;
 }
 
-export interface EmptyResponseDocument {
+interface EmptyResponseDocument {
   response: Response;
 }
 
-export interface ResponseDocument extends RemoteDocument {
+interface ResponseDocument extends RemoteDocument {
   response: Response;
   body: Document;
 }

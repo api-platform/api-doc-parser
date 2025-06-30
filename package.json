@@ -46,7 +46,11 @@
     "lint:fix": "oxlint --fix",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "knip": "knip",
+    "knip:fix": "knip --fix"
   },
   "dependencies": {
     "graphql": "^16.0.0",
@@ -55,16 +59,15 @@
     "jsonref": "^9.0.0"
   },
   "devDependencies": {
-    "@types/inflection": "^1.13.0",
     "@types/jsonld": "^1.5.0",
     "@types/node": "^22.0.0",
     "@vitest/coverage-v8": "3.2.2",
-    "globals": "^15.14.0",
     "msw": "^2.9.0",
     "openapi-types": "^12.0.0",
     "oxlint": "^1.1.0",
     "prettier": "^3.0.0",
     "typescript": "^5.7.0",
+    "knip": "^5.61.3",
     "vitest": "^3.2.2"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",

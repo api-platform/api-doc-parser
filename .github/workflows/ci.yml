@@ -40,3 +40,6 @@ jobs:
 
       - name: Report test coverage
         uses: davelosert/vitest-coverage-report-action@v2
+
+      - name: Run knip
+        run: pnpm run knip
