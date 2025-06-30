@@ -47,8 +47,8 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "test:coverage": "vitest --coverage",
-    "format": "prettier . --write",
-    "format:check": "prettier . --check",
+    "format": "prettier . --write --experimental-cli",
+    "format:check": "prettier . --check --experimental-cli",
     "knip": "knip",
     "knip:fix": "knip --fix"
   },
