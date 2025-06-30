@@ -1,7 +1,3 @@
-export interface RequestInitExtended extends Omit<RequestInit, "headers"> {
-  headers?: HeadersInit | (() => HeadersInit);
-}
-
 export interface IriTemplateMapping {
   "@type": "IriTemplateMapping";
   variable: "string";

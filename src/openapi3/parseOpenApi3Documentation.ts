@@ -2,7 +2,7 @@
 import { Api } from "../Api.js";
 import handleJson, { removeTrailingSlash } from "./handleJson.js";
 import type { OpenAPIV3 } from "openapi-types";
-import type { RequestInitExtended } from "./types.js";
+import type { RequestInitExtended } from "../types.js";
 
 export interface ParsedOpenApi3Documentation {
   api: Api;
