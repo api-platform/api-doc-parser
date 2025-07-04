@@ -1,3 +1,11 @@
+<h1 align="center">
+<img 
+  src="https://github.com/user-attachments/assets/4d3bf8ba-8cbf-4673-9e6b-2cd30c9685d0" 
+  alt="API doc parser" 
+  width="250" 
+  height="250">
+</h1>
+
 # API Doc Parser
 
 **Effortlessly turn Hydra, Swagger/OpenAPI, and GraphQL specs into actionable data for your tools and apps.**
