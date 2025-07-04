@@ -1,53 +1,18 @@
-<h1 align="center">
-  <br>
-API Doc Parser
-</h1>
+# API Doc Parser
 
-<p align="center">
-  <b>
-Effortlessly turn Hydra, Swagger/OpenAPI, and GraphQL specs into actionable data for your tools and apps.
-  </b>
-</p>
+**Effortlessly turn Hydra, Swagger/OpenAPI, and GraphQL specs into actionable data for your tools and apps.**
 
-<p align="center">
-  <a href="https://github.com/api-platform/api-doc-parser/actions/workflows/ci.yml">
-    <img src="https://github.com/api-platform/api-doc-parser/actions/workflows/ci.yml/badge.svg" alt="CI">
-  </a>
-  <a href="https://github.com/api-platform/api-doc-parser/blob/main/LICENSE">
-    <img  src="https://img.shields.io/github/license/api-platform/api-doc-parser" alt="GitHub License">
-  </a>
-  <a href="https://bundlephobia.com/package/@api-platform/api-doc-parser">
-    <img src="https://img.shields.io/bundlephobia/minzip/@api-platform/api-doc-parser" alt="npm bundle size">
-  </a>
-  <a href="https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser">
-    <img src="https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg" alt="npm version">
-  </a>
-  <a href="https://img.shields.io/npm/dw/%40api-platform%2Fapi-doc-parser">
-    <img src="https://img.shields.io/npm/dw/%40api-platform%2Fapi-doc-parser" alt="NPM Downloads">
-  </a>
-</p>
-
-<p align="center">
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#type-definitions">Type definitions</a> •
-  <a href="#contributing">Contributing</a> •
-  <a href="#credits">Credits</a> •
-  <a href="#license">License</a>
-</p>
+[![CI](https://github.com/api-platform/api-doc-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/api-platform/api-doc-parser/actions/workflows/ci.yml)
+[![GitHub License](https://img.shields.io/github/license/api-platform/api-doc-parser)](https://github.com/api-platform/api-doc-parser/blob/main/LICENSE)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@api-platform/api-doc-parser)](https://bundlephobia.com/package/@api-platform/api-doc-parser)
+[![npm version](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser.svg)](https://badge.fury.io/js/%40api-platform%2Fapi-doc-parser)
+[![NPM Downloads](https://img.shields.io/npm/dw/%40api-platform%2Fapi-doc-parser)](https://img.shields.io/npm/dw/%40api-platform%2Fapi-doc-parser)
 
 ---
 
- <br>
-<p align="center">
-  <code>api-doc-parser</code> is a standalone TypeScript library that parses
-  <a href="https://www.hydra-cg.com/">Hydra</a>,
-  <a href="https://swagger.io/specification/v2/">Swagger</a>,
-  <a href="https://github.com/OAI/OpenAPI-Specification#the-openapi-specification">OpenAPI</a>,
-  and <a href="https://graphql.org/">GraphQL</a> documentation into a unified, intermediate representation.<br>
-  This normalized structure enables smart API clients, code generators, admin interfaces, and more.<br>
-  It integrates seamlessly with the <a href="https://api-platform.com/">API Platform</a> framework.
-</p>
+**`api-doc-parser` is a standalone TypeScript library that parses [Hydra](https://www.hydra-cg.com/), [Swagger](https://swagger.io/specification/v2/), [OpenAPI](https://github.com/OAI/OpenAPI-Specification#the-openapi-specification), and [GraphQL](https://graphql.org/) documentation into a unified, intermediate representation.**  
+This normalized structure enables smart API clients, code generators, admin interfaces, and more.  
+It integrates seamlessly with the [API Platform](https://api-platform.com/) framework.
 
 ## ✨ Key Features
 
@@ -117,7 +82,7 @@ parseGraphQl("https://demo.api-platform.com/graphql").then(({ api }) =>
 );
 ```
 
-## <img src="https://www.typescriptlang.org/icons/icon-48x48.png" alt="TypeScript" width="24" height="24" style="vertical-align:top; padding-right:4px;" /> Type definitions
+## ![TypeScript](https://api.iconify.design/vscode-icons:file-type-typescript-official.svg?color=%23888888&wdith=26&height=26) Type definitions
 
 Each parse function returns a Promise that resolves to an object containing the normalized API structure, the raw documentation, and the HTTP status code:
 
@@ -298,7 +263,7 @@ If a rule is not met, the resource concerned is silently skipped.
 | **Schema discovery** | **GET** → first searches `responses → 200 → content → application/json`; if missing, falls back to `components` (component name must be singular, e.g. `Book`).<br/>**PUT/PATCH** → only `requestBody → content → application/json` is considered.<br/>If both GET & PUT/PATCH schemas exist, their fields are **merged**. |
 | **Collection paths** | A create (`POST`) or list (`GET`) endpoint **must** be plural:<br/>`/books`. |
 | **Deletion path** | `DELETE` must live under the single-item GET path (`/books/{id}`). |
-| **Relations & Embeddeds** | Links between resources are inferred from property names and their JSON schema:<br/>• **Plural object/array properties** (e.g. `reviews`, `authors`) become **embedded** resources when their item schema matches an existing resource (`Review`, `Author`).<br/>• **ID-like properties** (e.g. `review_id`, `reviewId`, `review_ids`, `reviewIds`, `authorId`) are treated as **references** to that resource.<br/>• Matching algorithm: `camelize` → strip trailing `Id`/`Ids` → `classify` (singular PascalCase) → exact compare with resource titles. This effectively handles both plural and ID variants, regardless of original casing.<br/>• As a result, fields such as **`reviews`** (object/array) and **`review_ids`** (scalar/array of IDs) each point to the **same** `Review` resource, one flagged _embedded_, the other _reference_. |
+| **Relations & Embeddeds** | Links between resources are inferred from property names and their JSON schema:<br/>• **Plural object/array properties** (e.g. `reviews`, `authors`) become **embedded** resources when their item schema matches an existing resource (`Review`, `Author`).<br/>• **ID-like properties** (e.g. `review_id`, `reviewId`, `review_ids`, `reviewIds`, `authorId`) are treated as **references** to that resource.<br/>• As a result, fields such as **`reviews`** (object/array) and **`review_ids`** (scalar/array of IDs) each point to the **same** `Review` resource, one flagged _embedded_, the other _reference_. |
 | **Parameter extraction** | Parameters are read **only** from the list path (`/books`). |
 
 ## 🧩 Support for other formats (JSON:API, AsyncAPI...)
@@ -347,9 +312,7 @@ Contributions are welcome! To contribute:
 
 ## 👥 Contributors
 
-<a href="https://github.com/api-platform/api-doc-parser/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=api-platform/api-doc-parser" />
-</a>
+[![Contributors](https://contrib.rocks/image?repo=api-platform/api-doc-parser)](https://github.com/api-platform/api-doc-parser/graphs/contributors)
 
 ## 🌟 Star History
 
