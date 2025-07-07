@@ -55,8 +55,8 @@ Using [Bun](https://bun.sh/):
 ```javascript
 import { parseHydraDocumentation } from "@api-platform/api-doc-parser";
 
-parseHydraDocumentation("https://demo.api-platform.com").then(({ api }) =>
-  console.log(api),
+const { api, response, status } = await parseHydraDocumentation(
+  "https://demo.api-platform.com",
 );
 ```
 
@@ -65,8 +65,8 @@ parseHydraDocumentation("https://demo.api-platform.com").then(({ api }) =>
 ```javascript
 import { parseSwaggerDocumentation } from "@api-platform/api-doc-parser";
 
-parseSwaggerDocumentation("https://demo.api-platform.com/docs.json").then(
-  ({ api }) => console.log(api),
+const { api, response, status } = await parseSwaggerDocumentation(
+  "https://demo.api-platform.com/docs.json",
 );
 ```
 
@@ -75,9 +75,9 @@ parseSwaggerDocumentation("https://demo.api-platform.com/docs.json").then(
 ```javascript
 import { parseOpenApi3Documentation } from "@api-platform/api-doc-parser";
 
-parseOpenApi3Documentation(
+const { api, response, status } = await parseOpenApi3Documentation(
   "https://demo.api-platform.com/docs.jsonopenapi?spec_version=3.0.0",
-).then(({ api }) => console.log(api));
+);
 ```
 
 **GraphQL**
@@ -85,8 +85,8 @@ parseOpenApi3Documentation(
 ```javascript
 import { parseGraphQl } from "@api-platform/api-doc-parser";
 
-parseGraphQl("https://demo.api-platform.com/graphql").then(({ api }) =>
-  console.log(api),
+const { api, response } = await parseGraphQl(
+  "https://demo.api-platform.com/graphql",
 );
 ```
 
