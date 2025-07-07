@@ -32,10 +32,6 @@ It integrates seamlessly with the [API Platform](https://api-platform.com/) fram
 
 ## 📦 Installation
 
-With [Yarn](https://yarnpkg.com/):
-
-    yarn add @api-platform/api-doc-parser
-
 Using [NPM](https://www.npmjs.com/):
 
     npm install @api-platform/api-doc-parser
@@ -43,6 +39,10 @@ Using [NPM](https://www.npmjs.com/):
 Using [Pnpm](https://pnpm.io/):
 
     pnpm add @api-platform/api-doc-parser
+
+With [Yarn](https://yarnpkg.com/):
+
+    yarn add @api-platform/api-doc-parser
 
 Using [Bun](https://bun.sh/):
 
@@ -90,7 +90,7 @@ parseGraphQl("https://demo.api-platform.com/graphql").then(({ api }) =>
 );
 ```
 
-## ![TypeScript](https://api.iconify.design/vscode-icons:file-type-typescript-official.svg?color=%23888888&wdith=26&height=26) Type definitions
+## ![TypeScript](https://api.iconify.design/vscode-icons:file-type-typescript-official.svg?color=%23888888&width=26&height=26) Type definitions
 
 Each parse function returns a Promise that resolves to an object containing the normalized API structure, the raw documentation, and the HTTP status code:
 
@@ -341,7 +341,7 @@ Contributions are welcome! To contribute:
   </picture>
 </a>
 
-## 🎉 Credits
+## 🙌 Credits
 
 Created by [Kévin Dunglas](https://dunglas.fr). Sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
 
