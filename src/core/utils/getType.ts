@@ -1,10 +1,7 @@
 import inflection from "inflection";
 import type { FieldType } from "../Field.js";
 
-export default function getType(
-  openApiType: string,
-  format?: string,
-): FieldType {
+export function getType(openApiType: string, format?: string): FieldType {
   if (format) {
     switch (format) {
       case "int32":
