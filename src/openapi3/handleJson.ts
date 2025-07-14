@@ -16,6 +16,35 @@ import type {
   SchemaObjectDereferenced,
 } from "./dereferencedOpenApiv3.js";
 
+/**
+ * Assigns relationships between resources based on their fields.
+ * Sets the field's `embedded` or `reference` property depending on its type.
+ *
+ * @param resources - Array of Resource objects to process.
+ * @returns The same array of resources with relationships assigned.
+ */
+function assignResourceRelationships(resources: Resource[]) {
+  for (const resource of resources) {
+    for (const field of resource.fields ?? []) {
+      const name = camelize(field.name).replace(/Ids?$/, "");
+
+      const guessedResource = resources.find(
+        (res) => res.title === classify(name),
+      );
+      if (!guessedResource) {
+        continue;
+      }
+      field.maxCardinality = field.type === "array" ? null : 1;
+      if (field.type === "object" || field.arrayType === "object") {
+        field.embedded = guessedResource;
+      } else {
+        field.reference = guessedResource;
+      }
+    }
+  }
+  return resources;
+}
+
 function mergeResources(resourceA: Resource, resourceB: Resource) {
   for (const fieldB of resourceB.fields ?? []) {
     if (!resourceA.fields?.some((fieldA) => fieldA.name === fieldB.name)) {
@@ -154,8 +183,14 @@ export default async function handleJson(
 
     const title = classify(baseName);
 
-    const showOperation = pathItem.get;
-    const editOperation = pathItem.put || pathItem.patch;
+    const {
+      get: showOperation,
+      put: putOperation,
+      patch: patchOperation,
+      delete: deleteOperation,
+    } = pathItem;
+
+    const editOperation = putOperation || patchOperation;
     if (!showOperation && !editOperation) {
       continue;
     }
@@ -184,14 +219,8 @@ export default async function handleJson(
       resource = mergeResources(showResource, editResource);
     }
 
-    const {
-      put: putOperation,
-      patch: patchOperation,
-      delete: deleteOperation,
-    } = pathItem;
     const pathCollection = document.paths[`/${name}`];
-    const listOperation = pathCollection && pathCollection.get;
-    const createOperation = pathCollection && pathCollection.post;
+    const { get: listOperation, post: createOperation } = pathCollection ?? {};
 
     resource.operations = [
       ...(showOperation
@@ -214,7 +243,7 @@ export default async function handleJson(
         : []),
     ];
 
-    if (listOperation && listOperation.parameters) {
+    if (listOperation?.parameters) {
       resource.parameters = listOperation.parameters.map(
         (parameter) =>
           new Parameter(
@@ -230,25 +259,5 @@ export default async function handleJson(
     resources.push(resource);
   }
 
-  // Guess embeddeds and references from property names
-  for (const resource of resources) {
-    for (const field of resource.fields ?? []) {
-      const name = camelize(field.name).replace(/Ids?$/, "");
-
-      const guessedResource = resources.find(
-        (res) => res.title === classify(name),
-      );
-      if (!guessedResource) {
-        continue;
-      }
-      field.maxCardinality = field.type === "array" ? null : 1;
-      if (field.type === "object" || field.arrayType === "object") {
-        field.embedded = guessedResource;
-      } else {
-        field.reference = guessedResource;
-      }
-    }
-  }
-
-  return resources;
+  return assignResourceRelationships(resources);
 }
