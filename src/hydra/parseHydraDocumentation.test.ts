@@ -1,8 +1,8 @@
-import parseHydraDocumentation from "./parseHydraDocumentation.js";
-import parsedJsonReplacer from "../utils/parsedJsonReplacer.js";
-import { server } from "../../vitest.setup.js";
 import { http, HttpResponse } from "msw";
 import { assert, expect, test, vi } from "vitest";
+import { server } from "../../vitest.setup.js";
+import { parsedJsonReplacer } from "../core/utils/index.js";
+import parseHydraDocumentation from "./parseHydraDocumentation.js";
 
 const entrypoint = {
   "@context": {

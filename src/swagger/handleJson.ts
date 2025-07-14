@@ -1,16 +1,11 @@
 import inflection from "inflection";
 import type { OpenAPIV2 } from "openapi-types";
-import { Field } from "../Field.js";
-import getType from "../openapi3/getType.js";
-import { Resource } from "../Resource.js";
-import getResourcePaths from "../utils/getResources.js";
-
-export function removeTrailingSlash(url: string): string {
-  if (url.endsWith("/")) {
-    return url.slice(0, -1);
-  }
-  return url;
-}
+import { Field, Resource } from "../core/index.js";
+import {
+  getResourcePaths,
+  getType,
+  removeTrailingSlash,
+} from "../core/utils/index.js";
 
 export default function handleJson(
   response: OpenAPIV2.Document,
