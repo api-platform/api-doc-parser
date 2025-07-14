@@ -1,6 +1,6 @@
-import { assignSealed } from "./utils/assignSealed.js";
 import type { Resource } from "./Resource.js";
 import type { Nullable } from "./types.js";
+import { assignSealed } from "./utils/assignSealed.js";
 
 export type FieldType =
   | "string"
@@ -28,7 +28,8 @@ export type FieldType =
   | "url"
   | "uuid"
   | "password"
-  | string;
+  // oxlint-disable-next-line ban-types
+  | ({} & string); // Allow any other string type
 
 export interface FieldOptions
   extends Nullable<{

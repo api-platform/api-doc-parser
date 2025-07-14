@@ -1,6 +1,6 @@
-import { assignSealed } from "./utils/assignSealed.js";
 import type { Resource } from "./Resource.js";
 import type { Nullable } from "./types.js";
+import { assignSealed } from "./utils/assignSealed.js";
 
 export interface ApiOptions
   extends Nullable<{
