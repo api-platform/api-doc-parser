@@ -1,7 +1,8 @@
 // oxlint-disable prefer-await-to-then
-import { Api } from "../Api.js";
-import handleJson, { removeTrailingSlash } from "./handleJson.js";
 import type { OpenAPIV2 } from "openapi-types";
+import { Api } from "../core/Api.js";
+import { removeTrailingSlash } from "../core/utils/index.js";
+import handleJson from "./handleJson.js";
 
 export interface ParsedSwaggerDocumentation {
   api: Api;

@@ -2,25 +2,18 @@ import inflection from "inflection";
 import type { ParseOptions } from "jsonref";
 import { parse } from "jsonref";
 import type { OpenAPIV3 } from "openapi-types";
-import { Field } from "../Field.js";
-import type { OperationType } from "../Operation.js";
-import { Operation } from "../Operation.js";
-import { Parameter } from "../Parameter.js";
-import { Resource } from "../Resource.js";
-import getResourcePaths from "../utils/getResources.js";
+import type { OperationType } from "../core/index.js";
+import { Field, Operation, Parameter, Resource } from "../core/index.js";
+import {
+getResourcePaths,
+  getType,
+  removeTrailingSlash,
+} from "../core/utils/index.js";
 import type {
   OpenAPIV3DocumentDereferenced,
   OperationObjectDereferenced,
   SchemaObjectDereferenced,
 } from "./dereferencedOpenApiv3.js";
-import getType from "./getType.js";
-
-export function removeTrailingSlash(url: string): string {
-  if (url.endsWith("/")) {
-    return url.slice(0, -1);
-  }
-  return url;
-}
 
 function mergeResources(resourceA: Resource, resourceB: Resource) {
   for (const fieldB of resourceB.fields ?? []) {

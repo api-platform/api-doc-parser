@@ -1,5 +1,5 @@
 import type { Nullable } from "./types.js";
-import { assignSealed } from "./utils/assignSealed.js";
+import { assignSealed } from "./utils/index.js";
 
 export type OperationType = "show" | "edit" | "delete" | "list" | "create";
 

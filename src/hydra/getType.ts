@@ -1,4 +1,4 @@
-import type { FieldType } from "../Field.js";
+import type { FieldType } from "../core/index.js";
 
 function getType(id: string, range: string): FieldType {
   switch (id) {
