@@ -1,7 +1,8 @@
-import inflection from "inflection";
+import { classify, pluralize } from "inflection";
 import type { OpenAPIV2 } from "openapi-types";
 import { Field, Resource } from "../core/index.js";
 import {
+  buildEnumObject,
   getResourcePaths,
   getType,
   removeTrailingSlash,
@@ -20,10 +21,10 @@ export default function handleJson(
       throw new Error("Invalid path: " + path);
     }
 
-    const name = inflection.pluralize(baseName);
+    const name = pluralize(baseName);
     const url = `${removeTrailingSlash(entrypointUrl)}/${name}`;
 
-    const title = inflection.classify(baseName);
+    const title = classify(baseName);
 
     if (!response.definitions) {
       throw new Error(); // @TODO
@@ -52,16 +53,7 @@ export default function handleJson(
             typeof property?.type === "string" ? property.type : "",
             property?.["format"] ?? "",
           ),
-          enum: property.enum
-            ? Object.fromEntries(
-                property.enum.map((enumValue: string | number) => [
-                  typeof enumValue === "string"
-                    ? inflection.humanize(enumValue)
-                    : enumValue,
-                  enumValue,
-                ]),
-              )
-            : null,
+          enum: buildEnumObject(property.enum),
           reference: null,
           embedded: null,
           required: requiredFields.some((value) => value === fieldName),

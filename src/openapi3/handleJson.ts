@@ -1,11 +1,12 @@
-import inflection from "inflection";
+import { camelize, classify, pluralize } from "inflection";
 import type { ParseOptions } from "jsonref";
 import { parse } from "jsonref";
 import type { OpenAPIV3 } from "openapi-types";
 import type { OperationType } from "../core/index.js";
 import { Field, Operation, Parameter, Resource } from "../core/index.js";
 import {
-getResourcePaths,
+  buildEnumObject,
+  getResourcePaths,
   getType,
   removeTrailingSlash,
 } from "../core/utils/index.js";
@@ -37,21 +38,6 @@ function mergeResources(resourceA: Resource, resourceB: Resource) {
   }
 
   return resourceA;
-}
-
-function buildEnumObject(enumArray: SchemaObjectDereferenced["enum"]) {
-  if (!enumArray) {
-    return null;
-  }
-  return Object.fromEntries(
-    // Object.values is used because the array is annotated: it contains the __meta symbol used by jsonref.
-    Object.values(enumArray).map((enumValue) => [
-      typeof enumValue === "string"
-        ? inflection.humanize(enumValue)
-        : enumValue,
-      enumValue,
-    ]),
-  );
 }
 
 function getArrayType(property: SchemaObjectDereferenced) {
@@ -159,14 +145,14 @@ export default async function handleJson(
       throw new Error("Invalid path: " + path);
     }
 
-    const name = inflection.pluralize(baseName);
+    const name = pluralize(baseName);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
     const pathItem = document.paths[path];
     if (!pathItem) {
       throw new Error();
     }
 
-    const title = inflection.classify(baseName);
+    const title = classify(baseName);
 
     const showOperation = pathItem.get;
     const editOperation = pathItem.put || pathItem.patch;
@@ -198,12 +184,15 @@ export default async function handleJson(
       resource = mergeResources(showResource, editResource);
     }
 
-    const putOperation = pathItem.put;
-    const patchOperation = pathItem.patch;
-    const deleteOperation = pathItem.delete;
+    const {
+      put: putOperation,
+      patch: patchOperation,
+      delete: deleteOperation,
+    } = pathItem;
     const pathCollection = document.paths[`/${name}`];
     const listOperation = pathCollection && pathCollection.get;
     const createOperation = pathCollection && pathCollection.post;
+
     resource.operations = [
       ...(showOperation
         ? [buildOperationFromPathItem("get", "show", showOperation)]
@@ -244,10 +233,10 @@ export default async function handleJson(
   // Guess embeddeds and references from property names
   for (const resource of resources) {
     for (const field of resource.fields ?? []) {
-      const name = inflection.camelize(field.name).replace(/Ids?$/, "");
+      const name = camelize(field.name).replace(/Ids?$/, "");
 
       const guessedResource = resources.find(
-        (res) => res.title === inflection.classify(name),
+        (res) => res.title === classify(name),
       );
       if (!guessedResource) {
         continue;
