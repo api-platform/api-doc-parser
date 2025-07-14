@@ -16,10 +16,12 @@ export default function parseOpenApi3Documentation(
   options: RequestInitExtended = {},
 ): Promise<ParsedOpenApi3Documentation> {
   entrypointUrl = removeTrailingSlash(entrypointUrl);
-  let headers: HeadersInit | undefined =
+  const headersObject =
     typeof options.headers === "function" ? options.headers() : options.headers;
-  headers = new Headers(headers);
-  headers.append("Accept", "application/vnd.openapi+json");
+  const headers = new Headers(headersObject);
+  if (!headers.get("Accept")?.includes("application/vnd.openapi+json")) {
+    headers.append("Accept", "application/vnd.openapi+json");
+  }
 
   return fetch(entrypointUrl, { ...options, headers: headers })
     .then((res) => Promise.all([res, res.json()]))
