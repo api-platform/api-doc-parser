@@ -288,13 +288,15 @@ Contributions are welcome! To contribute:
 
 2. **Fork the repository and create a feature branch.**
 
-3. **Install dependencies**
+3. **Ensure you have the _latest_ version of [pnpm](https://pnpm.io/installation) installed.**
+
+4. **Install dependencies**
 
    ```bash
    pnpm install
    ```
 
-4. **Adhere to the code style**
+5. **Adhere to the code style and lint rules**
 
    ```bash
    pnpm lint:fix
@@ -304,19 +306,19 @@ Contributions are welcome! To contribute:
    pnpm format
    ```
 
-5. **Run tests**
+6. **Run tests**
 
    ```bash
    pnpm test
    ```
 
-6. **Ensure type correctness**
+7. **Ensure type correctness**
 
    ```bash
    pnpm typecheck
    ```
 
-7. **Submit a pull request with a clear description of your changes.**
+8. **Submit a pull request with a clear description of your changes.**
 
 ## 👥 Contributors
 
