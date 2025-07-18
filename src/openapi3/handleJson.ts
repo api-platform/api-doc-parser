@@ -1,25 +1,48 @@
-import inflection from "inflection";
+import { camelize, classify, pluralize } from "inflection";
 import type { ParseOptions } from "jsonref";
 import { parse } from "jsonref";
 import type { OpenAPIV3 } from "openapi-types";
-import { Field } from "../Field.js";
-import type { OperationType } from "../Operation.js";
-import { Operation } from "../Operation.js";
-import { Parameter } from "../Parameter.js";
-import { Resource } from "../Resource.js";
-import getResourcePaths from "../utils/getResources.js";
+import type { OperationType } from "../core/index.js";
+import { Field, Operation, Parameter, Resource } from "../core/index.js";
+import {
+  buildEnumObject,
+  getResourcePaths,
+  getType,
+  removeTrailingSlash,
+} from "../core/utils/index.js";
 import type {
   OpenAPIV3DocumentDereferenced,
   OperationObjectDereferenced,
   SchemaObjectDereferenced,
 } from "./dereferencedOpenApiv3.js";
-import getType from "./getType.js";
 
-export function removeTrailingSlash(url: string): string {
-  if (url.endsWith("/")) {
-    return url.slice(0, -1);
+/**
+ * Assigns relationships between resources based on their fields.
+ * Sets the field's `embedded` or `reference` property depending on its type.
+ *
+ * @param resources - Array of Resource objects to process.
+ * @returns The same array of resources with relationships assigned.
+ */
+function assignResourceRelationships(resources: Resource[]) {
+  for (const resource of resources) {
+    for (const field of resource.fields ?? []) {
+      const name = camelize(field.name).replace(/Ids?$/, "");
+
+      const guessedResource = resources.find(
+        (res) => res.title === classify(name),
+      );
+      if (!guessedResource) {
+        continue;
+      }
+      field.maxCardinality = field.type === "array" ? null : 1;
+      if (field.type === "object" || field.arrayType === "object") {
+        field.embedded = guessedResource;
+      } else {
+        field.reference = guessedResource;
+      }
+    }
   }
-  return url;
+  return resources;
 }
 
 function mergeResources(resourceA: Resource, resourceB: Resource) {
@@ -44,21 +67,6 @@ function mergeResources(resourceA: Resource, resourceB: Resource) {
   }
 
   return resourceA;
-}
-
-function buildEnumObject(enumArray: SchemaObjectDereferenced["enum"]) {
-  if (!enumArray) {
-    return null;
-  }
-  return Object.fromEntries(
-    // Object.values is used because the array is annotated: it contains the __meta symbol used by jsonref.
-    Object.values(enumArray).map((enumValue) => [
-      typeof enumValue === "string"
-        ? inflection.humanize(enumValue)
-        : enumValue,
-      enumValue,
-    ]),
-  );
 }
 
 function getArrayType(property: SchemaObjectDereferenced) {
@@ -166,17 +174,23 @@ export default async function handleJson(
       throw new Error("Invalid path: " + path);
     }
 
-    const name = inflection.pluralize(baseName);
+    const name = pluralize(baseName);
     const url = `${removeTrailingSlash(serverUrl)}/${name}`;
     const pathItem = document.paths[path];
     if (!pathItem) {
       throw new Error();
     }
 
-    const title = inflection.classify(baseName);
+    const title = classify(baseName);
 
-    const showOperation = pathItem.get;
-    const editOperation = pathItem.put || pathItem.patch;
+    const {
+      get: showOperation,
+      put: putOperation,
+      patch: patchOperation,
+      delete: deleteOperation,
+    } = pathItem;
+
+    const editOperation = putOperation || patchOperation;
     if (!showOperation && !editOperation) {
       continue;
     }
@@ -205,12 +219,9 @@ export default async function handleJson(
       resource = mergeResources(showResource, editResource);
     }
 
-    const putOperation = pathItem.put;
-    const patchOperation = pathItem.patch;
-    const deleteOperation = pathItem.delete;
     const pathCollection = document.paths[`/${name}`];
-    const listOperation = pathCollection && pathCollection.get;
-    const createOperation = pathCollection && pathCollection.post;
+    const { get: listOperation, post: createOperation } = pathCollection ?? {};
+
     resource.operations = [
       ...(showOperation
         ? [buildOperationFromPathItem("get", "show", showOperation)]
@@ -232,7 +243,7 @@ export default async function handleJson(
         : []),
     ];
 
-    if (listOperation && listOperation.parameters) {
+    if (listOperation?.parameters) {
       resource.parameters = listOperation.parameters.map(
         (parameter) =>
           new Parameter(
@@ -248,25 +259,5 @@ export default async function handleJson(
     resources.push(resource);
   }
 
-  // Guess embeddeds and references from property names
-  for (const resource of resources) {
-    for (const field of resource.fields ?? []) {
-      const name = inflection.camelize(field.name).replace(/Ids?$/, "");
-
-      const guessedResource = resources.find(
-        (res) => res.title === inflection.classify(name),
-      );
-      if (!guessedResource) {
-        continue;
-      }
-      field.maxCardinality = field.type === "array" ? null : 1;
-      if (field.type === "object" || field.arrayType === "object") {
-        field.embedded = guessedResource;
-      } else {
-        field.reference = guessedResource;
-      }
-    }
-  }
-
-  return resources;
+  return assignResourceRelationships(resources);
 }

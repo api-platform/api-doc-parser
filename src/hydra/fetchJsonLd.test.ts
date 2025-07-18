@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http } from "msw/core/http";
 import { assert, expect, test } from "vitest";
 import { server } from "../../vitest.setup.js";
 import fetchJsonLd from "./fetchJsonLd.js";
@@ -14,7 +14,7 @@ const httpResponse = {
 test("fetch a JSON-LD document", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () =>
-      HttpResponse.json(httpResponse, {
+      Response.json(httpResponse, {
         headers: { "Content-Type": "application/ld+json" },
         status: 200,
         statusText: "OK",
@@ -36,7 +36,7 @@ test("fetch a non JSON-LD document", async () => {
     http.get(
       "http://localhost/foo.jsonld",
       () =>
-        new HttpResponse(`<body>Hello</body>`, {
+        new Response(`<body>Hello</body>`, {
           headers: { "Content-Type": "text/html" },
           status: 200,
           statusText: "OK",
@@ -53,7 +53,7 @@ test("fetch a non JSON-LD document", async () => {
 test("fetch an error with Content-Type application/ld+json", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () =>
-      HttpResponse.json(httpResponse, {
+      Response.json(httpResponse, {
         status: 500,
         statusText: "Internal Server Error",
         headers: { "Content-Type": "application/ld+json" },
@@ -75,7 +75,7 @@ test("fetch an error with Content-Type application/ld+json", async () => {
 test("fetch an error with Content-Type application/error+json", async () => {
   server.use(
     http.get("http://localhost/foo.jsonld", () =>
-      HttpResponse.json(httpResponse, {
+      Response.json(httpResponse, {
         status: 400,
         statusText: "Bad Request",
         headers: { "Content-Type": "application/error+json" },
@@ -99,7 +99,7 @@ test("fetch an empty document", async () => {
     http.get(
       "http://localhost/foo.jsonld",
       () =>
-        new HttpResponse(``, {
+        new Response(null, {
           status: 204,
           statusText: "No Content",
           headers: { "Content-Type": "text/html" },

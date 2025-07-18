@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import getResourcePaths from "./getResources.js";
+import { getResourcePaths } from "./index.js";
 
 test("should get resource paths", () => {
   const paths = {

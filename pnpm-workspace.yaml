@@ -4,7 +4,4 @@ packages:
 onlyBuiltDependencies:
   - esbuild
   - msw
-  - unrs-resolver
-
-overrides:
-  brace-expansion: ^2.0.2
+  - oxc-resolver
