@@ -20,7 +20,8 @@
     "import",
     "eslint",
     "oxc",
-    "promise"
+    "promise",
+    "jsdoc"
   ],
   "rules": {
     "@typescript-eslint/no-empty-object-type": [
