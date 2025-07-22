@@ -52,7 +52,7 @@
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
+    "lint:fix": "oxlint --fix --fix-suggestions",
     "test": "vitest run",
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch",
@@ -91,7 +91,7 @@
     },
     "runtime": {
       "name": "node",
-      "version": ">=20"
+      "version": ">= 20"
     }
   }
 }
