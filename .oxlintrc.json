@@ -38,7 +38,6 @@
     "eslint/max-depth": "off",
     "eslint/max-lines": "off",
     "eslint/max-lines-per-function": "off",
-    "eslint/max-nested-callbacks": "off",
     "eslint/no-duplicate-imports": "off",
     "func-style": [
       "error",
@@ -91,9 +90,7 @@
         }
       }
     ],
-    "unicorn/no-nested-ternary": "off",
     "unicorn/no-null": "off",
-    "unicorn/number-literal-case": "off",
     "vitest/consistent-test-it": [
       "error",
       {
