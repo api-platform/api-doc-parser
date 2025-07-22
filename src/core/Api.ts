@@ -1,6 +1,5 @@
 import type { Resource } from "./Resource.js";
 import type { Nullable } from "./types.js";
-import { assignSealed } from "./utils/index.js";
 
 export interface ApiOptions
   extends Nullable<{
@@ -16,6 +15,6 @@ export class Api implements ApiOptions {
 
   constructor(entrypoint: string, options: ApiOptions = {}) {
     this.entrypoint = entrypoint;
-    assignSealed(this, options);
+    Object.assign(this, options);
   }
 }

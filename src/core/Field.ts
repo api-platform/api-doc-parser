@@ -1,6 +1,5 @@
 import type { Resource } from "./Resource.js";
 import type { Nullable } from "./types.js";
-import { assignSealed } from "./utils/index.js";
 
 export type FieldType =
   | "string"
@@ -65,6 +64,6 @@ export class Field implements FieldOptions {
 
   constructor(name: string, options: FieldOptions = {}) {
     this.name = name;
-    assignSealed(this, options);
+    Object.assign(this, options);
   }
 }

@@ -1,5 +1,4 @@
 import type { Nullable } from "./types.js";
-import { assignSealed } from "./utils/index.js";
 
 export type OperationType = "show" | "edit" | "delete" | "list" | "create";
 
@@ -30,6 +29,6 @@ export class Operation implements OperationOptions {
     this.name = name;
     this.type = type;
 
-    assignSealed(this, options);
+    Object.assign(this, options);
   }
 }
