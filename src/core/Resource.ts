@@ -9,19 +9,30 @@ export interface ResourceOptions
     id?: string;
     title?: string;
     description?: string;
-    deprecated?: boolean;
     fields?: Field[];
     readableFields?: Field[];
     writableFields?: Field[];
-    parameters?: Parameter[];
     getParameters?: () => Promise<Parameter[]>;
     operations?: Operation[];
+    deprecated?: boolean;
+    parameters?: Parameter[];
   }> {}
 
-export interface Resource extends ResourceOptions {}
-export class Resource {
+export class Resource implements ResourceOptions {
   name: string;
   url: string;
+
+  id?: string | null;
+  title?: string | null;
+  description?: string | null;
+  fields?: Field[] | null;
+  readableFields?: Field[] | null;
+  writableFields?: Field[] | null;
+  getParameters?: (() => Promise<Parameter[]>) | null;
+  operations?: Operation[] | null;
+  deprecated?: boolean | null;
+  parameters?: Parameter[] | null;
+
   constructor(name: string, url: string, options: ResourceOptions = {}) {
     this.name = name;
     this.url = url;

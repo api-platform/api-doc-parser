@@ -8,9 +8,12 @@ export interface ApiOptions
     resources?: Resource[];
   }> {}
 
-export interface Api extends ApiOptions {}
-export class Api {
+export class Api implements ApiOptions {
   entrypoint: string;
+
+  title?: string | null;
+  resources?: Resource[] | null;
+
   constructor(entrypoint: string, options: ApiOptions = {}) {
     this.entrypoint = entrypoint;
     assignSealed(this, options);

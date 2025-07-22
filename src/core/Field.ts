@@ -40,16 +40,29 @@ export interface FieldOptions
     enum?: { [key: string | number]: string | number };
     reference?: string | Resource;
     embedded?: Resource;
-    required?: boolean;
     nullable?: boolean;
+    required?: boolean;
     description?: string;
     maxCardinality?: number;
     deprecated?: boolean;
   }> {}
 
-export interface Field extends FieldOptions {}
-export class Field {
+export class Field implements FieldOptions {
   name: string;
+
+  id?: string | null;
+  range?: string | null;
+  type?: FieldType | null;
+  arrayType?: FieldType | null;
+  enum?: { [key: string | number]: string | number } | null;
+  reference?: string | Resource | null;
+  embedded?: Resource | null;
+  nullable?: boolean | null;
+  required?: boolean | null;
+  description?: string | null;
+  maxCardinality?: number | null;
+  deprecated?: boolean | null;
+
   constructor(name: string, options: FieldOptions = {}) {
     this.name = name;
     assignSealed(this, options);

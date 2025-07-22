@@ -12,10 +12,16 @@ export interface OperationOptions
     deprecated?: boolean;
   }> {}
 
-export interface Operation extends OperationOptions {}
-export class Operation {
+export class Operation implements OperationOptions {
   name: string;
   type: OperationType;
+
+  method?: string | null;
+  expects?: any | null;
+  returns?: string | null;
+  types?: string[] | null;
+  deprecated?: boolean | null;
+
   constructor(
     name: string,
     type: OperationType,

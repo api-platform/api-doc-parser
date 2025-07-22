@@ -30,7 +30,7 @@
       }
     ],
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "@typescript-eslint/no-unsafe-declaration-merging": "error",
     "eslint/arrow-body-style": ["error", "as-needed"],
     "eslint/curly": "error",
     "eslint/id-length": "off",
