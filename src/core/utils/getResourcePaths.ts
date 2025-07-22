@@ -1,6 +1,6 @@
 import type { OpenAPIV2, OpenAPIV3 } from "openapi-types";
 
-export default function getResources(
+export function getResourcePaths(
   paths: OpenAPIV2.PathsObject | OpenAPIV3.PathsObject,
 ): string[] {
   return [

@@ -5,7 +5,7 @@ interface ResourceValue {
 
 type ParsedJsonReplacerResult = ResourceValue | string | null;
 
-export default function parsedJsonReplacer(
+export function parsedJsonReplacer(
   key: string,
   value: null | ResourceValue,
 ): ParsedJsonReplacerResult {

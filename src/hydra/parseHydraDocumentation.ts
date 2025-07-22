@@ -1,21 +1,18 @@
-import jsonld from "jsonld";
-import { Api } from "../Api.js";
-import { Field } from "../Field.js";
-import { Resource } from "../Resource.js";
-import { Operation } from "../Operation.js";
+import { expand as jsonldExpand } from "jsonld";
+import type { OperationType, Parameter } from "../core/index.js";
+import { Api, Field, Operation, Resource } from "../core/index.js";
+import type { RequestInitExtended } from "../core/types.js";
+import { removeTrailingSlash } from "../core/utils/index.js";
 import fetchJsonLd from "./fetchJsonLd.js";
 import getParameters from "./getParameters.js";
 import getType from "./getType.js";
-import type { OperationType } from "../Operation.js";
-import type { Parameter } from "../Parameter.js";
 import type {
+  Entrypoint,
   ExpandedClass,
   ExpandedDoc,
-  Entrypoint,
   ExpandedOperation,
   ExpandedRdfProperty,
 } from "./types.js";
-import type { RequestInitExtended } from "../types.js";
 
 /**
  * Extracts the short name of a resource.
@@ -128,11 +125,11 @@ async function fetchEntrypointAndDocs(
     const docsJsonLd = docsResponse.body;
 
     const [docs, entrypoint] = (await Promise.all([
-      jsonld.expand(docsJsonLd, {
+      jsonldExpand(docsJsonLd, {
         base: docsUrl,
         documentLoader,
       }),
-      jsonld.expand(entrypointJsonLd, {
+      jsonldExpand(entrypointJsonLd, {
         base: entrypointUrl,
         documentLoader,
       }),
@@ -155,14 +152,6 @@ async function fetchEntrypointAndDocs(
       status: response?.status,
     };
   }
-}
-
-function removeTrailingSlash(url: string): string {
-  if (url.endsWith("/")) {
-    url = url.slice(0, -1);
-  }
-
-  return url;
 }
 
 function findRelatedClass(

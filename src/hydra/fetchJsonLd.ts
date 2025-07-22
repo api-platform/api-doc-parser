@@ -1,5 +1,5 @@
 import type { Document, JsonLd, RemoteDocument } from "jsonld/jsonld-spec.js";
-import type { RequestInitExtended } from "../types.js";
+import type { RequestInitExtended } from "../core/types.js";
 
 const jsonLdMimeType = "application/ld+json";
 const jsonProblemMimeType = "application/problem+json";

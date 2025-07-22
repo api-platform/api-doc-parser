@@ -1,8 +1,8 @@
-import parseHydraDocumentation from "./parseHydraDocumentation.js";
-import parsedJsonReplacer from "../utils/parsedJsonReplacer.js";
-import { server } from "../../vitest.setup.js";
-import { http, HttpResponse } from "msw";
+import { http } from "msw/core/http";
 import { assert, expect, test, vi } from "vitest";
+import { server } from "../../vitest.setup.js";
+import { parsedJsonReplacer } from "../core/utils/index.js";
+import parseHydraDocumentation from "./parseHydraDocumentation.js";
 
 const entrypoint = {
   "@context": {
@@ -1299,10 +1299,8 @@ const init = {
 
 test("parse a Hydra documentation", async () => {
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   const fetchSpy = vi.spyOn(globalThis, "fetch");
@@ -1332,10 +1330,8 @@ function getHeaders(): Headers {
 
 test("parse a Hydra documentation using dynamic headers", async () => {
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   const fetchSpy = vi.spyOn(globalThis, "fetch");
@@ -1362,10 +1358,8 @@ test("parse a Hydra documentation using dynamic headers", async () => {
 
 test("parse a Hydra documentation (http://localhost/)", async () => {
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   const data = await parseHydraDocumentation("http://localhost/");
@@ -1393,9 +1387,7 @@ test("parse a Hydra documentation without authorization", async () => {
   };
 
   server.use(
-    http.get("http://localhost", () =>
-      HttpResponse.json(expectedResponse, init),
-    ),
+    http.get("http://localhost", () => Response.json(expectedResponse, init)),
   );
   const promise = parseHydraDocumentation("http://localhost");
   await expect(promise).rejects.toMatchObject({
@@ -1434,10 +1426,8 @@ test('Parse entrypoint without "@type" key', async () => {
   };
 
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
@@ -1482,10 +1472,8 @@ test('Parse entrypoint class without "supportedClass" key', async () => {
   };
 
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
@@ -1546,10 +1534,8 @@ test('Parse entrypoint class without "supportedProperty" key', async () => {
     'The entrypoint definition has no "http://www.w3.org/ns/hydra/core#supportedProperty" key or it is not an array.';
 
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
   );
 
   await expect(parseHydraDocumentation("http://localhost/")).rejects.toThrow(
@@ -1561,11 +1547,8 @@ test("Invalid docs JSON", async () => {
   const docs = `{foo,}`;
 
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get(
-      "http://localhost/docs.jsonld",
-      () => new HttpResponse(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => new Response(docs, init)),
   );
 
   const promise = parseHydraDocumentation("http://localhost/");
@@ -1578,7 +1561,7 @@ test("Invalid docs JSON", async () => {
 test("Invalid entrypoint JSON", async () => {
   const entrypoint = `{foo,}`;
   server.use(
-    http.get("http://localhost", () => new HttpResponse(entrypoint, init)),
+    http.get("http://localhost", () => new Response(entrypoint, init)),
   );
 
   const promise = parseHydraDocumentation("http://localhost/");
@@ -1591,12 +1574,10 @@ test("Invalid entrypoint JSON", async () => {
 test("Resource parameters can be retrieved", async () => {
   const fetchSpy = vi.spyOn(globalThis, "fetch");
   server.use(
-    http.get("http://localhost", () => HttpResponse.json(entrypoint, init)),
-    http.get("http://localhost/docs.jsonld", () =>
-      HttpResponse.json(docs, init),
-    ),
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () => Response.json(docs, init)),
     http.get("http://localhost/books", () =>
-      HttpResponse.json(resourceCollectionWithParameters, init),
+      Response.json(resourceCollectionWithParameters, init),
     ),
   );
 
