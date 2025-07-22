@@ -30,6 +30,11 @@
       "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
+    "./core": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/core/index.js",
+      "default": "./lib/core/index.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "./lib/index.js",
