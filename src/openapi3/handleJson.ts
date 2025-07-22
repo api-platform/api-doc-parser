@@ -20,10 +20,10 @@ import type {
  * Assigns relationships between resources based on their fields.
  * Sets the field's `embedded` or `reference` property depending on its type.
  *
- * @param resources - Array of Resource objects to process.
- * @returns The same array of resources with relationships assigned.
+ * @param {Resource[]} resources - Array of Resource objects to process.
+ * @returns {Resource[]} The same array of resources with relationships assigned.
  */
-function assignResourceRelationships(resources: Resource[]) {
+function assignResourceRelationships(resources: Resource[]): Resource[] {
   for (const resource of resources) {
     for (const field of resource.fields ?? []) {
       const name = camelize(field.name).replace(/Ids?$/, "");

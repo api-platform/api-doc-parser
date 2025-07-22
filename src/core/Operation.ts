@@ -1,5 +1,4 @@
 import type { Nullable } from "./types.js";
-import { assignSealed } from "./utils/index.js";
 
 export type OperationType = "show" | "edit" | "delete" | "list" | "create";
 
@@ -12,10 +11,16 @@ export interface OperationOptions
     deprecated?: boolean;
   }> {}
 
-export interface Operation extends OperationOptions {}
-export class Operation {
+export class Operation implements OperationOptions {
   name: string;
   type: OperationType;
+
+  method?: string | null;
+  expects?: any | null;
+  returns?: string | null;
+  types?: string[] | null;
+  deprecated?: boolean | null;
+
   constructor(
     name: string,
     type: OperationType,
@@ -24,6 +29,6 @@ export class Operation {
     this.name = name;
     this.type = type;
 
-    assignSealed(this, options);
+    Object.assign(this, options);
   }
 }

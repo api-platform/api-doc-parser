@@ -30,6 +30,11 @@
       "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
+    "./core": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/core/index.js",
+      "default": "./lib/core/index.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "./lib/index.js",
@@ -47,7 +52,7 @@
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
+    "lint:fix": "oxlint --fix --fix-suggestions",
     "test": "vitest run",
     "test:coverage": "vitest --coverage",
     "test:watch": "vitest --watch",
@@ -86,7 +91,7 @@
     },
     "runtime": {
       "name": "node",
-      "version": ">=20"
+      "version": ">= 20"
     }
   }
 }

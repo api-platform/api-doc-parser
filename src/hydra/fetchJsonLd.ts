@@ -19,6 +19,9 @@ interface ResponseDocument extends RemoteDocument {
 
 /**
  * Sends a JSON-LD request to the API.
+ * @param {string} url The URL to request.
+ * @param {RequestInitExtended} [options] Optional fetch options.
+ * @returns {Promise<ResponseDocument | EmptyResponseDocument>} The response document or an empty response document.
  */
 export default async function fetchJsonLd(
   url: string,

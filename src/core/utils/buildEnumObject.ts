@@ -5,8 +5,8 @@ import { humanize } from "inflection";
  * The keys of the object are the humanized versions of the enum values,
  * and the values are the original enum values.
  *
- * @param enumArray - An array of enum values.
- * @returns An object mapping humanized enum names to their original values, or null if the input is empty.
+ * @param {any[] | undefined} enumArray - An array of enum values.
+ * @returns {Record<string, string | number> | null} An object mapping humanized enum names to their original values, or null if the input is empty.
  */
 export function buildEnumObject(
   enumArray: any[] | undefined,

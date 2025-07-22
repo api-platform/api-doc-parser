@@ -994,14 +994,7 @@ const parsed = [
         description: "",
       },
     ],
-    parameters: [
-      {
-        variable: "page",
-        range: "integer",
-        required: false,
-        description: "The collection page number",
-      },
-    ],
+
     operations: [
       {
         name: "Retrieves a Book resource.",
@@ -1032,6 +1025,14 @@ const parsed = [
         type: "create",
         method: "POST",
         deprecated: false,
+      },
+    ],
+    parameters: [
+      {
+        variable: "page",
+        range: "integer",
+        required: false,
+        description: "The collection page number",
       },
     ],
   },
@@ -1277,14 +1278,7 @@ const parsed = [
         description: "",
       },
     ],
-    parameters: [
-      {
-        variable: "page",
-        range: "integer",
-        required: false,
-        description: "The collection page number",
-      },
-    ],
+
     operations: [
       {
         name: "Retrieves a Review resource.",
@@ -1315,6 +1309,14 @@ const parsed = [
         type: "create",
         method: "POST",
         deprecated: false,
+      },
+    ],
+    parameters: [
+      {
+        variable: "page",
+        range: "integer",
+        required: false,
+        description: "The collection page number",
       },
     ],
   },

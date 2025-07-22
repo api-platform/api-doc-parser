@@ -16,11 +16,19 @@ import type {
 
 /**
  * Extracts the short name of a resource.
+ * @param {string} url The resource URL.
+ * @param {string} entrypointUrl The API entrypoint URL.
+ * @returns {string} The short name of the resource.
  */
 function guessNameFromUrl(url: string, entrypointUrl: string): string {
   return url.slice(entrypointUrl.length + 1);
 }
 
+/**
+ * Gets the title or label from an ExpandedOperation object.
+ * @param {ExpandedOperation} obj The operation object.
+ * @returns {string} The title or label.
+ */
 function getTitleOrLabel(obj: ExpandedOperation): string {
   const a =
     obj["http://www.w3.org/2000/01/rdf-schema#label"] ??
@@ -36,6 +44,9 @@ function getTitleOrLabel(obj: ExpandedOperation): string {
 
 /**
  * Finds the description of the class with the given id.
+ * @param {ExpandedDoc[]} docs The expanded documentation array.
+ * @param {string} classToFind The class ID to find.
+ * @returns {ExpandedClass} The matching expanded class.
  */
 function findSupportedClass(
   docs: ExpandedDoc[],
@@ -87,6 +98,9 @@ export function getDocumentationUrlFromHeaders(headers: Headers): string {
 
 /**
  * Retrieves Hydra's entrypoint and API docs.
+ * @param {string} entrypointUrl The URL of the API entrypoint.
+ * @param {RequestInitExtended} [options] Optional fetch options.
+ * @returns {Promise<{ entrypointUrl: string; docsUrl: string; response: Response; entrypoint: Entrypoint[]; docs: ExpandedDoc[]; }>} An object containing entrypointUrl, docsUrl, response, entrypoint, and docs.
  */
 async function fetchEntrypointAndDocs(
   entrypointUrl: string,
@@ -98,6 +112,11 @@ async function fetchEntrypointAndDocs(
   entrypoint: Entrypoint[];
   docs: ExpandedDoc[];
 }> {
+  /**
+   * Loads a JSON-LD document from the given input.
+   * @param {string} input The URL or IRI to load.
+   * @returns {Promise<any>} The fetched JSON-LD response.
+   */
   async function documentLoader(input: string) {
     const response = await fetchJsonLd(input, options);
     if (!("body" in response)) {
@@ -154,6 +173,12 @@ async function fetchEntrypointAndDocs(
   }
 }
 
+/**
+ * Finds the related class for a property.
+ * @param {ExpandedDoc[]} docs The expanded documentation array.
+ * @param {ExpandedRdfProperty} property The property to find the related class for.
+ * @returns {ExpandedClass} The related expanded class.
+ */
 function findRelatedClass(
   docs: ExpandedDoc[],
   property: ExpandedRdfProperty,
@@ -213,6 +238,9 @@ function findRelatedClass(
 
 /**
  * Parses Hydra documentation and converts it to an intermediate representation.
+ * @param {string} entrypointUrl The API entrypoint URL.
+ * @param {RequestInitExtended} [options] Optional fetch options.
+ * @returns {Promise<{ api: Api; response: Response; status: number; }>} The parsed API, response, and status.
  */
 export default async function parseHydraDocumentation(
   entrypointUrl: string,
@@ -470,8 +498,12 @@ export default async function parseHydraDocumentation(
     });
 
     resource.parameters = [];
-    resource.getParameters = (): Promise<Parameter[]> =>
-      getParameters(resource, options);
+    resource.getParameters =
+      /**
+       * Gets the parameters for the resource.
+       * @returns {Promise<Parameter[]>} The parameters for the resource.
+       */
+      (): Promise<Parameter[]> => getParameters(resource, options);
 
     resources.push(resource);
   }
