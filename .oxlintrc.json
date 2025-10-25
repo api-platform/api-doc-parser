@@ -20,7 +20,8 @@
     "import",
     "eslint",
     "oxc",
-    "promise"
+    "promise",
+    "jsdoc"
   ],
   "rules": {
     "@typescript-eslint/no-empty-object-type": [
@@ -30,14 +31,13 @@
       }
     ],
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "@typescript-eslint/no-unsafe-declaration-merging": "error",
     "eslint/arrow-body-style": ["error", "as-needed"],
     "eslint/curly": "error",
     "eslint/id-length": "off",
     "eslint/max-depth": "off",
     "eslint/max-lines": "off",
     "eslint/max-lines-per-function": "off",
-    "eslint/max-nested-callbacks": "off",
     "eslint/no-duplicate-imports": "off",
     "func-style": [
       "error",
@@ -90,9 +90,7 @@
         }
       }
     ],
-    "unicorn/no-nested-ternary": "off",
     "unicorn/no-null": "off",
-    "unicorn/number-literal-case": "off",
     "vitest/consistent-test-it": [
       "error",
       {
