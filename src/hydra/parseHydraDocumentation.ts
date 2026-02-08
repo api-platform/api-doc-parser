@@ -205,7 +205,8 @@ function findRelatedClass(
 
     if (
       allValuesFrom &&
-      onProperty === "http://www.w3.org/ns/hydra/core#member"
+      typeof onProperty === "string" &&
+      onProperty.endsWith("#member")
     ) {
       return findSupportedClass(docs, allValuesFrom);
     }
@@ -389,16 +390,12 @@ export default async function parseHydraDocumentation(
           id,
           range,
           type: getType(id, range),
-          reference:
-            supportedProperty?.["@type"]?.[0] ===
-            "http://www.w3.org/ns/hydra/core#Link"
-              ? range // Will be updated in a subsequent pass
-              : null,
-          embedded:
-            supportedProperty?.["@type"]?.[0] ===
-            "http://www.w3.org/ns/hydra/core#Link"
-              ? null
-              : (range as unknown as Resource), // Will be updated in a subsequent pass
+          reference: supportedProperty?.["@type"]?.[0]?.endsWith("#Link")
+            ? range // Will be updated in a subsequent pass
+            : null,
+          embedded: supportedProperty?.["@type"]?.[0]?.endsWith("#Link")
+            ? null
+            : (range as unknown as Resource), // Will be updated in a subsequent pass
           required:
             supportedProperties?.[
               "http://www.w3.org/ns/hydra/core#required"
