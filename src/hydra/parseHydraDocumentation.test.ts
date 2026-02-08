@@ -1981,3 +1981,197 @@ test("parse a Hydra documentation with owl:equivalentClass without onProperty hy
   expect(bookConditionResource.name).toBe("book_conditions");
   expect(bookConditionResource.title).toBe("BookCondition");
 });
+
+test("parse a Hydra documentation with Post output: false (owl:Nothing returns)", async () => {
+  const owlNothingEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      book: {
+        "@id": "Entrypoint/book",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    book: "/books",
+  };
+
+  const owlNothingDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      subClassOf: {
+        "@id": "rdfs:subClassOf",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with owl:Nothing",
+    "hydra:description": "An API with Post output: false",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "http://schema.org/Book",
+        "@type": "hydra:Class",
+        "rdfs:label": "Book",
+        "hydra:title": "Book",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/name",
+              "@type": "rdf:Property",
+              "rdfs:label": "name",
+              domain: "http://schema.org/Book",
+              range: "xmls:string",
+            },
+            "hydra:title": "name",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Book resource.",
+            "rdfs:label": "Retrieves Book resource.",
+            returns: "http://schema.org/Book",
+          },
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "DELETE",
+            "hydra:title": "Deletes the Book resource.",
+            "rdfs:label": "Deletes the Book resource.",
+            returns: "owl:Nothing",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/book",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Book resources",
+              "rdfs:range": [
+                { "@id": "hydra:PagedCollection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:onProperty": { "@id": "hydra:member" },
+                    "owl:allValuesFrom": {
+                      "@id": "http://schema.org/Book",
+                    },
+                  },
+                },
+              ],
+              "hydra:supportedOperation": [
+                {
+                  "@type": "hydra:Operation",
+                  "hydra:method": "GET",
+                  "hydra:title": "Retrieves the collection of Book resources.",
+                  "rdfs:label": "Retrieves the collection of Book resources.",
+                  returns: "hydra:PagedCollection",
+                },
+                {
+                  "@type": "hydra:CreateResourceOperation",
+                  expects: "http://schema.org/Book",
+                  "hydra:method": "POST",
+                  "hydra:title": "Creates a Book resource.",
+                  "rdfs:label": "Creates a Book resource.",
+                  returns: "owl:Nothing",
+                },
+              ],
+            },
+            "hydra:title": "The collection of Book resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "rdfs:label": "The API entrypoint.",
+          returns: "#EntryPoint",
+        },
+      },
+      {
+        "@id": "#ConstraintViolation",
+        "@type": "hydra:Class",
+        "hydra:title": "A constraint violation",
+        "hydra:supportedProperty": [],
+      },
+      {
+        "@id": "#ConstraintViolationList",
+        "@type": "hydra:Class",
+        subClassOf: "hydra:Error",
+        "hydra:title": "A constraint violation list",
+        "hydra:supportedProperty": [],
+      },
+    ],
+  };
+
+  server.use(
+    http.get("http://localhost", () =>
+      Response.json(owlNothingEntrypoint, init),
+    ),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(owlNothingDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const bookResource = data.api.resources?.find(
+    (r) => r.id === "http://schema.org/Book",
+  );
+
+  expect(bookResource).toBeDefined();
+  assert(bookResource !== undefined);
+  expect(bookResource.name).toBe("books");
+  expect(bookResource.title).toBe("Book");
+
+  // Verify fields parsed correctly
+  assert(bookResource.fields !== null);
+  assert(bookResource.fields !== undefined);
+  expect(bookResource.fields).toHaveLength(1);
+  expect(bookResource.fields[0]?.name).toBe("name");
+
+  // Verify operations include both collection and item operations
+  assert(bookResource.operations !== null);
+  assert(bookResource.operations !== undefined);
+
+  // The POST operation with owl:Nothing returns should still be listed
+  const postOp = bookResource.operations.find((op) => op.method === "POST");
+  expect(postOp).toBeDefined();
+  assert(postOp !== undefined);
+  expect(postOp.returns).toBe("http://www.w3.org/2002/07/owl#Nothing");
+});
