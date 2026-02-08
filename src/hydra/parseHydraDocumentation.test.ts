@@ -2175,3 +2175,411 @@ test("parse a Hydra documentation with Post output: false (owl:Nothing returns)"
   assert(postOp !== undefined);
   expect(postOp.returns).toBe("http://www.w3.org/2002/07/owl#Nothing");
 });
+
+test("parse a Hydra documentation with read-only resource without hydra prefix (bare member)", async () => {
+  const readOnlyEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      greeting: {
+        "@id": "Entrypoint/greeting",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    greeting: "/greetings",
+  };
+
+  // Simulate hydra_prefix: false — "member" is NOT prefixed with "hydra:"
+  // so jsonld.expand will resolve it via @vocab instead of the hydra context
+  const readOnlyDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      subClassOf: {
+        "@id": "rdfs:subClassOf",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with read-only resource",
+    "hydra:description": "An API with a read-only resource and no hydra prefix",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "#Greeting",
+        "@type": "hydra:Class",
+        "rdfs:label": "Greeting",
+        "hydra:title": "Greeting",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Greeting/message",
+              "@type": "rdf:Property",
+              "rdfs:label": "message",
+              domain: "#Greeting",
+              range: "xmls:string",
+            },
+            "hydra:title": "message",
+            "hydra:required": false,
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Greeting resource.",
+            "rdfs:label": "Retrieves Greeting resource.",
+            returns: "#Greeting",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/greeting",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Greeting resources",
+              "rdfs:range": [
+                { "@id": "hydra:PagedCollection" },
+                {
+                  "owl:equivalentClass": {
+                    // bare "member" without hydra: prefix — this is the bug trigger
+                    "owl:onProperty": { "@id": "member" },
+                    "owl:allValuesFrom": { "@id": "#Greeting" },
+                  },
+                },
+              ],
+              "hydra:supportedOperation": [
+                {
+                  "@type": "hydra:Operation",
+                  "hydra:method": "GET",
+                  "hydra:title":
+                    "Retrieves the collection of Greeting resources.",
+                  "rdfs:label":
+                    "Retrieves the collection of Greeting resources.",
+                  returns: "hydra:PagedCollection",
+                },
+              ],
+            },
+            "hydra:title": "The collection of Greeting resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "rdfs:label": "The API entrypoint.",
+          returns: "#EntryPoint",
+        },
+      },
+      {
+        "@id": "#ConstraintViolation",
+        "@type": "hydra:Class",
+        "hydra:title": "A constraint violation",
+        "hydra:supportedProperty": [],
+      },
+      {
+        "@id": "#ConstraintViolationList",
+        "@type": "hydra:Class",
+        subClassOf: "hydra:Error",
+        "hydra:title": "A constraint violation list",
+        "hydra:supportedProperty": [],
+      },
+    ],
+  };
+
+  server.use(
+    http.get("http://localhost", () => Response.json(readOnlyEntrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(readOnlyDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const greetingResource = data.api.resources?.find(
+    (r) => r.id === "http://localhost/docs.jsonld#Greeting",
+  );
+
+  expect(greetingResource).toBeDefined();
+  assert(greetingResource !== undefined);
+  expect(greetingResource.name).toBe("greetings");
+  expect(greetingResource.title).toBe("Greeting");
+
+  // Verify read-only: readable but not writable
+  assert(greetingResource.fields !== null);
+  assert(greetingResource.fields !== undefined);
+  expect(greetingResource.fields).toHaveLength(1);
+  expect(greetingResource.fields[0]?.name).toBe("message");
+  expect(greetingResource.readableFields).toHaveLength(1);
+  expect(greetingResource.writableFields).toHaveLength(0);
+});
+
+test("parse a Hydra documentation with bare Link @type (without hydra prefix)", async () => {
+  const linkEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      book: {
+        "@id": "Entrypoint/book",
+        "@type": "@id",
+      },
+      review: {
+        "@id": "Entrypoint/review",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    book: "/books",
+    review: "/reviews",
+  };
+
+  const linkDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      subClassOf: {
+        "@id": "rdfs:subClassOf",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with bare Link type",
+    "hydra:description": "An API without hydra prefix on Link @type",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "http://schema.org/Book",
+        "@type": "hydra:Class",
+        "rdfs:label": "Book",
+        "hydra:title": "Book",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/name",
+              "@type": "rdf:Property",
+              "rdfs:label": "name",
+              domain: "http://schema.org/Book",
+              range: "xmls:string",
+            },
+            "hydra:title": "name",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Book/review",
+              // bare "Link" without hydra: prefix
+              "@type": "Link",
+              "rdfs:label": "review",
+              domain: "http://schema.org/Book",
+              range: "http://schema.org/Review",
+            },
+            "hydra:title": "review",
+            "hydra:required": false,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Book resource.",
+            "rdfs:label": "Retrieves Book resource.",
+            returns: "http://schema.org/Book",
+          },
+        ],
+      },
+      {
+        "@id": "http://schema.org/Review",
+        "@type": "hydra:Class",
+        "rdfs:label": "Review",
+        "hydra:title": "Review",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/reviewBody",
+              "@type": "rdf:Property",
+              "rdfs:label": "reviewBody",
+              domain: "http://schema.org/Review",
+              range: "xmls:string",
+            },
+            "hydra:title": "reviewBody",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Review resource.",
+            "rdfs:label": "Retrieves Review resource.",
+            returns: "http://schema.org/Review",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/book",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Book resources",
+              "rdfs:range": [
+                { "@id": "hydra:PagedCollection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:onProperty": { "@id": "hydra:member" },
+                    "owl:allValuesFrom": {
+                      "@id": "http://schema.org/Book",
+                    },
+                  },
+                },
+              ],
+            },
+            "hydra:title": "The collection of Book resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/review",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Review resources",
+              "rdfs:range": [
+                { "@id": "hydra:PagedCollection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:onProperty": { "@id": "hydra:member" },
+                    "owl:allValuesFrom": {
+                      "@id": "http://schema.org/Review",
+                    },
+                  },
+                },
+              ],
+            },
+            "hydra:title": "The collection of Review resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "rdfs:label": "The API entrypoint.",
+          returns: "#EntryPoint",
+        },
+      },
+      {
+        "@id": "#ConstraintViolation",
+        "@type": "hydra:Class",
+        "hydra:title": "A constraint violation",
+        "hydra:supportedProperty": [],
+      },
+      {
+        "@id": "#ConstraintViolationList",
+        "@type": "hydra:Class",
+        subClassOf: "hydra:Error",
+        "hydra:title": "A constraint violation list",
+        "hydra:supportedProperty": [],
+      },
+    ],
+  };
+
+  server.use(
+    http.get("http://localhost", () => Response.json(linkEntrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(linkDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const bookResource = data.api.resources?.find(
+    (r) => r.id === "http://schema.org/Book",
+  );
+  const reviewResource = data.api.resources?.find(
+    (r) => r.id === "http://schema.org/Review",
+  );
+
+  expect(bookResource).toBeDefined();
+  assert(bookResource !== undefined);
+  expect(reviewResource).toBeDefined();
+  assert(reviewResource !== undefined);
+
+  // The "review" field should be a reference (Link), not embedded
+  const reviewField = bookResource.fields?.find((f) => f.name === "review");
+  expect(reviewField).toBeDefined();
+  assert(reviewField !== undefined);
+  expect(reviewField.reference).toBe(reviewResource);
+  expect(reviewField.embedded).toBeNull();
+});
