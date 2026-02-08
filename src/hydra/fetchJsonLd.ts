@@ -35,15 +35,20 @@ export default async function fetchJsonLd(
     return { response };
   }
 
-  if (
-    status >= 500 ||
-    !contentType ||
-    (!contentType.includes(jsonLdMimeType) &&
-      !contentType.includes(jsonProblemMimeType))
-  ) {
+  const isJsonContent =
+    contentType !== null &&
+    (contentType.includes(jsonLdMimeType) ||
+      contentType.includes(jsonProblemMimeType));
+
+  if (status >= 500 || (!isJsonContent && !response.ok)) {
     const reason: RejectedResponseDocument = { response };
     // oxlint-disable-next-line no-throw-literal
     throw reason;
+  }
+
+  // 2xx response with a content type different from JSON-LD: return empty response
+  if (!isJsonContent) {
+    return { response };
   }
 
   const body = (await response.json()) as JsonLd;
