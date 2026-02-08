@@ -1599,3 +1599,385 @@ test("Resource parameters can be retrieved", async () => {
     },
   ]);
 });
+
+test("parse a Hydra documentation with enum/read-only resources (rdfs:range direct @id)", async () => {
+  const enumEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      book: {
+        "@id": "Entrypoint/book",
+        "@type": "@id",
+      },
+      bookCondition: {
+        "@id": "Entrypoint/bookCondition",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    book: "/books",
+    bookCondition: "/book_conditions",
+  };
+
+  const enumDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      subClassOf: {
+        "@id": "rdfs:subClassOf",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with enums",
+    "hydra:description": "An API that exposes enum resources",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "http://schema.org/Book",
+        "@type": "hydra:Class",
+        "rdfs:label": "Book",
+        "hydra:title": "Book",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/name",
+              "@type": "rdf:Property",
+              "rdfs:label": "name",
+              domain: "http://schema.org/Book",
+              range: "xmls:string",
+            },
+            "hydra:title": "name",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Book resource.",
+            "rdfs:label": "Retrieves Book resource.",
+            returns: "http://schema.org/Book",
+          },
+        ],
+      },
+      {
+        "@id": "#BookCondition",
+        "@type": "hydra:Class",
+        "rdfs:label": "BookCondition",
+        "hydra:title": "BookCondition",
+        "hydra:description": "The condition of a book (new, used, damaged).",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#BookCondition/value",
+              "@type": "rdf:Property",
+              "rdfs:label": "value",
+              domain: "#BookCondition",
+              range: "xmls:string",
+            },
+            "hydra:title": "value",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves BookCondition resource.",
+            "rdfs:label": "Retrieves BookCondition resource.",
+            returns: "#BookCondition",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/book",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Book resources",
+              "rdfs:range": [
+                { "@id": "hydra:PagedCollection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:onProperty": { "@id": "hydra:member" },
+                    "owl:allValuesFrom": {
+                      "@id": "http://schema.org/Book",
+                    },
+                  },
+                },
+              ],
+            },
+            "hydra:title": "The collection of Book resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/bookCondition",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of BookCondition resources",
+              "rdfs:range": [{ "@id": "#BookCondition" }],
+            },
+            "hydra:title": "The collection of BookCondition resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "rdfs:label": "The API entrypoint.",
+          returns: "#EntryPoint",
+        },
+      },
+      {
+        "@id": "#ConstraintViolation",
+        "@type": "hydra:Class",
+        "hydra:title": "A constraint violation",
+        "hydra:supportedProperty": [],
+      },
+      {
+        "@id": "#ConstraintViolationList",
+        "@type": "hydra:Class",
+        subClassOf: "hydra:Error",
+        "hydra:title": "A constraint violation list",
+        "hydra:supportedProperty": [],
+      },
+    ],
+  };
+
+  server.use(
+    http.get("http://localhost", () => Response.json(enumEntrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(enumDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const bookConditionResource = data.api.resources?.find(
+    (r) => r.id === "http://localhost/docs.jsonld#BookCondition",
+  );
+
+  expect(bookConditionResource).toBeDefined();
+  assert(bookConditionResource !== undefined);
+
+  expect(bookConditionResource.name).toBe("book_conditions");
+  expect(bookConditionResource.title).toBe("BookCondition");
+  expect(bookConditionResource.url).toBe("http://localhost/book_conditions");
+
+  // Verify the field was parsed correctly
+  assert(bookConditionResource.fields !== null);
+  assert(bookConditionResource.fields !== undefined);
+  expect(bookConditionResource.fields).toHaveLength(1);
+  expect(bookConditionResource.fields[0]?.name).toBe("value");
+  expect(bookConditionResource.fields[0]?.range).toBe(
+    "http://www.w3.org/2001/XMLSchema#string",
+  );
+  expect(bookConditionResource.fields[0]?.required).toBe(true);
+
+  // Readable but not writable (read-only enum)
+  expect(bookConditionResource.readableFields).toHaveLength(1);
+  expect(bookConditionResource.writableFields).toHaveLength(0);
+
+  // Verify operations - only GET (item operation from supportedOperation)
+  assert(bookConditionResource.operations !== null);
+  assert(bookConditionResource.operations !== undefined);
+  expect(bookConditionResource.operations).toHaveLength(1);
+  expect(bookConditionResource.operations[0]?.method).toBe("GET");
+
+  // Also verify the book resource still works (Strategy 1 still functions)
+  const bookResource = data.api.resources?.find(
+    (r) => r.id === "http://schema.org/Book",
+  );
+  expect(bookResource).toBeDefined();
+  expect(bookResource?.name).toBe("books");
+});
+
+test("parse a Hydra documentation with owl:equivalentClass without onProperty hydra:member", async () => {
+  const enumEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      bookCondition: {
+        "@id": "Entrypoint/bookCondition",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    bookCondition: "/book_conditions",
+  };
+
+  const enumDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      subClassOf: {
+        "@id": "rdfs:subClassOf",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with enums",
+    "hydra:description": "An API that exposes enum resources",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "#BookCondition",
+        "@type": "hydra:Class",
+        "rdfs:label": "BookCondition",
+        "hydra:title": "BookCondition",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#BookCondition/value",
+              "@type": "rdf:Property",
+              "rdfs:label": "value",
+              domain: "#BookCondition",
+              range: "xmls:string",
+            },
+            "hydra:title": "value",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves BookCondition resource.",
+            "rdfs:label": "Retrieves BookCondition resource.",
+            returns: "#BookCondition",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/bookCondition",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of BookCondition resources",
+              "rdfs:range": [
+                { "@id": "hydra:Collection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:allValuesFrom": {
+                      "@id": "#BookCondition",
+                    },
+                  },
+                },
+              ],
+            },
+            "hydra:title": "The collection of BookCondition resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+          },
+        ],
+        "hydra:supportedOperation": {
+          "@type": "hydra:Operation",
+          "hydra:method": "GET",
+          "rdfs:label": "The API entrypoint.",
+          returns: "#EntryPoint",
+        },
+      },
+      {
+        "@id": "#ConstraintViolation",
+        "@type": "hydra:Class",
+        "hydra:title": "A constraint violation",
+        "hydra:supportedProperty": [],
+      },
+      {
+        "@id": "#ConstraintViolationList",
+        "@type": "hydra:Class",
+        subClassOf: "hydra:Error",
+        "hydra:title": "A constraint violation list",
+        "hydra:supportedProperty": [],
+      },
+    ],
+  };
+
+  server.use(
+    http.get("http://localhost", () => Response.json(enumEntrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(enumDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const bookConditionResource = data.api.resources?.find(
+    (r) => r.id === "http://localhost/docs.jsonld#BookCondition",
+  );
+
+  expect(bookConditionResource).toBeDefined();
+  assert(bookConditionResource !== undefined);
+  expect(bookConditionResource.name).toBe("book_conditions");
+  expect(bookConditionResource.title).toBe("BookCondition");
+});

@@ -1,4 +1,4 @@
-import { expand as jsonldExpand } from "jsonld";
+import jsonld from "jsonld";
 import type { OperationType, Parameter } from "../core/index.js";
 import { Api, Field, Operation, Resource } from "../core/index.js";
 import type { RequestInitExtended } from "../core/types.js";
@@ -144,11 +144,11 @@ async function fetchEntrypointAndDocs(
     const docsJsonLd = docsResponse.body;
 
     const [docs, entrypoint] = (await Promise.all([
-      jsonldExpand(docsJsonLd, {
+      jsonld.expand(docsJsonLd, {
         base: docsUrl,
         documentLoader,
       }),
-      jsonldExpand(entrypointJsonLd, {
+      jsonld.expand(entrypointJsonLd, {
         base: entrypointUrl,
         documentLoader,
       }),
@@ -230,6 +230,54 @@ function findRelatedClass(
       returns.indexOf("http://www.w3.org/ns/hydra/core") !== 0
     ) {
       return findSupportedClass(docs, returns);
+    }
+  }
+
+  // Third strategy: For read-only resources, look for rdfs:range with a direct class reference
+  // This handles enums and other resources that only have GET collection operations
+  if (Array.isArray(property["http://www.w3.org/2000/01/rdf-schema#range"])) {
+    for (const range of property[
+      "http://www.w3.org/2000/01/rdf-schema#range"
+    ]) {
+      // Check if this range has a direct @id that's not a Hydra core type
+      if ("@id" in range) {
+        const rangeId = range["@id"];
+        if (
+          rangeId &&
+          typeof rangeId === "string" &&
+          rangeId.indexOf("http://www.w3.org/ns/hydra/core") !== 0
+        ) {
+          try {
+            return findSupportedClass(docs, rangeId);
+          } catch {
+            // Not a valid class, continue to next range
+            continue;
+          }
+        }
+      }
+
+      // Also check if there's an owl:allValuesFrom without strict onProperty checking
+      // This is a more lenient version of Strategy 1
+      const equivalentClass =
+        "http://www.w3.org/2002/07/owl#equivalentClass" in range
+          ? range?.["http://www.w3.org/2002/07/owl#equivalentClass"]?.[0]
+          : undefined;
+
+      if (equivalentClass) {
+        const allValuesFrom =
+          equivalentClass["http://www.w3.org/2002/07/owl#allValuesFrom"]?.[0]?.[
+            "@id"
+          ];
+
+        if (allValuesFrom) {
+          try {
+            return findSupportedClass(docs, allValuesFrom);
+          } catch {
+            // Not a valid class, continue to next range
+            continue;
+          }
+        }
+      }
     }
   }
 
