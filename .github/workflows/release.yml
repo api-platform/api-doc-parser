@@ -1,5 +1,9 @@
 name: Release
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   workflow_dispatch: ~
   push:
@@ -22,8 +26,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: "current"
           cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -40,7 +45,19 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Debug auth config
+        run: |
+          echo "NODE_AUTH_TOKEN is set: ${{ env.NODE_AUTH_TOKEN != '' }}"
+          echo "NPM_TOKEN is set: ${{ env.NPM_TOKEN != '' }}"
+          echo "npm whoami:"
+          npm whoami 2>&1 || true
+          echo "npmrc contents (tokens redacted):"
+          cat ~/.npmrc 2>/dev/null | sed 's/_authToken=.*/_authToken=REDACTED/' || echo "no ~/.npmrc"
+          cat .npmrc 2>/dev/null | sed 's/_authToken=.*/_authToken=REDACTED/' || echo "no .npmrc"
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
       - name: Publish to npm
-        run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish
