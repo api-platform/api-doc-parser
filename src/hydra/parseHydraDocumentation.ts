@@ -229,7 +229,11 @@ function findRelatedClass(
       typeof returns === "string" &&
       returns.indexOf("http://www.w3.org/ns/hydra/core") !== 0
     ) {
-      return findSupportedClass(docs, returns);
+      try {
+        return findSupportedClass(docs, returns);
+      } catch {
+        continue;
+      }
     }
   }
 
