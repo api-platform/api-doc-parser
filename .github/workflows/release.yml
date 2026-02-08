@@ -1,5 +1,9 @@
 name: Release
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   workflow_dispatch: ~
   push:
@@ -24,6 +28,7 @@ jobs:
         with:
           node-version: 22
           cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -41,6 +46,6 @@ jobs:
         run: pnpm build
 
       - name: Publish to npm
-        run: pnpm publish --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          node -e "const p=require('./package.json'); delete p.packageManager; if(p.devEngines) delete p.devEngines.packageManager; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2))"
+          npm publish --provenance --access public
