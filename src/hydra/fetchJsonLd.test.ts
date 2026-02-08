@@ -31,7 +31,7 @@ test("fetch a JSON-LD document", async () => {
   expect(data.body["name"]).toBe("John Lennon");
 });
 
-test("fetch a non JSON-LD document", async () => {
+test("fetch a non JSON-LD document with 2xx returns empty response", async () => {
   server.use(
     http.get(
       "http://localhost/foo.jsonld",
@@ -44,10 +44,70 @@ test("fetch a non JSON-LD document", async () => {
     ),
   );
 
+  const data = await fetchJsonLd("http://localhost/foo.jsonld");
+  expect(data.response.ok).toBe(true);
+  expect(data).not.toHaveProperty("body");
+});
+
+test("fetch a non JSON-LD document with non-2xx rejects", async () => {
+  server.use(
+    http.get(
+      "http://localhost/foo.jsonld",
+      () =>
+        new Response(`<body>Not Found</body>`, {
+          headers: { "Content-Type": "text/html" },
+          status: 404,
+          statusText: "Not Found",
+        }),
+    ),
+  );
+
   const promise = fetchJsonLd("http://localhost/foo.jsonld");
 
-  await expect(promise).rejects.toHaveProperty("response.ok", true);
+  await expect(promise).rejects.toHaveProperty("response.ok", false);
   await expect(promise).rejects.not.toHaveProperty("body");
+});
+
+test("fetch a 202 Accepted with non JSON-LD content type returns empty response", async () => {
+  server.use(
+    http.post(
+      "http://localhost/foo.jsonld",
+      () =>
+        new Response(null, {
+          status: 202,
+          statusText: "Accepted",
+        }),
+    ),
+  );
+
+  const data = await fetchJsonLd("http://localhost/foo.jsonld", {
+    method: "POST",
+  });
+  expect(data.response.ok).toBe(true);
+  expect(data.response.status).toBe(202);
+  expect(data).not.toHaveProperty("body");
+});
+
+test("fetch a 202 Accepted with JSON-LD content type parses body", async () => {
+  server.use(
+    http.post("http://localhost/foo.jsonld", () =>
+      Response.json(httpResponse, {
+        headers: { "Content-Type": "application/ld+json" },
+        status: 202,
+        statusText: "Accepted",
+      }),
+    ),
+  );
+
+  const data = await fetchJsonLd("http://localhost/foo.jsonld", {
+    method: "POST",
+  });
+  expect(data.response.ok).toBe(true);
+  expect(data.response.status).toBe(202);
+  assert("body" in data, "Response should have a body property");
+  assert(data.body !== null, "Body should not be null");
+  assert("name" in data.body, "Body should have a name property");
+  expect(data.body["name"]).toBe("John Lennon");
 });
 
 test("fetch an error with Content-Type application/ld+json", async () => {
