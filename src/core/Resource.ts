@@ -3,6 +3,11 @@ import type { Operation } from "./Operation.js";
 import type { Parameter } from "./Parameter.js";
 import type { Nullable } from "./types.js";
 
+export interface ManagesBlock {
+  property?: string;
+  object?: string;
+}
+
 export interface ResourceOptions
   extends Nullable<{
     id?: string;
@@ -15,6 +20,7 @@ export interface ResourceOptions
     operations?: Operation[];
     deprecated?: boolean;
     parameters?: Parameter[];
+    manages?: ManagesBlock[];
   }> {}
 
 export class Resource implements ResourceOptions {
@@ -31,6 +37,7 @@ export class Resource implements ResourceOptions {
   operations?: Operation[] | null;
   deprecated?: boolean | null;
   parameters?: Parameter[] | null;
+  manages?: ManagesBlock[] | null;
 
   constructor(name: string, url: string, options: ResourceOptions = {}) {
     this.name = name;
