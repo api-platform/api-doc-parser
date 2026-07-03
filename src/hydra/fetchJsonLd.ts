@@ -62,7 +62,7 @@ export default async function fetchJsonLd(
 
 function setHeaders(options: RequestInitExtended): RequestInit {
   if (!options.headers) {
-    return { ...options, headers: {} };
+    options.headers = {};
   }
 
   let headers =
