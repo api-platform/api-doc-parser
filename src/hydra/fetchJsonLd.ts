@@ -61,12 +61,10 @@ export default async function fetchJsonLd(
 }
 
 function setHeaders(options: RequestInitExtended): RequestInit {
-  if (!options.headers) {
-    return { ...options, headers: {} };
-  }
-
   let headers =
-    typeof options.headers === "function" ? options.headers() : options.headers;
+    typeof options.headers === "function"
+      ? options.headers()
+      : (options.headers ?? {});
 
   headers = new Headers(headers);
 
