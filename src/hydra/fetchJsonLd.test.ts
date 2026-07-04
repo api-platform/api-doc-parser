@@ -154,6 +154,40 @@ test("fetch an error with Content-Type application/error+json", async () => {
   );
 });
 
+test("fetch with an explicit empty options object still sends the default Accept header", async () => {
+  let receivedAccept: string | null = null;
+
+  server.use(
+    http.get("http://localhost/foo.jsonld", ({ request }) => {
+      receivedAccept = request.headers.get("Accept");
+      return Response.json(httpResponse, {
+        headers: { "Content-Type": "application/ld+json" },
+        status: 200,
+        statusText: "OK",
+      });
+    }),
+  );
+
+  await fetchJsonLd("http://localhost/foo.jsonld", {});
+  expect(receivedAccept).toBe("application/ld+json");
+});
+
+test("fetch does not mutate the passed options object", async () => {
+  server.use(
+    http.get("http://localhost/foo.jsonld", () =>
+      Response.json(httpResponse, {
+        headers: { "Content-Type": "application/ld+json" },
+        status: 200,
+        statusText: "OK",
+      }),
+    ),
+  );
+
+  const options = {};
+  await fetchJsonLd("http://localhost/foo.jsonld", options);
+  expect(options).toEqual({});
+});
+
 test("fetch an empty document", async () => {
   server.use(
     http.get(
