@@ -1,6 +1,7 @@
 import jsonld from "jsonld";
 import type { OperationType, Parameter } from "../core/index.js";
 import { Api, Field, Operation, Resource } from "../core/index.js";
+import type { ManagesBlock } from "../core/Resource.js";
 import type { RequestInitExtended } from "../core/types.js";
 import { removeTrailingSlash } from "../core/utils/index.js";
 import fetchJsonLd from "./fetchJsonLd.js";
@@ -183,7 +184,8 @@ function findRelatedClass(
   docs: ExpandedDoc[],
   property: ExpandedRdfProperty,
 ): ExpandedClass {
-  // Use the entrypoint property's owl:equivalentClass if available
+  // Try to use hydra:manages if available (new approach)
+  // Otherwise fall back to owl:equivalentClass (legacy approach)
 
   for (const range of property["http://www.w3.org/2000/01/rdf-schema#range"] ??
     []) {
@@ -287,6 +289,36 @@ function findRelatedClass(
   }
 
   throw new Error(`Cannot find the class related to ${property["@id"]}.`);
+}
+
+/**
+ * Extracts manages blocks from a property.
+ * A manages block describes the relations between collection members and other resources.
+ * @param {ExpandedRdfProperty} property The property containing manages blocks.
+ * @returns {ManagesBlock[]} Array of manages blocks.
+ */
+function getManagesBlocks(property: ExpandedRdfProperty): ManagesBlock[] {
+  const manages = property["http://www.w3.org/ns/hydra/core#manages"];
+
+  if (!manages || !Array.isArray(manages)) {
+    return [];
+  }
+
+  return manages
+    .map((manage) => {
+      const prop = manage["http://www.w3.org/ns/hydra/core#property"]?.[0]?.["@id"];
+      const object = manage["http://www.w3.org/ns/hydra/core#object"]?.[0]?.["@id"];
+
+      if (!prop && !object) {
+        return null;
+      }
+
+      return {
+        ...(prop && { property: prop }),
+        ...(object && { object }),
+      } as ManagesBlock;
+    })
+    .filter((block): block is ManagesBlock => block !== null);
 }
 
 /**
@@ -530,6 +562,8 @@ export default async function parseHydraDocumentation(
       operations.push(operation);
     }
 
+    const manages = getManagesBlocks(property);
+
     const resource = new Resource(guessNameFromUrl(url, entrypointUrl), url, {
       id: relatedClass["@id"],
       title:
@@ -544,6 +578,7 @@ export default async function parseHydraDocumentation(
         relatedClass?.["http://www.w3.org/2002/07/owl#deprecated"]?.[0]?.[
           "@value"
         ] ?? false,
+      ...(manages.length > 0 && { manages }),
     });
 
     resource.parameters = [];

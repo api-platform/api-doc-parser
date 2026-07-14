@@ -2583,3 +2583,172 @@ test("parse a Hydra documentation with bare Link @type (without hydra prefix)", 
   expect(reviewField.reference).toBe(reviewResource);
   expect(reviewField.embedded).toBeNull();
 });
+
+test("parse a Hydra documentation with hydra:manages", async () => {
+  const managesEntrypoint = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      comment: {
+        "@id": "Entrypoint/comment",
+        "@type": "@id",
+      },
+    },
+    "@id": "/",
+    "@type": "Entrypoint",
+    comment: "/comments",
+  };
+
+  const managesDocs = {
+    "@context": {
+      "@vocab": "http://localhost/docs.jsonld#",
+      hydra: "http://www.w3.org/ns/hydra/core#",
+      rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      rdfs: "http://www.w3.org/2000/01/rdf-schema#",
+      xmls: "http://www.w3.org/2001/XMLSchema#",
+      owl: "http://www.w3.org/2002/07/owl#",
+      domain: {
+        "@id": "rdfs:domain",
+        "@type": "@id",
+      },
+      range: {
+        "@id": "rdfs:range",
+        "@type": "@id",
+      },
+      expects: {
+        "@id": "hydra:expects",
+        "@type": "@id",
+      },
+      returns: {
+        "@id": "hydra:returns",
+        "@type": "@id",
+      },
+    },
+    "@id": "/docs.jsonld",
+    "hydra:title": "API with manages",
+    "hydra:description": "A test",
+    "hydra:entrypoint": "/",
+    "hydra:supportedClass": [
+      {
+        "@id": "http://schema.org/Comment",
+        "@type": "hydra:Class",
+        "rdfs:label": "Comment",
+        "hydra:title": "Comment",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/text",
+              "@type": "rdf:Property",
+              "rdfs:label": "text",
+              domain: "http://schema.org/Comment",
+              range: "xmls:string",
+            },
+            "hydra:title": "text",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "http://schema.org/about",
+              "@type": "hydra:Link",
+              "rdfs:label": "about",
+              domain: "http://schema.org/Comment",
+              range: "http://schema.org/Thing",
+            },
+            "hydra:title": "about",
+            "hydra:required": true,
+            "hydra:readable": true,
+            "hydra:writeable": true,
+          },
+        ],
+        "hydra:supportedOperation": [
+          {
+            "@type": "hydra:Operation",
+            "hydra:method": "GET",
+            "hydra:title": "Retrieves Comment resource.",
+            "rdfs:label": "Retrieves Comment resource.",
+            returns: "http://schema.org/Comment",
+          },
+        ],
+      },
+      {
+        "@id": "#Entrypoint",
+        "@type": "hydra:Class",
+        "hydra:title": "The API entrypoint",
+        "hydra:supportedProperty": [
+          {
+            "@type": "hydra:SupportedProperty",
+            "hydra:property": {
+              "@id": "#Entrypoint/comment",
+              "@type": "hydra:Link",
+              domain: "#Entrypoint",
+              "rdfs:label": "The collection of Comment resources",
+              "rdfs:range": [
+                { "@id": "hydra:Collection" },
+                {
+                  "owl:equivalentClass": {
+                    "owl:onProperty": { "@id": "hydra:member" },
+                    "owl:allValuesFrom": { "@id": "http://schema.org/Comment" },
+                  },
+                },
+              ],
+              "hydra:manages": [
+                {
+                  "hydra:property": { "@id": "http://example.com/vocab#comment" },
+                  "hydra:object": { "@id": "http://schema.org/Comment" },
+                },
+              ],
+            },
+            "hydra:title": "The collection of Comment resources",
+            "hydra:readable": true,
+            "hydra:writeable": false,
+            "hydra:supportedOperation": [
+              {
+                "@type": "hydra:Operation",
+                "hydra:method": "GET",
+                "hydra:title": "Retrieves the collection of Comment resources.",
+                "rdfs:label": "Retrieves the collection of Comment resources.",
+                returns: "hydra:Collection",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  const init = { headers: { "Content-Type": "application/ld+json" } };
+  server.use(
+    http.get("http://localhost", () =>
+      Response.json(managesEntrypoint, {
+        headers: {
+          ...init.headers,
+          Link: '<http://localhost/docs.jsonld>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"',
+        },
+      }),
+    ),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(managesDocs, init),
+    ),
+  );
+
+  const data = await parseHydraDocumentation("http://localhost");
+  expect(data.status).toBe(200);
+
+  const commentResource = data.api.resources?.find(
+    (r) => r.id === "http://schema.org/Comment",
+  );
+  expect(commentResource).toBeDefined();
+  assert(commentResource !== undefined);
+
+  expect(commentResource.manages).toBeDefined();
+  expect(commentResource.manages).toHaveLength(1);
+  expect(commentResource.manages?.[0]).toEqual({
+    property: "http://example.com/vocab#comment",
+    object: "http://schema.org/Comment",
+  });
+});
+

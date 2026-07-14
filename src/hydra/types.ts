@@ -5,6 +5,19 @@ export interface IriTemplateMapping {
   required: boolean;
 }
 
+export interface ExpandedManages {
+  "http://www.w3.org/ns/hydra/core#property"?: [
+    {
+      "@id": string;
+    },
+  ];
+  "http://www.w3.org/ns/hydra/core#object"?: [
+    {
+      "@id": string;
+    },
+  ];
+}
+
 export interface ExpandedOperation {
   "@type": ["http://www.w3.org/ns/hydra/core#Operation"];
   "http://www.w3.org/2000/01/rdf-schema#label": [
@@ -88,6 +101,7 @@ export interface ExpandedRdfProperty {
       "@value": number;
     },
   ];
+  "http://www.w3.org/ns/hydra/core#manages"?: ExpandedManages[];
 }
 
 interface ExpandedSupportedProperty {
