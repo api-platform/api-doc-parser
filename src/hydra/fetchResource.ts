@@ -6,11 +6,7 @@ export default async function fetchResource(
   resourceUrl: string,
   options: RequestInitExtended = {},
 ): Promise<{ parameters: IriTemplateMapping[] }> {
-  const response = await fetchJsonLd(
-    resourceUrl,
-    // oxlint-disable-next-line prefer-object-spread
-    Object.assign({ itemsPerPage: 0 }, options),
-  );
+  const response = await fetchJsonLd(resourceUrl, options);
 
   let hasPrefix = true;
   if ("body" in response) {

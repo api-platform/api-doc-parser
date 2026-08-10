@@ -175,6 +175,11 @@ interface Resource {
 }
 ```
 
+For Hydra resources, `getParameters()` loads parameters lazily and caches the
+result for the lifetime of the `Resource` instance. Run the documentation
+parser again to refresh parameters after the API schema or authorization
+context changes.
+
 ### Field
 
 Represents a property of a resource, including its type, constraints, and metadata.
