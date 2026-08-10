@@ -549,7 +549,8 @@ export default async function parseHydraDocumentation(
     resource.parameters = [];
     resource.getParameters =
       /**
-       * Gets the parameters for the resource.
+       * Gets the parameters for the resource. The result is cached for the
+       * lifetime of this Resource instance.
        * @returns {Promise<Parameter[]>} The parameters for the resource.
        */
       (): Promise<Parameter[]> => getParameters(resource, options);
