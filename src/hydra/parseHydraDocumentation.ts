@@ -212,6 +212,30 @@ function findRelatedClass(
     }
   }
 
+  for (const memberAssertion of property[
+    "http://www.w3.org/ns/hydra/core#memberAssertion"
+  ] ?? []) {
+    const assertedProperty =
+      memberAssertion["http://www.w3.org/ns/hydra/core#property"]?.[0]?.["@id"];
+    if (
+      assertedProperty !== "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+    ) {
+      continue;
+    }
+
+    const assertedClass =
+      memberAssertion["http://www.w3.org/ns/hydra/core#object"]?.[0]?.["@id"];
+    if (typeof assertedClass !== "string") {
+      continue;
+    }
+
+    try {
+      return findSupportedClass(docs, assertedClass);
+    } catch {
+      continue;
+    }
+  }
+
   // As a fallback, find an operation available on the property of the entrypoint returning the searched type (usually POST)
   for (const entrypointSupportedOperation of property[
     "http://www.w3.org/ns/hydra/core#supportedOperation"

@@ -2583,3 +2583,54 @@ test("parse a Hydra documentation with bare Link @type (without hydra prefix)", 
   expect(reviewField.reference).toBe(reviewResource);
   expect(reviewField.embedded).toBeNull();
 });
+
+test("parse a Hydra documentation describing collections with hydra:memberAssertion", async () => {
+  const modernDocs = structuredClone(docs);
+  const entrypointClass = modernDocs["hydra:supportedClass"].find(
+    (supportedClass) => supportedClass["@id"] === "#Entrypoint",
+  );
+  assert(entrypointClass !== undefined);
+
+  const collectionProperties = entrypointClass["hydra:supportedProperty"]
+    .map((supportedProperty) => {
+      const property = supportedProperty["hydra:property"] as Record<
+        string,
+        unknown
+      >;
+      const ranges = property["rdfs:range"] as
+        | {
+            "owl:equivalentClass"?: { "owl:allValuesFrom": { "@id": string } };
+          }[]
+        | undefined;
+
+      return {
+        property,
+        memberType: ranges?.find((range) => range["owl:equivalentClass"])?.[
+          "owl:equivalentClass"
+        ]?.["owl:allValuesFrom"]["@id"],
+      };
+    })
+    .filter(({ memberType }) => memberType !== undefined);
+
+  for (const { property, memberType } of collectionProperties) {
+    delete property["rdfs:range"];
+    property["range"] = "hydra:Collection";
+    property["hydra:memberAssertion"] = {
+      "hydra:property": { "@id": "rdf:type" },
+      "hydra:object": { "@id": memberType },
+    };
+  }
+
+  server.use(
+    http.get("http://localhost", () => Response.json(entrypoint, init)),
+    http.get("http://localhost/docs.jsonld", () =>
+      Response.json(modernDocs, init),
+    ),
+  );
+
+  const response = await parseHydraDocumentation("http://localhost");
+
+  expect(JSON.stringify(response.api, parsedJsonReplacer, 2)).toBe(
+    JSON.stringify(expectedApi, null, 2),
+  );
+});
