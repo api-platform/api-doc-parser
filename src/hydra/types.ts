@@ -83,6 +83,18 @@ export interface ExpandedRdfProperty {
         },
       ];
   "http://www.w3.org/ns/hydra/core#supportedOperation"?: ExpandedOperation[];
+  "http://www.w3.org/ns/hydra/core#memberAssertion"?: {
+    "http://www.w3.org/ns/hydra/core#property"?: [
+      {
+        "@id": string;
+      },
+    ];
+    "http://www.w3.org/ns/hydra/core#object"?: [
+      {
+        "@id": string;
+      },
+    ];
+  }[];
   "http://www.w3.org/2002/07/owl#maxCardinality": [
     {
       "@value": number;
