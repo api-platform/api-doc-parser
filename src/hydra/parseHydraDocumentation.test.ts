@@ -1591,9 +1591,16 @@ test("Resource parameters can be retrieved", async () => {
   const parameters = await resource.getParameters();
 
   expect(fetchSpy).toHaveBeenCalledTimes(3);
-  expect(fetchSpy).toHaveBeenLastCalledWith("http://localhost/books", {
-    headers: {},
-  });
+  const lastCall = fetchSpy.mock.lastCall;
+  assert(lastCall !== undefined);
+
+  const [lastUrl, lastOptions] = lastCall;
+  assert(lastOptions !== undefined);
+
+  expect(lastUrl).toBe("http://localhost/books");
+  expect(new Headers(lastOptions.headers).get("Accept")).toBe(
+    "application/ld+json",
+  );
   expect(parameters).toEqual([
     {
       description: "",
