@@ -1589,7 +1589,11 @@ test("Resource parameters can be retrieved", async () => {
   assert(!!resource.getParameters);
 
   const parameters = await resource.getParameters();
+
   expect(fetchSpy).toHaveBeenCalledTimes(3);
+  expect(fetchSpy).toHaveBeenLastCalledWith("http://localhost/books", {
+    headers: {},
+  });
   expect(parameters).toEqual([
     {
       description: "",
@@ -1598,6 +1602,7 @@ test("Resource parameters can be retrieved", async () => {
       variable: "isbn",
     },
   ]);
+  fetchSpy.mockRestore();
 });
 
 test("parse a Hydra documentation with enum/read-only resources (rdfs:range direct @id)", async () => {
